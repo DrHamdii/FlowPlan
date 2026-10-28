@@ -4,6 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FlowPlan — Daily, Weekly & Monthly Planner with Focus Timer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     if (window.tailwind) {
@@ -570,11 +573,19 @@
       box-sizing: border-box;
     }
     body {
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
     }
     .font-mono-clock {
-      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+      font-family: 'Outfit', 'Plus Jakarta Sans', 'Segoe UI Variable Display', 'Inter', system-ui, sans-serif;
       font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1, "cv01" 1;
+      letter-spacing: -0.02em;
+    }
+    .font-prayer-time {
+      font-family: 'Outfit', 'Plus Jakarta Sans', 'Segoe UI Variable Display', 'Inter', system-ui, sans-serif;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1, "cv01" 1;
+      letter-spacing: -0.015em;
     }
     .progress-ring-circle {
       transition: stroke-dashoffset 0.35s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.3s ease;
@@ -637,6 +648,190 @@
       border-color: rgba(14, 165, 233, 0.35);
       color: #bae6fd;
     }
+    /* Sticky Note Icon Button Color Matching */
+    .sticky-icon-btn {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 0.625rem;
+      border-width: 1.5px;
+      border-style: solid;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+    }
+    .sticky-icon-btn:hover {
+      transform: translateY(-1px) scale(1.05);
+    }
+    .sticky-icon-btn-yellow {
+      background-color: #fef9c3;
+      border-color: #facc15;
+      color: #ca8a04;
+      box-shadow: 0 1px 2px rgba(234, 179, 8, 0.16);
+    }
+    .sticky-icon-btn-yellow:hover {
+      background-color: #fef08a;
+      border-color: #eab308;
+      color: #a16207;
+    }
+    .dark .sticky-icon-btn-yellow {
+      background-color: rgba(234, 179, 8, 0.2);
+      border-color: rgba(250, 204, 21, 0.55);
+      color: #fde047;
+    }
+    .dark .sticky-icon-btn-yellow:hover {
+      background-color: rgba(234, 179, 8, 0.32);
+      border-color: #facc15;
+    }
+    .sticky-icon-btn-amber {
+      background-color: #ffedd5;
+      border-color: #fb923c;
+      color: #ea580c;
+      box-shadow: 0 1px 2px rgba(249, 115, 22, 0.16);
+    }
+    .sticky-icon-btn-amber:hover {
+      background-color: #fed7aa;
+      border-color: #f97316;
+      color: #c2410c;
+    }
+    .dark .sticky-icon-btn-amber {
+      background-color: rgba(249, 115, 22, 0.2);
+      border-color: rgba(251, 146, 60, 0.55);
+      color: #fdba74;
+    }
+    .dark .sticky-icon-btn-amber:hover {
+      background-color: rgba(249, 115, 22, 0.32);
+      border-color: #fb923c;
+    }
+    .sticky-icon-btn-mint {
+      background-color: #d1fae5;
+      border-color: #34d399;
+      color: #059669;
+      box-shadow: 0 1px 2px rgba(16, 185, 129, 0.16);
+    }
+    .sticky-icon-btn-mint:hover {
+      background-color: #a7f3d0;
+      border-color: #10b981;
+      color: #047857;
+    }
+    .dark .sticky-icon-btn-mint {
+      background-color: rgba(16, 185, 129, 0.2);
+      border-color: rgba(52, 211, 153, 0.55);
+      color: #6ee7b7;
+    }
+    .dark .sticky-icon-btn-mint:hover {
+      background-color: rgba(16, 185, 129, 0.32);
+      border-color: #34d399;
+    }
+    .sticky-icon-btn-sky {
+      background-color: #e0f2fe;
+      border-color: #38bdf8;
+      color: #0284c7;
+      box-shadow: 0 1px 2px rgba(14, 165, 233, 0.16);
+    }
+    .sticky-icon-btn-sky:hover {
+      background-color: #bae6fd;
+      border-color: #0ea5e9;
+      color: #0369a1;
+    }
+    .dark .sticky-icon-btn-sky {
+      background-color: rgba(14, 165, 233, 0.2);
+      border-color: rgba(56, 189, 248, 0.55);
+      color: #7dd3fc;
+    }
+    .dark .sticky-icon-btn-sky:hover {
+      background-color: rgba(14, 165, 233, 0.32);
+      border-color: #38bdf8;
+    }
+
+    /* Restyled Task Check Box */
+    .task-check-btn {
+      width: 1.35rem;
+      height: 1.35rem;
+      border-radius: 0.45rem;
+      border: 2px solid #cbd5e1;
+      background: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), inset 0 1px 1px rgba(255, 255, 255, 0.6);
+      padding: 0;
+      position: relative;
+    }
+    .dark .task-check-btn {
+      border-color: #475569;
+      background: rgba(15, 23, 42, 0.75);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+    }
+    .task-check-btn-sm {
+      width: 1.125rem;
+      height: 1.125rem;
+      border-radius: 0.375rem;
+    }
+    .task-check-btn .task-check-icon {
+      width: 0.85rem;
+      height: 0.85rem;
+      opacity: 0;
+      transform: scale(0.45);
+      transition: all 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+      color: #6366f1;
+    }
+    .task-check-btn-sm .task-check-icon {
+      width: 0.72rem;
+      height: 0.72rem;
+    }
+    .task-check-btn:hover:not(.is-checked) {
+      border-color: #6366f1;
+      background: rgba(99, 102, 241, 0.08);
+      transform: scale(1.06);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+    }
+    .dark .task-check-btn:hover:not(.is-checked) {
+      border-color: #818cf8;
+      background: rgba(99, 102, 241, 0.16);
+    }
+    .task-check-btn:hover:not(.is-checked) .task-check-icon {
+      opacity: 0.4;
+      transform: scale(0.85);
+    }
+    .task-check-btn.is-checked {
+      border-color: transparent;
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 55%, #10b981 100%);
+      color: #ffffff;
+      box-shadow: 0 3px 8px -1px rgba(79, 70, 229, 0.45);
+    }
+    .task-check-btn.is-checked .task-check-icon {
+      opacity: 1;
+      transform: scale(1);
+      color: #ffffff;
+    }
+
+    /* All-Time Analytics Enhanced Card Styling */
+    .alltime-stat-box {
+      background: linear-gradient(135deg, rgba(255, 251, 235, 0.9) 0%, #ffffff 55%, rgba(254, 243, 199, 0.45) 100%);
+      border: 1px solid rgba(251, 191, 36, 0.4);
+    }
+    .dark .alltime-stat-box {
+      background: linear-gradient(135deg, rgba(69, 26, 3, 0.35) 0%, rgba(15, 23, 42, 0.95) 60%, rgba(120, 53, 15, 0.25) 100%);
+      border: 1px solid rgba(217, 119, 6, 0.4);
+    }
+    .alltime-hero-text {
+      background: linear-gradient(135deg, #d97706 0%, #f59e0b 50%, #ea580c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .dark .alltime-hero-text {
+      background: linear-gradient(135deg, #fde047 0%, #fbbf24 55%, #fb923c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
     .dragging-item {
       opacity: 0.45;
       transform: scale(0.98);
@@ -645,7 +840,184 @@
       outline: 2px dashed #6366f1;
       outline-offset: 2px;
     }
-    /* Fullscreen Clock Only Mode */
+    /* Sticky Note Icon Dot Indicator when note has content & is hidden */
+    .sticky-icon-btn {
+      position: relative;
+    }
+    .sticky-icon-btn.has-note-dot::after {
+      content: '';
+      position: absolute;
+      top: -2px;
+      right: -2px;
+      width: 7px;
+      height: 7px;
+      border-radius: 9999px;
+      background: #4f46e5;
+      border: 1.5px solid #ffffff;
+    }
+    .dark .sticky-icon-btn.has-note-dot::after {
+      background: #818cf8;
+      border-color: #0f172a;
+    }
+
+    /* Restyled Modern Date Pickers */
+    .flowplan-date-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.65rem;
+      border-radius: 0.85rem;
+      background: linear-gradient(135deg, rgba(238, 242, 255, 0.9) 0%, rgba(255, 255, 255, 0.98) 100%);
+      border: 1.5px solid rgba(99, 102, 241, 0.28);
+      box-shadow: 0 1px 3px rgba(79, 70, 229, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+      transition: all 0.16s ease;
+      cursor: pointer;
+    }
+    .flowplan-date-pill:hover {
+      border-color: rgba(79, 70, 229, 0.55);
+      box-shadow: 0 3px 8px rgba(79, 70, 229, 0.14);
+      transform: translateY(-1px);
+    }
+    .flowplan-date-pill:focus-within {
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.22);
+    }
+    .dark .flowplan-date-pill {
+      background: linear-gradient(135deg, rgba(30, 27, 75, 0.55) 0%, rgba(15, 23, 42, 0.92) 100%);
+      border-color: rgba(129, 140, 248, 0.32);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+    }
+    .dark .flowplan-date-pill:hover {
+      border-color: rgba(129, 140, 248, 0.6);
+    }
+    .flowplan-date-pill-emerald {
+      background: linear-gradient(135deg, rgba(236, 253, 245, 0.92) 0%, rgba(255, 255, 255, 0.98) 100%);
+      border-color: rgba(16, 185, 129, 0.32);
+      box-shadow: 0 1px 3px rgba(5, 150, 105, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    }
+    .flowplan-date-pill-emerald:hover {
+      border-color: rgba(5, 150, 105, 0.6);
+      box-shadow: 0 3px 8px rgba(5, 150, 105, 0.14);
+    }
+    .flowplan-date-pill-emerald:focus-within {
+      border-color: #059669;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.22);
+    }
+    .dark .flowplan-date-pill-emerald {
+      background: linear-gradient(135deg, rgba(6, 78, 59, 0.45) 0%, rgba(15, 23, 42, 0.92) 100%);
+      border-color: rgba(52, 211, 153, 0.32);
+    }
+    .dark .flowplan-date-pill-emerald:hover {
+      border-color: rgba(52, 211, 153, 0.65);
+    }
+    .flowplan-date-input {
+      background: transparent !important;
+      border: 0 !important;
+      padding: 0 !important;
+      margin: 0 !important;
+      font-size: 0.75rem !important;
+      font-weight: 700 !important;
+      letter-spacing: -0.01em;
+      color: #1e293b;
+      outline: none !important;
+      box-shadow: none !important;
+      cursor: pointer;
+    }
+    .dark .flowplan-date-input {
+      color: #f1f5f9;
+      color-scheme: dark;
+    }
+    .flowplan-date-input::-webkit-calendar-picker-indicator {
+      cursor: pointer;
+      opacity: 0.65;
+      filter: hue-rotate(210deg);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+    .flowplan-date-input:hover::-webkit-calendar-picker-indicator {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+
+    /* Prayer Times Card & Timeline Markers */
+    .prayer-item-row {
+      transition: all 0.18s ease;
+    }
+    .prayer-item-next {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(16, 185, 129, 0.1) 100%);
+      border-color: rgba(99, 102, 241, 0.45) !important;
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.1);
+    }
+    .dark .prayer-item-next {
+      background: linear-gradient(135deg, rgba(79, 70, 229, 0.24) 0%, rgba(5, 150, 105, 0.18) 100%);
+      border-color: rgba(129, 140, 248, 0.48) !important;
+    }
+    .prayer-item-current {
+      background: rgba(16, 185, 129, 0.09);
+      border-color: rgba(16, 185, 129, 0.4) !important;
+    }
+    .dark .prayer-item-current {
+      background: rgba(16, 185, 129, 0.16);
+      border-color: rgba(52, 211, 153, 0.4) !important;
+    }
+    .prayer-time-badge {
+      font-family: 'Outfit', 'Plus Jakarta Sans', 'Segoe UI Variable Display', 'Inter', system-ui, sans-serif;
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1, "cv01" 1;
+      letter-spacing: -0.015em;
+      padding: 0.15rem 0.5rem;
+      border-radius: 0.5rem;
+      background: rgba(255, 255, 255, 0.85);
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    }
+    .dark .prayer-time-badge {
+      background: rgba(15, 23, 42, 0.75);
+      border-color: rgba(51, 65, 85, 0.75);
+    }
+
+    /* Restyled Mini Tasks in Monthly Glance */
+    .month-mini-task {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.22rem 0.45rem;
+      border-radius: 0.5rem;
+      font-size: 0.68rem;
+      font-weight: 600;
+      line-height: 1.25;
+      background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+      border: 1px solid rgba(203, 213, 225, 0.7);
+      border-left: 3px solid #6366f1;
+      color: #1e293b;
+      box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+      transition: transform 0.14s ease, box-shadow 0.14s ease;
+    }
+    .dark .month-mini-task {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 41, 59, 0.75) 100%);
+      border-color: rgba(51, 65, 85, 0.75);
+      border-left: 3px solid #818cf8;
+      color: #e2e8f0;
+    }
+    .month-mini-task-done {
+      background: linear-gradient(135deg, rgba(236, 253, 245, 0.85) 0%, rgba(248, 250, 252, 0.9) 100%);
+      border-color: rgba(167, 243, 208, 0.75);
+      border-left: 3px solid #10b981;
+      color: #64748b;
+    }
+    .dark .month-mini-task-done {
+      background: linear-gradient(135deg, rgba(6, 78, 59, 0.28) 0%, rgba(15, 23, 42, 0.75) 100%);
+      border-color: rgba(16, 185, 129, 0.3);
+      border-left: 3px solid #34d399;
+      color: #94a3b8;
+    }
+    .month-mini-task-dot {
+      width: 0.36rem;
+      height: 0.36rem;
+      border-radius: 9999px;
+      flex-shrink: 0;
+    }
+
+    /* Fullscreen Clock Only Mode & Mini Clock Mode */
     body.clock-fullscreen-open {
       overflow: hidden;
     }
@@ -707,6 +1079,52 @@
     #timerSidebar.fullscreen-clock-only #clockColorDotsRail {
       right: -2.25rem !important;
     }
+
+    /* Tiny / Mini Clock Mode (Fits compact window or floating corner widget) */
+    body.clock-mini-mode #timerSidebar.fullscreen-clock-only {
+      padding: 2.25rem 0.5rem 0.5rem 0.5rem !important;
+    }
+    body.clock-mini-mode.clock-mini-browser-fallback {
+      overflow: auto !important;
+    }
+    body.clock-mini-mode.clock-mini-browser-fallback #timerSidebar.fullscreen-clock-only {
+      inset: auto 1.25rem 1.25rem auto !important;
+      width: 300px !important;
+      height: 330px !important;
+      border-radius: 1.5rem !important;
+      border: 1px solid rgba(99, 102, 241, 0.45) !important;
+      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.55) !important;
+    }
+    body.clock-mini-mode #timerSidebar.fullscreen-clock-only #clockDisplayArea {
+      transform: scale(0.92) !important;
+    }
+    body.clock-mini-mode #timerSidebar.fullscreen-clock-only #clockStyleDigital #digitalClockText {
+      font-size: 3.75rem !important;
+    }
+    body.clock-mini-mode #timerSidebar.fullscreen-clock-only #clockStyleCard .flip-digit-tile {
+      width: 6.25rem !important;
+      height: 7rem !important;
+    }
+    body.clock-mini-mode #timerSidebar.fullscreen-clock-only #clockStyleCard #cardClockMin,
+    body.clock-mini-mode #timerSidebar.fullscreen-clock-only #clockStyleCard #cardClockSec {
+      font-size: 3.25rem !important;
+    }
+    body.clock-mini-mode #timerSidebar.fullscreen-clock-only #clockStyleZen > div {
+      padding: 1.25rem 1.5rem !important;
+    }
+    body.clock-mini-mode #timerSidebar.fullscreen-clock-only #clockStyleZen #zenClockText {
+      font-size: 3.25rem !important;
+    }
+    body.clock-mini-mode #fullscreenClockToolbar {
+      top: 0.45rem !important;
+      right: 0.45rem !important;
+      left: 0.45rem !important;
+      justify-content: center !important;
+      gap: 0.35rem !important;
+    }
+    body.clock-mini-mode #fullscreenClockToolbar .fs-btn-label {
+      display: none !important;
+    }
   </style>
 </head>
 <body class="h-full bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white transition-colors duration-200">
@@ -715,7 +1133,7 @@
     <!-- Top Header -->
     <header class="sticky top-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
-        <!-- Brand -->
+        <!-- Brand + File Menu -->
         <div class="flex items-center gap-3 select-none">
           <div id="brandBadge" class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 via-indigo-600 to-violet-600 flex items-center justify-center text-white font-bold shadow-md ring-1 ring-indigo-500/20">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
@@ -725,6 +1143,65 @@
           <h1 class="text-xl font-extrabold tracking-tight leading-none flex items-center">
             <span class="text-slate-900 dark:text-white">Flow</span><span class="text-indigo-600 dark:text-indigo-400">Plan</span><span class="w-1.5 h-1.5 rounded-full bg-indigo-500 ml-1 mt-1"></span>
           </h1>
+
+          <!-- File Menu Dropdown (Export / Import Data) -->
+          <div class="relative ml-1" id="fileMenuContainer">
+            <button
+              type="button"
+              id="fileMenuTriggerBtn"
+              onclick="toggleFileMenuDropdown(event)"
+              class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 text-xs font-semibold transition"
+              title="File Menu — Import or Export your FlowPlan data"
+            >
+              <svg class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+              </svg>
+              <span>File</span>
+              <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+
+            <div
+              id="fileMenuDropdown"
+              class="hidden absolute left-0 mt-2 w-60 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl p-1.5 z-50 space-y-1"
+            >
+              <button
+                type="button"
+                onclick="exportFlowPlanDataFile()"
+                class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-left text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
+              >
+                <span class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/>
+                  </svg>
+                  Export / Save Data (.json)
+                </span>
+                <span class="text-[10px] font-mono text-slate-400">Ctrl+S</span>
+              </button>
+
+              <button
+                type="button"
+                onclick="triggerImportFlowPlanDataFile()"
+                class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-left text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
+              >
+                <span class="flex items-center gap-2">
+                  <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M16 8l-4-4m0 0L8 8m4-4v12"/>
+                  </svg>
+                  Import / Upload Data (.json)
+                </span>
+                <span class="text-[10px] font-mono text-slate-400">Ctrl+O</span>
+              </button>
+            </div>
+            <input
+              type="file"
+              id="importFlowPlanFileInput"
+              accept=".json,application/json"
+              class="hidden"
+              onchange="handleImportFlowPlanFileSelect(event)"
+            />
+          </div>
         </div>
 
         <!-- Main View Switcher -->
@@ -754,7 +1231,12 @@
             </button>
           </div>
 
-          <input type="date" id="datePickerInput" onchange="handleDatePickerChange(this.value)" class="bg-slate-100 dark:bg-slate-800 border border-slate-200/70 dark:border-slate-700 text-xs font-medium rounded-xl px-2.5 py-2 text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          <label class="flowplan-date-pill" title="Pick a date" onclick="if(this.querySelector('input') && this.querySelector('input').showPicker) { try { this.querySelector('input').showPicker(); } catch(e){} }">
+            <svg class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <input type="date" id="datePickerInput" onchange="handleDatePickerChange(this.value)" class="flowplan-date-input" />
+          </label>
 
           <!-- Install Desktop App (PWA) Button -->
           <button onclick="triggerDesktopInstall()" id="installPwaBtn" class="hidden items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/80 dark:border-indigo-800/70 text-[11px] font-semibold text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition" title="Install FlowPlan as a Desktop App">
@@ -826,7 +1308,7 @@
               </form>
 
               <div class="flex items-center justify-between text-xs text-slate-400 dark:text-slate-500 px-1">
-                <span>Drag tasks by the handle (<span class="font-mono">⋮⋮</span>) to reorder their position. Click <strong>+ Sticky Note</strong> on any task to attach notes.</span>
+                <span>Drag tasks by the handle (<span class="font-mono">⋮⋮</span>) to reorder their position. Click the <strong>sticky note icon</strong> on any task to attach notes.</span>
                 <button onclick="clearCompletedDailyTasks()" class="hover:text-rose-500 transition font-medium">Clear completed</button>
               </div>
 
@@ -836,12 +1318,14 @@
 
             <!-- SUB-VIEW 2: Hourly Timeline -->
             <div id="dailySubViewTimeline" class="hidden bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
-              <div class="flex items-center justify-between">
+              <div class="flex flex-wrap items-center justify-between gap-2">
                 <div>
-                  <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200">Hourly Schedule (07:00 – 21:00)</h3>
-                  <p class="text-xs text-slate-500 dark:text-slate-400">Drag tasks below into any hour slot, move blocks between hours, or drag the bottom edge to span multiple hours.</p>
+                  <h3 id="timelineRangeHeading" class="text-sm font-bold text-slate-800 dark:text-slate-200">Hourly Schedule &amp; Prayer Timeline (Fajr – 12:00)</h3>
+                  <p class="text-xs text-slate-500 dark:text-slate-400">Drag tasks below into any hour slot, move blocks between hours, or plan around pinned prayer times.</p>
                 </div>
-                <button onclick="clearDaySchedule()" class="text-xs font-medium text-slate-400 hover:text-rose-500 transition">Clear schedule</button>
+                <div class="flex items-center gap-2">
+                  <button onclick="clearDaySchedule()" class="text-xs font-medium text-slate-400 hover:text-rose-500 transition">Clear schedule</button>
+                </div>
               </div>
 
               <!-- Tasks in Brief (Side-by-Side Draggable Chips) -->
@@ -853,7 +1337,7 @@
                 <div id="timelineTasksBrief" class="flex flex-wrap items-center gap-2"></div>
               </div>
 
-              <div id="timelineContainer" class="max-h-[540px] overflow-y-auto pr-1"></div>
+              <div id="timelineContainer" class="max-h-[560px] overflow-y-auto pr-1"></div>
             </div>
           </section>
 
@@ -864,7 +1348,7 @@
                 <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Weekly Board</span>
                 <h2 id="weeklyRangeTitle" class="text-xl font-bold text-slate-900 dark:text-white mt-0.5">Oct 19 – Oct 25</h2>
                 <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                  Drag day headers (<span class="font-mono">⋮⋮</span>) to rearrange days, drag bottom-right corner to resize height, or choose how columns are organized.
+                  Drag tasks between days, drag the bottom-right corner to resize day height, or choose how columns are organized.
                 </p>
               </div>
               <div class="flex flex-wrap items-center gap-2 self-start lg:self-auto">
@@ -914,7 +1398,7 @@
 
             <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm">
               <div class="grid grid-cols-7 gap-2 text-center text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 pb-3 border-b border-slate-100 dark:border-slate-800">
-                <div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div><div>Sun</div>
+                <div>Sat</div><div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div>
               </div>
               <div id="monthlyGrid" class="grid grid-cols-7 gap-2 pt-3"></div>
             </div>
@@ -965,15 +1449,12 @@
                     </div>
                   </div>
                   <div class="flex items-center gap-1.5 shrink-0">
-                    <button onclick="shiftAnalyticsDay(-1)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 transition shadow-sm" title="Previous Day">
-                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-                    </button>
-                    <label class="relative cursor-pointer">
-                      <input type="date" id="analyticsDayPicker" onchange="handleAnalyticsDayChange(this.value)" class="bg-white dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-sm cursor-pointer" />
+                    <label class="flowplan-date-pill" title="Choose day to analyze" onclick="if(this.querySelector('input') && this.querySelector('input').showPicker) { try { this.querySelector('input').showPicker(); } catch(e){} }">
+                      <svg class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                      </svg>
+                      <input type="date" id="analyticsDayPicker" onchange="handleAnalyticsDayChange(this.value)" class="flowplan-date-input" />
                     </label>
-                    <button onclick="shiftAnalyticsDay(1)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 hover:bg-indigo-50 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 transition shadow-sm" title="Next Day">
-                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                    </button>
                     <button onclick="setAnalyticsDayToday()" class="px-2.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-[11px] font-semibold transition shadow-sm">Today</button>
                   </div>
                 </div>
@@ -992,68 +1473,77 @@
                     </div>
                   </div>
                   <div class="flex items-center gap-1.5 shrink-0">
-                    <button onclick="shiftAnalyticsWeek(-7)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 transition shadow-sm" title="Previous Week">
-                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
-                    </button>
-                    <input type="date" id="analyticsWeekPicker" onchange="handleAnalyticsWeekChange(this.value)" class="bg-white dark:bg-slate-800 border border-slate-200/90 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-700 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm cursor-pointer" />
-                    <button onclick="shiftAnalyticsWeek(7)" class="w-8 h-8 rounded-xl bg-white dark:bg-slate-800 hover:bg-emerald-50 dark:hover:bg-slate-700 border border-slate-200/80 dark:border-slate-700 flex items-center justify-center text-slate-600 dark:text-slate-300 transition shadow-sm" title="Next Week">
-                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.4" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
-                    </button>
+                    <label class="flowplan-date-pill flowplan-date-pill-emerald" title="Choose week to analyze" onclick="if(this.querySelector('input') && this.querySelector('input').showPicker) { try { this.querySelector('input').showPicker(); } catch(e){} }">
+                      <svg class="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                      </svg>
+                      <input type="date" id="analyticsWeekPicker" onchange="handleAnalyticsWeekChange(this.value)" class="flowplan-date-input" />
+                    </label>
                     <button onclick="setAnalyticsWeekCurrent()" class="px-2.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-[11px] font-semibold transition shadow-sm">This Week</button>
                   </div>
                 </div>
               </div>
 
               <!-- 3 Clickable Analytics Pillars: Daily, Weekly, All-Time -->
-              <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-5 items-stretch">
                 <!-- Daily Analytics Card -->
-                <div id="analyticsCardDaily" onclick="selectAnalyticsGraph('daily')" class="cursor-pointer rounded-2xl p-5 bg-slate-50 dark:bg-slate-800/60 border-2 border-indigo-500 dark:border-indigo-500 space-y-4 transition-all hover:shadow-md">
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Daily Analytics</span>
-                    <span id="analyticsDailyDateLabel" class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Today</span>
+                <div id="analyticsCardDaily" onclick="selectAnalyticsGraph('daily')" class="cursor-pointer rounded-2xl p-5 bg-slate-50 dark:bg-slate-800/60 border-2 border-indigo-500 dark:border-indigo-500 flex flex-col justify-between space-y-4 transition-all hover:shadow-md">
+                  <div class="flex items-center justify-between gap-2">
+                    <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                      <span class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                      Daily Analytics
+                    </span>
+                    <span id="analyticsDailyDateLabel" class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-indigo-100/80 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300">Today</span>
                   </div>
-                  <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200/60 dark:border-slate-800">
-                      <p class="text-[11px] text-slate-400 font-medium">Focus Time</p>
-                      <p id="analyticsDailyFocusTime" class="text-xl font-extrabold text-slate-900 dark:text-white mt-0.5">0m</p>
+                  <div class="grid grid-cols-2 gap-3 flex-1">
+                    <div class="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200/60 dark:border-slate-800 flex flex-col items-center justify-center text-center">
+                      <p class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Focus Time</p>
+                      <p id="analyticsDailyFocusTime" class="text-xl font-extrabold text-slate-900 dark:text-white mt-1.5">0m</p>
                     </div>
-                    <div class="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200/60 dark:border-slate-800">
-                      <p class="text-[11px] text-slate-400 font-medium">Tasks Done</p>
-                      <p id="analyticsDailyTasksRatio" class="text-xl font-extrabold text-slate-900 dark:text-white mt-0.5">0 / 0</p>
-                      <p id="analyticsDailyPending" class="text-[11px] text-slate-500 mt-0.5">0 pending</p>
+                    <div class="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200/60 dark:border-slate-800 flex flex-col items-center justify-center text-center">
+                      <p class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Tasks Done</p>
+                      <p id="analyticsDailyTasksRatio" class="text-xl font-extrabold text-slate-900 dark:text-white mt-1.5">0 / 0</p>
                     </div>
                   </div>
                 </div>
 
                 <!-- Weekly Analytics Card -->
-                <div id="analyticsCardWeekly" onclick="selectAnalyticsGraph('weekly')" class="cursor-pointer rounded-2xl p-5 bg-slate-50 dark:bg-slate-800/60 border-2 border-transparent hover:border-slate-300 dark:hover:border-slate-700 space-y-4 transition-all hover:shadow-md">
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">Weekly Analytics</span>
-                    <span id="analyticsWeeklyRangeLabel" class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Mon – Sun</span>
+                <div id="analyticsCardWeekly" onclick="selectAnalyticsGraph('weekly')" class="cursor-pointer rounded-2xl p-5 bg-slate-50 dark:bg-slate-800/60 border-2 border-transparent hover:border-slate-300 dark:hover:border-slate-700 flex flex-col justify-between space-y-4 transition-all hover:shadow-md">
+                  <div class="flex items-center justify-between gap-2">
+                    <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
+                      <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                      Weekly Analytics
+                    </span>
+                    <span id="analyticsWeeklyRangeLabel" class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-emerald-100/80 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300">Sat – Fri</span>
                   </div>
-                  <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200/60 dark:border-slate-800">
-                      <p class="text-[11px] text-slate-400 font-medium">Weekly Focus</p>
-                      <p id="analyticsWeeklyFocusTime" class="text-xl font-extrabold text-slate-900 dark:text-white mt-0.5">0m</p>
+                  <div class="grid grid-cols-2 gap-3 flex-1">
+                    <div class="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200/60 dark:border-slate-800 flex flex-col items-center justify-center text-center">
+                      <p class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Weekly Focus</p>
+                      <p id="analyticsWeeklyFocusTime" class="text-xl font-extrabold text-slate-900 dark:text-white mt-1.5">0m</p>
                     </div>
-                    <div class="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200/60 dark:border-slate-800">
-                      <p class="text-[11px] text-slate-400 font-medium">Weekly Tasks</p>
-                      <p id="analyticsWeeklyTasksRatio" class="text-xl font-extrabold text-slate-900 dark:text-white mt-0.5">0 / 0</p>
-                      <p id="analyticsWeeklyPending" class="text-[11px] text-slate-500 mt-0.5">0 pending</p>
+                    <div class="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200/60 dark:border-slate-800 flex flex-col items-center justify-center text-center">
+                      <p class="text-[11px] text-slate-400 font-semibold uppercase tracking-wider">Tasks Done</p>
+                      <p id="analyticsWeeklyTasksRatio" class="text-xl font-extrabold text-slate-900 dark:text-white mt-1.5">0 / 0</p>
                     </div>
                   </div>
                 </div>
 
-                <!-- All-Time Analytics Card -->
-                <div id="analyticsCardAllTime" onclick="selectAnalyticsGraph('alltime')" class="cursor-pointer rounded-2xl p-5 bg-slate-50 dark:bg-slate-800/60 border-2 border-transparent hover:border-slate-300 dark:hover:border-slate-700 space-y-4 transition-all hover:shadow-md">
-                  <div class="flex items-center justify-between">
-                    <span class="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400">All-Time Analytics</span>
-                    <span id="analyticsAllTimeDaysLabel" class="text-[11px] font-semibold text-slate-500 dark:text-slate-400">Lifetime</span>
+                <!-- All-Time Analytics Card (Enhanced Styling & Typography, without lightning icon) -->
+                <div id="analyticsCardAllTime" onclick="selectAnalyticsGraph('alltime')" class="cursor-pointer rounded-2xl p-5 bg-slate-50 dark:bg-slate-800/60 border-2 border-transparent hover:border-slate-300 dark:hover:border-slate-700 flex flex-col justify-between space-y-4 transition-all hover:shadow-md">
+                  <div class="flex items-center justify-between gap-2">
+                    <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-amber-600 dark:text-amber-400">
+                      <svg class="w-3.5 h-3.5 text-amber-500" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+                      </svg>
+                      All-Time Analytics
+                    </span>
+                    <span id="analyticsAllTimeDaysLabel" class="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300">Lifetime</span>
                   </div>
-                  <div class="grid grid-cols-1 gap-3">
-                    <div class="bg-white dark:bg-slate-900 p-3.5 rounded-xl border border-slate-200/60 dark:border-slate-800">
-                      <p class="text-[11px] text-slate-400 font-medium">Total Focus</p>
-                      <p id="analyticsAllTimeFocusTime" class="text-xl font-extrabold text-slate-900 dark:text-white mt-0.5">0m</p>
+                  <div class="alltime-stat-box p-4 rounded-xl shadow-sm flex items-center justify-between gap-3 flex-1">
+                    <div class="min-w-0 flex flex-col justify-between h-full w-full">
+                      <p class="text-[11px] font-bold uppercase tracking-wider text-amber-700/80 dark:text-amber-300/90">Total Cumulative Focus</p>
+                      <p id="analyticsAllTimeFocusTime" class="text-2xl sm:text-3xl font-extrabold tracking-tight alltime-hero-text leading-none my-1">0m</p>
+                      <p id="analyticsAllTimeSubStats" class="text-[11px] font-semibold text-slate-600 dark:text-slate-300">0 tasks done</p>
                     </div>
                   </div>
                 </div>
@@ -1075,9 +1565,6 @@
                       <span class="inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-medium">
                         <span class="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block"></span> Tasks Done
                       </span>
-                      <span class="inline-flex items-center gap-1.5 text-slate-600 dark:text-slate-300 font-medium">
-                        <span class="w-2.5 h-2.5 rounded-sm bg-amber-400 inline-block"></span> Tasks Pending
-                      </span>
                     </div>
                   </div>
                 </div>
@@ -1090,15 +1577,49 @@
 
         </div>
 
-        <!-- Right Sidebar: Focus & Pomodoro Timer (Hidden on Weekly view) -->
+        <!-- Right Sidebar: Focus & Pomodoro Timer + Real-Time Prayer Times (Hidden on Weekly view) -->
         <aside id="timerSidebar" class="lg:col-span-4 space-y-5 lg:sticky lg:top-22">
-          <!-- Floating Exit Fullscreen Button (Only shown in Full View) -->
-          <button id="exitFullscreenFloatingBtn" onclick="toggleFullScreenPomodoro()" class="hidden fixed top-6 right-6 z-[10000] px-4 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-white text-xs font-semibold border border-slate-700 shadow-lg flex items-center gap-2 transition">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-            </svg>
-            Exit Full View (Esc)
-          </button>
+          <!-- Floating Fullscreen Clock Toolbar (Mini Clock, Always on Top, Exit Full View) -->
+          <div id="fullscreenClockToolbar" class="hidden fixed top-5 right-6 z-[10000] flex items-center gap-2">
+            <button
+              type="button"
+              id="miniClockModeBtn"
+              onclick="toggleMiniClockMode()"
+              class="px-3 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-100 text-xs font-semibold border border-slate-700 shadow-lg flex items-center gap-1.5 transition"
+              title="Shrink app to a tiny clock-only window so you can work on other apps around it"
+            >
+              <svg class="w-4 h-4 text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 9V4.5M9 9H4.5M9 9L3.75 3.75M9 15v4.5M9 15H4.5M9 15l-5.25 5.25M15 9h4.5M15 9V4.5M15 9l5.25-5.25M15 15h4.5M15 15v4.5m0-4.5l5.25 5.25"/>
+              </svg>
+              <span id="miniClockModeBtnLabel" class="fs-btn-label">Mini Clock</span>
+            </button>
+
+            <button
+              type="button"
+              id="alwaysOnTopBtn"
+              onclick="toggleAlwaysOnTop()"
+              class="hidden px-3 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-100 text-xs font-semibold border border-slate-700 shadow-lg items-center gap-1.5 transition"
+              title="Keep Mini Clock pinned on top of all windows and desktop"
+            >
+              <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+              </svg>
+              <span id="alwaysOnTopBtnLabel" class="fs-btn-label">Always on Top</span>
+            </button>
+
+            <button
+              type="button"
+              id="exitFullscreenFloatingBtn"
+              onclick="toggleFullScreenPomodoro()"
+              class="px-3 py-2 rounded-xl bg-slate-800/90 hover:bg-rose-600/90 text-white text-xs font-semibold border border-slate-700 shadow-lg flex items-center gap-1.5 transition"
+              title="Exit Full View (Esc)"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+              </svg>
+              <span class="fs-btn-label">Exit Full View (Esc)</span>
+            </button>
+          </div>
 
           <div id="timerCardContainer" class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm overflow-hidden transition-all">
 
@@ -1288,6 +1809,65 @@
               </div>
             </div>
           </div>
+
+          <!-- ================= REAL-TIME PRAYER TIMES CARD (Below Focus Timer) ================= -->
+          <div id="prayerTimesCard" class="hide-in-fullscreen bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm overflow-hidden">
+            <!-- Card Header -->
+            <div class="px-5 pt-4 pb-3 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2.5 min-w-0">
+                <div class="w-8 h-8 rounded-xl bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+                  </svg>
+                </div>
+                <div class="min-w-0">
+                  <div class="flex items-center gap-1.5">
+                    <h3 class="text-sm font-bold text-slate-900 dark:text-white leading-tight">Prayer Times</h3>
+                    <span id="prayerLiveSyncDot" class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" title="Synced with real time"></span>
+                  </div>
+                  <p id="prayerLocationLabel" class="text-[11px] font-medium text-slate-500 dark:text-slate-400 truncate">Makkah • Umm al-Qura</p>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onclick="openPrayerSettingsModal()"
+                class="p-2 rounded-xl text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition shrink-0"
+                title="Prayer Times Location, Method &amp; Mosque Offsets"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Live Countdown Banner -->
+            <div class="p-4 space-y-3">
+              <div class="p-3.5 rounded-xl bg-gradient-to-r from-indigo-50/90 via-emerald-50/60 to-slate-50 dark:from-indigo-950/50 dark:via-emerald-950/30 dark:to-slate-800/70 border border-indigo-200/70 dark:border-indigo-800/60 flex items-center justify-between gap-3">
+                <div class="min-w-0">
+                  <div class="flex items-center gap-1.5">
+                    <span class="text-[10px] font-extrabold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">Next Prayer</span>
+                  </div>
+                  <div class="flex items-baseline gap-2 mt-0.5">
+                    <span id="prayerNextName" class="text-base font-extrabold text-slate-900 dark:text-white">Fajr</span>
+                    <span id="prayerNextTimeFormatted" class="text-xs font-prayer-time font-bold text-slate-600 dark:text-slate-300">05:05 AM</span>
+                  </div>
+                </div>
+                <div class="text-right shrink-0">
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 block">Remaining</span>
+                  <span id="prayerLiveCountdown" class="font-prayer-time text-base font-extrabold text-indigo-600 dark:text-indigo-400">--:--:--</span>
+                </div>
+              </div>
+
+              <!-- Elapsed Time Since Past Prayer -->
+              <div class="flex items-center justify-between px-1 gap-2">
+                <span id="prayerCardDateLabel" class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 truncate">Time passed since past prayer</span>
+                <span id="prayerElapsedAmount" class="text-[11px] font-prayer-time font-extrabold text-emerald-600 dark:text-emerald-400 shrink-0">--</span>
+              </div>
+              <div id="prayerTimesListContainer" class="space-y-1.5"></div>
+            </div>
+          </div>
         </aside>
 
       </div>
@@ -1401,6 +1981,112 @@
           </div>
         </div>
 
+        <!-- Timer End Sound & Custom Audio Upload -->
+        <div class="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-3">
+          <div class="flex items-center justify-between">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Timer End Sound</label>
+              <p class="text-[11px] text-slate-400 dark:text-slate-500">Choose a built-in tone or upload your own audio file</p>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button
+                type="button"
+                onclick="previewTimerEndSound()"
+                class="px-2.5 py-1 rounded-lg bg-indigo-50 dark:bg-indigo-950/70 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 text-indigo-600 dark:text-indigo-400 text-xs font-semibold transition flex items-center gap-1"
+                title="Test the selected timer end sound"
+              >
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Test
+              </button>
+              <button
+                type="button"
+                id="stopSoundPreviewBtn"
+                onclick="stopCustomAudioPlayback()"
+                class="hidden px-2.5 py-1 rounded-lg bg-rose-50 dark:bg-rose-950/60 hover:bg-rose-100 text-rose-600 dark:text-rose-400 text-xs font-semibold transition"
+                title="Stop audio preview"
+              >
+                Stop
+              </button>
+            </div>
+          </div>
+
+          <!-- Sound Preset Buttons -->
+          <div class="grid grid-cols-5 gap-1.5">
+            <button type="button" onclick="setTimerSoundType('chime')" id="soundBtnChime" class="py-1.5 px-1.5 rounded-xl border text-[11px] font-semibold transition text-center">
+              Chime
+            </button>
+            <button type="button" onclick="setTimerSoundType('bell')" id="soundBtnBell" class="py-1.5 px-1.5 rounded-xl border text-[11px] font-semibold transition text-center">
+              Bell
+            </button>
+            <button type="button" onclick="setTimerSoundType('digital')" id="soundBtnDigital" class="py-1.5 px-1.5 rounded-xl border text-[11px] font-semibold transition text-center">
+              Digital
+            </button>
+            <button type="button" onclick="setTimerSoundType('gong')" id="soundBtnGong" class="py-1.5 px-1.5 rounded-xl border text-[11px] font-semibold transition text-center">
+              Gong
+            </button>
+            <button type="button" onclick="setTimerSoundType('custom')" id="soundBtnCustom" class="py-1.5 px-1.5 rounded-xl border text-[11px] font-semibold transition text-center">
+              Custom
+            </button>
+          </div>
+
+          <!-- Upload Custom Audio File Box -->
+          <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/80 dark:border-slate-700/80 space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <div class="min-w-0 flex-1">
+                <p class="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate" id="customSoundStatusLabel">No custom sound uploaded</p>
+                <p class="text-[10px] text-slate-400 dark:text-slate-500">Supports MP3, WAV, OGG, M4A, AAC, FLAC, WebM &amp; OPUS</p>
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <label
+                  for="customTimerSoundInput"
+                  class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold cursor-pointer transition shadow-sm inline-flex items-center gap-1.5"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M16 8l-4-4m0 0L8 8m4-4v12"/>
+                  </svg>
+                  Upload Audio
+                </label>
+                <button
+                  type="button"
+                  id="clearCustomSoundBtn"
+                  onclick="clearCustomTimerSound()"
+                  class="hidden p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/50 transition"
+                  title="Remove custom sound"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <input
+              type="file"
+              id="customTimerSoundInput"
+              accept=".mp3,.wav,.ogg,.m4a,.aac,.flac,.webm,.opus,.mp4,.weba,audio/*"
+              class="hidden"
+              onchange="handleCustomTimerSoundUpload(event)"
+            />
+
+            <!-- Volume Slider -->
+            <div class="flex items-center gap-3 pt-1 border-t border-slate-200/60 dark:border-slate-700/60">
+              <span class="text-[11px] font-semibold text-slate-500 dark:text-slate-400 w-14">Volume</span>
+              <input
+                type="range"
+                id="settingSoundVolume"
+                min="5"
+                max="100"
+                value="80"
+                oninput="handleSoundVolumeInput(this.value)"
+                class="flex-1 cursor-pointer"
+              />
+              <span id="settingSoundVolumeLabel" class="text-[11px] font-mono font-bold text-slate-600 dark:text-slate-300 w-9 text-right">80%</span>
+            </div>
+          </div>
+        </div>
+
         <!-- Auto-Advance Option (Moved into Settings as requested) -->
         <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
           <div>
@@ -1412,95 +2098,224 @@
       </div>
 
       <div class="px-5 py-3.5 bg-slate-50 dark:bg-slate-800/60 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-2">
-        <button onclick="closeTimerSettingsModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-700 transition">Cancel</button>
-        <button onclick="saveTimerSettingsFromModal()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-sm transition">Save Changes</button>
+        <button onclick="stopCustomAudioPlayback(); closeTimerSettingsModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-700 transition">Cancel</button>
+        <button onclick="stopCustomAudioPlayback(); saveTimerSettingsFromModal()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-sm transition">Save Changes</button>
       </div>
     </div>
   </div>
 
-  <!-- ================= DATA BACKUP & AUTO-SAVE MODAL ================= -->
-  <div id="backupModal" class="fixed inset-0 z-50 hidden bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-white dark:bg-slate-900 w-full max-w-xl rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden">
+  <!-- ================= PRAYER TIMES SETTINGS MODAL ================= -->
+  <div id="prayerSettingsModal" class="fixed inset-0 z-50 hidden bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xl overflow-hidden">
       <div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
         <div>
-          <h3 class="text-base font-bold text-slate-900 dark:text-white">Google Sites &amp; Cloud Sync Settings</h3>
-          <p class="text-xs text-slate-500 dark:text-slate-400">Keep your planner saved across reloads when embedded in Google Sites</p>
+          <h3 class="text-base font-bold text-slate-900 dark:text-white">Prayer Times Settings</h3>
+          <p class="text-xs text-slate-500 dark:text-slate-400">Location, calculation method, juristic school &amp; mosque minute calibration</p>
         </div>
-        <button onclick="closeBackupModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
+        <button onclick="closePrayerSettingsModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
         </button>
       </div>
-      <div class="p-5 space-y-4 max-h-[82vh] overflow-y-auto">
-        <!-- Why Google Sites resets & Instant Embed Exporter -->
-        <div class="p-3.5 rounded-xl bg-indigo-50/80 dark:bg-indigo-950/40 border border-indigo-200/80 dark:border-indigo-800/70 space-y-2.5">
-          <div class="flex items-start justify-between gap-2">
+
+      <div class="p-5 space-y-4 max-h-[80vh] overflow-y-auto">
+        <!-- Quick City Preset & Online City Lookup -->
+        <div class="space-y-2.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">1. Location &amp; City</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
             <div>
-              <p class="text-xs font-bold text-indigo-900 dark:text-indigo-200">Embedding in Google Sites?</p>
-              <p class="text-[11px] text-indigo-700 dark:text-indigo-300 mt-0.5 leading-relaxed">
-                Google Sites runs embedded HTML inside a temporary sandbox that wipes browser memory on refresh. Use <strong>Option A</strong> (automatic cloud sync) or <strong>Option B</strong> (bake your current data into the embed code) below:
-              </p>
+              <label class="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-1">Quick City Preset (Offline)</label>
+              <select
+                id="prayerCityPresetSelect"
+                onchange="handlePrayerCityPresetChange(this.value)"
+                class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              ></select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-1">Search Any City (Online)</label>
+              <div class="flex gap-1.5">
+                <input
+                  type="text"
+                  id="prayerCitySearchInput"
+                  placeholder="e.g. Madinah, Cairo, London..."
+                  onkeydown="if(event.key==='Enter'){event.preventDefault(); searchPrayerCityOnline();}"
+                  class="flex-1 min-w-0 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-2 text-xs text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
+                <button
+                  type="button"
+                  id="prayerCitySearchBtn"
+                  onclick="searchPrayerCityOnline()"
+                  class="px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition shrink-0"
+                >
+                  Find
+                </button>
+              </div>
             </div>
           </div>
-          <div class="flex flex-wrap items-center gap-2 pt-1">
-            <button onclick="copyFullUpdatedEmbedHTML()" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition shadow-sm">
-              Option B: Copy Full HTML With Current Changes Baked In
-            </button>
-            <button onclick="downloadStandaloneSavedHTML()" class="px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 text-xs font-semibold transition">
-              Download Saved HTML File
-            </button>
+
+          <div class="grid grid-cols-3 gap-2.5 pt-1">
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1">Display Name</label>
+              <input
+                type="text"
+                id="prayerCityNameInput"
+                placeholder="City Name"
+                class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white"
+              />
+            </div>
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1">Latitude</label>
+              <input
+                type="number"
+                step="0.0001"
+                id="prayerLatInput"
+                class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-mono font-semibold text-slate-900 dark:text-white"
+              />
+            </div>
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1">Longitude</label>
+              <input
+                type="number"
+                step="0.0001"
+                id="prayerLngInput"
+                class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-mono font-semibold text-slate-900 dark:text-white"
+              />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1">Timezone Mode</label>
+              <select
+                id="prayerTzModeSelect"
+                onchange="document.getElementById('prayerTzCustomWrap').classList.toggle('opacity-50', this.value === 'auto')"
+                class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white"
+              >
+                <option value="auto">Auto (System Timezone)</option>
+                <option value="custom">Fixed UTC Offset</option>
+              </select>
+            </div>
+            <div id="prayerTzCustomWrap">
+              <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1">UTC Offset (Hours, e.g. 3 for +03:00)</label>
+              <input
+                type="number"
+                step="0.5"
+                min="-12"
+                max="14"
+                id="prayerTzOffsetInput"
+                value="3"
+                class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2.5 py-1.5 text-xs font-mono font-semibold text-slate-900 dark:text-white"
+              />
+            </div>
           </div>
         </div>
 
-        <!-- Option A: External Cloud Sync Key for Google Sites -->
-        <div class="p-3.5 rounded-xl bg-emerald-50/70 dark:bg-emerald-950/30 border border-emerald-200/70 dark:border-emerald-800/60 space-y-3">
+        <!-- Calculation Method & Asr Juristic Method -->
+        <div class="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">2. Calculation Method &amp; Juristic School</label>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-1">Calculation Authority</label>
+              <select
+                id="prayerMethodSelect"
+                class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option value="umm_al_qura">Umm al-Qura University, Makkah</option>
+                <option value="mwl">Muslim World League (MWL)</option>
+                <option value="egypt">Egyptian General Authority</option>
+                <option value="isna">ISNA (North America)</option>
+                <option value="dubai">Dubai / UAE (IACAD)</option>
+                <option value="kuwait">Kuwait</option>
+                <option value="qatar">Qatar</option>
+                <option value="karachi">Univ. of Islamic Sciences, Karachi</option>
+                <option value="singapore">Singapore (MUIS)</option>
+                <option value="turkey">Diyanet, Turkey</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-1">Asr Juristic Method (Madhab)</label>
+              <select
+                id="prayerAsrJuristicSelect"
+                class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-2 text-xs font-semibold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              >
+                <option value="standard">Standard (Shafi'i, Maliki, Hanbali)</option>
+                <option value="hanafi">Hanafi</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Per-Prayer Minute Offsets (Mosque Calibration) -->
+        <div class="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-xs font-bold text-emerald-900 dark:text-emerald-200">Option A: Automatic Cloud Sync for Google Sites (Recommended)</p>
-              <p id="backupLastSavedLabel" class="text-[11px] text-emerald-700 dark:text-emerald-400 mt-0.5">Status: Checking storage...</p>
+              <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">3. Mosque Calibration Offsets (± Minutes)</label>
+              <p class="text-[11px] text-slate-400 dark:text-slate-500">Fine-tune individual prayer times to match your local mosque timetable</p>
             </div>
-            <button onclick="forceCloudSyncNow()" class="px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold transition shrink-0">
-              Sync Now
+            <button
+              type="button"
+              onclick="resetPrayerOffsetsInModal()"
+              class="text-[11px] font-semibold text-indigo-600 dark:text-indigo-400 hover:underline"
+            >
+              Reset (0m)
             </button>
           </div>
-
-          <div class="space-y-2 pt-1 border-t border-emerald-200/60 dark:border-emerald-800/50">
-            <label class="block text-[11px] font-bold text-slate-700 dark:text-slate-300">
-              External Cloud JSON Endpoint URL (e.g., npoint.io, jsonstorage.net, or Firebase Realtime DB `.json` URL):
-            </label>
-            <div class="flex gap-2">
-              <input
-                type="url"
-                id="customCloudEndpointInput"
-                placeholder="https://your-project-default-rtdb.firebaseio.com/flowplan.json"
-                class="flex-1 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs text-slate-800 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-emerald-500"
-              />
-              <button onclick="saveCustomCloudEndpoint()" class="px-3 py-1.5 rounded-xl bg-slate-900 dark:bg-white text-white dark:text-slate-900 text-xs font-semibold transition shrink-0">
-                Connect URL
-              </button>
+          <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1 text-center">Fajr</label>
+              <input type="number" min="-60" max="60" id="prayerOffsetFajr" value="0" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2 py-1.5 text-xs font-mono font-bold text-center text-slate-900 dark:text-white" />
             </div>
-            <p class="text-[10px] text-slate-500 dark:text-slate-400 leading-normal">
-              Tip: Create a free Realtime Database in Firebase (or a free bin at <code>npoint.io</code>), paste the URL above, click <strong>Connect URL</strong>, and then click <strong>Option B: Copy Full HTML</strong> once to paste into Google Sites. Every future change on your Google Site will save to that URL automatically!
-            </p>
-            <p id="backupCloudUidLabel" class="text-[10px] font-mono text-slate-500 dark:text-slate-400"></p>
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1 text-center">Sunrise</label>
+              <input type="number" min="-60" max="60" id="prayerOffsetSunrise" value="0" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2 py-1.5 text-xs font-mono font-bold text-center text-slate-900 dark:text-white" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1 text-center">Dhuhr</label>
+              <input type="number" min="-60" max="60" id="prayerOffsetDhuhr" value="0" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2 py-1.5 text-xs font-mono font-bold text-center text-slate-900 dark:text-white" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1 text-center">Asr</label>
+              <input type="number" min="-60" max="60" id="prayerOffsetAsr" value="0" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2 py-1.5 text-xs font-mono font-bold text-center text-slate-900 dark:text-white" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1 text-center">Maghrib</label>
+              <input type="number" min="-60" max="60" id="prayerOffsetMaghrib" value="0" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2 py-1.5 text-xs font-mono font-bold text-center text-slate-900 dark:text-white" />
+            </div>
+            <div>
+              <label class="block text-[10px] font-semibold text-slate-500 dark:text-slate-400 mb-1 text-center">Isha</label>
+              <input type="number" min="-60" max="60" id="prayerOffsetIsha" value="0" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-2 py-1.5 text-xs font-mono font-bold text-center text-slate-900 dark:text-white" />
+            </div>
           </div>
         </div>
 
-        <!-- Manual JSON Backup -->
-        <div>
-          <div class="flex items-center justify-between mb-1">
-            <label class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Portable State Data (JSON)</label>
-            <button onclick="copyBackupJson()" class="text-xs font-semibold text-indigo-600 dark:text-indigo-400 hover:underline">Copy JSON</button>
+        <!-- Display Options -->
+        <div class="pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2.5">
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">4. Display Preferences</label>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5 items-center">
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-500 dark:text-slate-400 mb-1">Time Format</label>
+              <select
+                id="prayerTimeFormatSelect"
+                class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs font-semibold text-slate-900 dark:text-white"
+              >
+                <option value="12h">12-Hour (AM / PM)</option>
+                <option value="24h">24-Hour (14:30)</option>
+              </select>
+            </div>
+            <label class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/70 dark:border-slate-700 cursor-pointer mt-3 sm:mt-4">
+              <input type="checkbox" id="prayerShowSunriseCheck" checked class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500" />
+              <span class="text-xs font-semibold text-slate-700 dark:text-slate-200">Show Sunrise</span>
+            </label>
+            <label class="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/70 border border-slate-200/70 dark:border-slate-700 cursor-pointer mt-1 sm:mt-4">
+              <input type="checkbox" id="prayerShowOnTimelineCheck" checked class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500" />
+              <span class="text-xs font-semibold text-slate-700 dark:text-slate-200">Pin on Timeline</span>
+            </label>
           </div>
-          <textarea id="backupJsonTextarea" rows="4" class="w-full font-mono text-[11px] bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-slate-800 dark:text-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
         </div>
-        <div class="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
-          <button onclick="restoreFromBackupTextarea()" class="px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold transition">
-            Restore From JSON Box
-          </button>
-          <button onclick="closeBackupModal()" class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 text-xs font-semibold">
-            Done
-          </button>
-        </div>
+      </div>
+
+      <div class="px-5 py-3.5 bg-slate-50 dark:bg-slate-800/60 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-2">
+        <button onclick="closePrayerSettingsModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-200/60 dark:hover:bg-slate-700 transition">Cancel</button>
+        <button onclick="savePrayerSettingsFromModal()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-sm transition">Save Prayer Settings</button>
       </div>
     </div>
   </div>
@@ -1693,7 +2508,9 @@
     const LEGACY_KEYS = ['flowplan_clean_v3_state', 'flowplan_clean_v2_state', 'flowplan_state_v1'];
     const IDB_NAME = 'FlowPlanPersistentDB';
     const IDB_STORE = 'stateStore';
-    const HOURS = Array.from({ length: 15 }, (_, i) => i + 7); // 07:00 to 21:00
+    const TIMELINE_START_HOUR = 4;
+    const TIMELINE_END_HOUR = 24;
+    const HOURS = Array.from({ length: TIMELINE_END_HOUR - TIMELINE_START_HOUR + 1 }, (_, i) => i + TIMELINE_START_HOUR); // Fajr to 24:00 (12:00)
 
     let isHydratingState = true;
     let isCloudBootstrapping = true;
@@ -1745,12 +2562,37 @@
         autoAdvance: false,
         clockStyle: 'ring', // 'ring' | 'digital' | 'card' | 'analog' | 'zen'
         clockColor: 'indigo',
-        muted: false
+        muted: false,
+        soundType: 'chime', // 'chime' | 'bell' | 'digital' | 'gong' | 'custom'
+        soundVolume: 80,
+        customSoundName: '',
+        customSoundDataUrl: ''
       },
       timerRuntime: {
         mode: 'pomodoro', // 'pomodoro' | 'custom' | 'flow'
         stage: 'focus',   // 'focus' | 'shortBreak' | 'longBreak'
         cycle: 1
+      },
+      prayerSettings: {
+        presetId: 'makkah',
+        cityName: 'Makkah',
+        latitude: 21.4225,
+        longitude: 39.8262,
+        tzMode: 'auto', // 'auto' | 'custom'
+        tzOffset: 3,
+        method: 'umm_al_qura',
+        asrJuristic: 'standard', // 'standard' | 'hanafi'
+        timeFormat: '12h', // '12h' | '24h'
+        showSunrise: true,
+        showOnTimeline: true,
+        offsets: {
+          fajr: 0,
+          sunrise: 0,
+          dhuhr: 0,
+          asr: 0,
+          maghrib: 0,
+          isha: 0
+        }
       },
       drafts: {
         newTaskTitle: '',
@@ -1858,6 +2700,14 @@
         timerRuntime: {
           ...defaultState.timerRuntime,
           ...(parsed.timerRuntime || {})
+        },
+        prayerSettings: {
+          ...defaultState.prayerSettings,
+          ...(parsed.prayerSettings || {}),
+          offsets: {
+            ...defaultState.prayerSettings.offsets,
+            ...((parsed.prayerSettings && parsed.prayerSettings.offsets) || {})
+          }
         },
         drafts: {
           ...defaultState.drafts,
@@ -1986,7 +2836,16 @@
       } catch (e) {}
       try {
         localStorage.setItem(STORAGE_KEY, serialized);
-      } catch (e) {}
+      } catch (e) {
+        // Fallback if a large custom audio DataURL exceeds 5MB localStorage quota
+        try {
+          const slimState = {
+            ...state,
+            timerSettings: { ...(state.timerSettings || {}), customSoundDataUrl: '' }
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(slimState));
+        } catch (err) {}
+      }
       try {
         sessionStorage.setItem(STORAGE_KEY, serialized);
       } catch (e) {}
@@ -2316,6 +3175,127 @@
       showToast('Downloaded HTML with your saved state');
     }
 
+    // =========================================================================
+    // FILE MENU: IMPORT / EXPORT DATA (.JSON)
+    // =========================================================================
+    function toggleFileMenuDropdown(e) {
+      if (e) e.stopPropagation();
+      const menu = document.getElementById('fileMenuDropdown');
+      if (!menu) return;
+      menu.classList.toggle('hidden');
+    }
+
+    function closeFileMenuDropdown() {
+      const menu = document.getElementById('fileMenuDropdown');
+      if (menu) menu.classList.add('hidden');
+    }
+
+    document.addEventListener('click', (e) => {
+      const container = document.getElementById('fileMenuContainer');
+      if (container && !container.contains(e.target)) {
+        closeFileMenuDropdown();
+      }
+    });
+
+    async function exportFlowPlanDataFile() {
+      closeFileMenuDropdown();
+      saveState();
+      const serialized = JSON.stringify(state, null, 2);
+      const suggestedFileName = `FlowPlan_Backup_${getTodayISO()}.json`;
+
+      if (window.electronDesktopAPI && typeof window.electronDesktopAPI.exportDataDialog === 'function') {
+        try {
+          const res = await window.electronDesktopAPI.exportDataDialog(serialized, suggestedFileName);
+          if (res && res.ok) {
+            showToast('Data exported and saved successfully!');
+          } else if (res && !res.canceled) {
+            showToast('Failed to export data file');
+          }
+          return;
+        } catch (err) {
+          console.warn('Electron export dialog fallback:', err);
+        }
+      }
+
+      const blob = new Blob([serialized], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = suggestedFileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast(`Exported data to ${suggestedFileName}`);
+    }
+
+    function applyImportedDataObject(parsed) {
+      if (!parsed || typeof parsed !== 'object') return false;
+      isHydratingState = true;
+      const ok = applyParsedStateObject(parsed);
+      if (ok) {
+        if (parsed.selectedDate && typeof parsed.selectedDate === 'string') {
+          state.selectedDate = parsed.selectedDate;
+          state.monthCursor = parsed.selectedDate.slice(0, 7);
+        }
+        applyFullStateToUI();
+      }
+      isHydratingState = false;
+      if (ok) {
+        saveState();
+      }
+      return ok;
+    }
+
+    async function triggerImportFlowPlanDataFile() {
+      closeFileMenuDropdown();
+
+      if (window.electronDesktopAPI && typeof window.electronDesktopAPI.importDataDialog === 'function') {
+        try {
+          const res = await window.electronDesktopAPI.importDataDialog();
+          if (res && res.ok && res.data) {
+            const parsed = JSON.parse(res.data);
+            if (applyImportedDataObject(parsed)) {
+              showToast('Data imported and restored successfully!');
+            } else {
+              showToast('Invalid FlowPlan data file');
+            }
+          } else if (res && res.error) {
+            showToast(res.error);
+          }
+          return;
+        } catch (err) {
+          console.warn('Electron import dialog fallback:', err);
+        }
+      }
+
+      const input = document.getElementById('importFlowPlanFileInput');
+      if (input) {
+        input.value = '';
+        input.click();
+      }
+    }
+
+    function handleImportFlowPlanFileSelect(e) {
+      const file = e.target && e.target.files && e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        try {
+          const text = String(ev.target.result || '');
+          const parsed = JSON.parse(text);
+          if (applyImportedDataObject(parsed)) {
+            showToast(`Imported data from "${file.name}"`);
+          } else {
+            showToast('Invalid FlowPlan backup file');
+          }
+        } catch (err) {
+          showToast('Could not parse JSON backup file');
+        }
+      };
+      reader.readAsText(file);
+    }
+
     function showToast(message) {
       const el = document.getElementById('toastNotice');
       el.textContent = message;
@@ -2531,9 +3511,10 @@
       const list = getTasksForDate(isoDate);
       const t = list.find(item => item.id === taskId);
       if (t) {
-        t.showNote = !t.showNote;
+        t.showNote = !Boolean(t.showNote);
         saveState();
         renderDailyTasks();
+        renderWeeklyView();
       }
     }
 
@@ -2544,6 +3525,12 @@
         t.stickyNote = noteText;
         saveState();
         renderWeeklyView();
+        // Update dot indicator without losing textarea focus
+        const btn = document.querySelector(`[data-sticky-btn="${taskId}"]`);
+        if (btn) {
+          const hasText = Boolean(noteText && noteText.trim().length > 0);
+          btn.classList.toggle('has-note-dot', hasText && !t.showNote);
+        }
       }
     }
 
@@ -2622,8 +3609,8 @@
 
       container.innerHTML = allTasks.map((task, idx) => {
         const noteColor = task.noteColor || 'yellow';
-        const hasNoteContent = task.stickyNote && task.stickyNote.trim().length > 0;
-        const showSticky = task.showNote || hasNoteContent;
+        const hasNoteContent = Boolean(task.stickyNote && task.stickyNote.trim().length > 0);
+        const showSticky = Boolean(task.showNote);
 
         return `
           <div
@@ -2640,12 +3627,18 @@
                 <!-- Drag Handle -->
                 <span class="cursor-grab active:cursor-grabbing text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 select-none px-1" title="Drag to reorder">⋮⋮</span>
 
-                <input
-                  type="checkbox"
-                  ${task.completed ? 'checked' : ''}
-                  onchange="toggleTaskCompleted('${state.selectedDate}', '${task.id}')"
-                  class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer shrink-0"
-                />
+                <button
+                  type="button"
+                  role="checkbox"
+                  aria-checked="${task.completed ? 'true' : 'false'}"
+                  onclick="toggleTaskCompleted('${state.selectedDate}', '${task.id}')"
+                  class="task-check-btn ${task.completed ? 'is-checked' : ''}"
+                  title="${task.completed ? 'Mark as incomplete' : 'Check task'}"
+                >
+                  <svg class="task-check-icon" viewBox="0 0 16 16" fill="none">
+                    <path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </button>
 
                 <input
                   type="text"
@@ -2658,14 +3651,15 @@
 
               <div class="flex items-center gap-1.5 shrink-0">
                 <button
+                  type="button"
+                  data-sticky-btn="${task.id}"
                   onclick="toggleTaskStickyNote('${state.selectedDate}', '${task.id}')"
-                  class="px-2.5 py-1 rounded-lg text-[11px] font-semibold border border-amber-300/80 dark:border-amber-700/60 bg-amber-50 dark:bg-amber-950/50 text-amber-800 dark:text-amber-300 hover:bg-amber-100 transition flex items-center gap-1"
-                  title="Toggle Sticky Note"
+                  class="sticky-icon-btn sticky-icon-btn-${noteColor} ${hasNoteContent && !showSticky ? 'has-note-dot' : ''}"
+                  title="${showSticky ? 'Hide Sticky Note' : hasNoteContent ? 'Show Sticky Note' : 'Add Sticky Note'} (${noteColor})"
                 >
-                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                   </svg>
-                  <span>${showSticky ? 'Note' : '+ Sticky Note'}</span>
                 </button>
 
                 <button
@@ -2697,8 +3691,8 @@
                     <button
                       type="button"
                       onclick="toggleTaskStickyNote('${state.selectedDate}', '${task.id}')"
-                      class="ml-1 text-[10px] font-semibold opacity-70 hover:opacity-100"
-                      title="Collapse sticky note"
+                      class="ml-1 px-2 py-0.5 rounded-md bg-black/10 dark:bg-white/10 hover:bg-black/20 dark:hover:bg-white/20 text-[10px] font-bold transition"
+                      title="Hide sticky note"
                     >Hide</button>
                   </div>
                 </div>
@@ -2721,7 +3715,26 @@
     const TIMELINE_ROW_HEIGHT = 56;
     let timelineDragPayload = null; // { type: 'task' | 'block', id: string }
 
+    function getTimelineStartHourForDate(isoDate) {
+      try {
+        if (typeof getPrayerScheduleForISO === 'function') {
+          const sched = getPrayerScheduleForISO(isoDate || state.selectedDate);
+          const fajr = sched && sched.find(p => p.id === 'fajr');
+          if (fajr && typeof fajr.totalMinutes === 'number') {
+            return Math.max(0, Math.min(8, Math.floor(fajr.totalMinutes / 60)));
+          }
+        }
+      } catch (e) {}
+      return TIMELINE_START_HOUR;
+    }
+
+    function getTimelineHoursForDate(isoDate) {
+      const startHr = getTimelineStartHourForDate(isoDate);
+      return Array.from({ length: TIMELINE_END_HOUR - startHr + 1 }, (_, i) => i + startHr);
+    }
+
     function getTimelineBlocksForDate(isoDate) {
+      const startHr = getTimelineStartHourForDate(isoDate);
       if (!state.scheduleByDate[isoDate]) {
         state.scheduleByDate[isoDate] = { blocks: [] };
       }
@@ -2735,7 +3748,7 @@
               id: 'tb_' + hr + '_' + Math.random().toString(36).slice(2, 6),
               taskId: null,
               title: entry[k].trim(),
-              startHour: Math.max(7, Math.min(21, hr)),
+              startHour: Math.max(startHr, Math.min(TIMELINE_END_HOUR, hr)),
               span: 1
             });
           }
@@ -2749,8 +3762,8 @@
           const linked = dayTasks.find(t => t.id === b.taskId);
           if (linked) b.title = linked.title;
         }
-        b.startHour = Math.max(7, Math.min(21, Number(b.startHour) || 7));
-        b.span = Math.max(1, Math.min(22 - b.startHour, Number(b.span) || 1));
+        b.startHour = Math.max(startHr, Math.min(TIMELINE_END_HOUR, Number(b.startHour) || 7));
+        b.span = Math.max(1, Math.min((TIMELINE_END_HOUR + 1) - b.startHour, Number(b.span) || 1));
       });
 
       return state.scheduleByDate[isoDate].blocks;
@@ -2803,7 +3816,10 @@
     }
 
     function formatHourLabel(hr) {
-      return `${String(hr).padStart(2, '0')}:00`;
+      const normalized = ((Number(hr) % 24) + 24) % 24;
+      const period = normalized >= 12 ? 'PM' : 'AM';
+      const hour12 = normalized % 12 || 12;
+      return `${hour12}:00 ${period}`;
     }
 
     function handleTimelineTaskChipDragStart(e, taskId) {
@@ -2844,8 +3860,9 @@
       e.currentTarget.classList.remove('bg-indigo-50/80', 'dark:bg-indigo-950/50', 'drag-over-target');
       if (!timelineDragPayload) return;
 
+      const startHr = getTimelineStartHourForDate(state.selectedDate);
       const blocks = getTimelineBlocksForDate(state.selectedDate);
-      const hr = Math.max(7, Math.min(21, Number(targetHour) || 7));
+      const hr = Math.max(startHr, Math.min(TIMELINE_END_HOUR, Number(targetHour) || startHr));
 
       if (timelineDragPayload.type === 'task') {
         const dayTasks = getTasksForDate(state.selectedDate);
@@ -2854,7 +3871,7 @@
           const existing = blocks.find(b => b.taskId === task.id);
           if (existing) {
             existing.startHour = hr;
-            existing.span = Math.min(existing.span, 22 - hr);
+            existing.span = Math.min(existing.span, (TIMELINE_END_HOUR + 1) - hr);
           } else {
             blocks.push({
               id: 'tb_' + Date.now() + '_' + Math.random().toString(36).slice(2, 6),
@@ -2869,7 +3886,7 @@
         const block = blocks.find(b => b.id === timelineDragPayload.id);
         if (block) {
           block.startHour = hr;
-          block.span = Math.min(block.span, 22 - hr);
+          block.span = Math.min(block.span, (TIMELINE_END_HOUR + 1) - hr);
         }
       }
 
@@ -2934,7 +3951,7 @@
 
       const startY = e.clientY;
       const initialSpan = block.span || 1;
-      const maxSpan = 22 - block.startHour;
+      const maxSpan = (TIMELINE_END_HOUR + 1) - block.startHour;
 
       function onMouseMove(moveEvent) {
         const deltaY = moveEvent.clientY - startY;
@@ -2960,13 +3977,32 @@
       window.addEventListener('mouseup', onMouseUp);
     }
 
+    function toggleShowPrayersOnTimeline() {
+      if (!state.prayerSettings) state.prayerSettings = { ...defaultState.prayerSettings };
+      state.prayerSettings.showOnTimeline = !Boolean(state.prayerSettings.showOnTimeline);
+      saveState();
+      renderTimeline();
+    }
+
     function renderTimeline() {
       const briefContainer = document.getElementById('timelineTasksBrief');
       const container = document.getElementById('timelineContainer');
       if (!container) return;
 
       const dayTasks = getTasksForDate(state.selectedDate);
+      const startHr = getTimelineStartHourForDate(state.selectedDate);
+      const dayHours = getTimelineHoursForDate(state.selectedDate);
       const blocks = getTimelineBlocksForDate(state.selectedDate);
+      const prayerSchedule = typeof getPrayerScheduleForISO === 'function' ? getPrayerScheduleForISO(state.selectedDate) : [];
+      const showPrayers = !state.prayerSettings || state.prayerSettings.showOnTimeline !== false;
+
+      const headingEl = document.getElementById('timelineRangeHeading');
+      if (headingEl) {
+        const fajrItem = prayerSchedule.find(p => p.id === 'fajr');
+        headingEl.textContent = fajrItem
+          ? `Hourly Schedule & Prayer Timeline (Fajr ${fajrItem.formatted} – 12:00 PM)`
+          : 'Hourly Schedule & Prayer Timeline (Fajr – 12:00 PM)';
+      }
 
       if (briefContainer) {
         if (dayTasks.length === 0) {
@@ -2975,7 +4011,7 @@
           briefContainer.innerHTML = dayTasks.map(task => {
             const scheduledBlock = blocks.find(b => b.taskId === task.id);
             const timeBadge = scheduledBlock
-              ? `<span class="px-1.5 py-0.2 rounded bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 font-mono-clock text-[10px]">${formatHourLabel(scheduledBlock.startHour)}${scheduledBlock.span > 1 ? ` (${scheduledBlock.span}h)` : ''}</span>`
+              ? `<span class="px-1.5 py-0.2 rounded bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 font-prayer-time text-[10px]">${formatHourLabel(scheduledBlock.startHour)}${scheduledBlock.span > 1 ? ` (${scheduledBlock.span}h)` : ''}</span>`
               : '';
             return `
               <div
@@ -2995,9 +4031,9 @@
       }
 
       const layoutMap = computeTimelineColumns(blocks);
-      const totalHeight = HOURS.length * TIMELINE_ROW_HEIGHT;
+      const totalHeight = dayHours.length * TIMELINE_ROW_HEIGHT;
 
-      const rowsHtml = HOURS.map(hr => {
+      const rowsHtml = dayHours.map(hr => {
         const label = formatHourLabel(hr);
         return `
           <div
@@ -3009,7 +4045,7 @@
             style="height: ${TIMELINE_ROW_HEIGHT}px"
             class="flex items-center gap-3 border-b border-slate-100 dark:border-slate-800/80 px-1 group cursor-pointer transition-colors hover:bg-slate-50/60 dark:hover:bg-slate-800/40"
           >
-            <span class="w-14 text-xs font-mono-clock font-semibold text-slate-400 dark:text-slate-500 shrink-0 select-none pointer-events-none">${label}</span>
+            <span class="w-16 text-xs font-prayer-time font-bold text-slate-400 dark:text-slate-500 shrink-0 select-none pointer-events-none">${label}</span>
             <div data-slot-hint="1" class="flex-1 h-full flex items-center text-[11px] text-slate-300 dark:text-slate-600 opacity-0 group-hover:opacity-100 transition-opacity select-none">
               + Drop task here or click to block time
             </div>
@@ -3017,9 +4053,40 @@
         `;
       }).join('');
 
+      const prayerMarkersHtml = showPrayers
+        ? prayerSchedule
+            .filter(p => {
+              const hrFloat = p.totalMinutes / 60;
+              return hrFloat >= startHr && hrFloat <= TIMELINE_END_HOUR + 0.99;
+            })
+            .map(p => {
+              const topPx = Math.round(((p.totalMinutes / 60) - startHr) * TIMELINE_ROW_HEIGHT);
+              const isSunrise = p.id === 'sunrise';
+              const lineColor = isSunrise
+                ? 'border-amber-400/70 dark:border-amber-500/60'
+                : 'border-emerald-500/70 dark:border-emerald-400/60';
+              const badgeColor = isSunrise
+                ? 'bg-amber-50/95 dark:bg-amber-950/90 text-amber-700 dark:text-amber-300 border-amber-300 dark:border-amber-700'
+                : 'bg-emerald-50/95 dark:bg-emerald-950/90 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-700';
+              return `
+                <div
+                  style="top: ${topPx}px; left: 4.1rem; right: 0;"
+                  class="absolute pointer-events-none z-20 flex items-center"
+                >
+                  <div class="w-2 h-2 rounded-full ${isSunrise ? 'bg-amber-500' : 'bg-emerald-500'} -ml-1 shrink-0 shadow-sm"></div>
+                  <div class="flex-1 border-t border-dashed ${lineColor}"></div>
+                  <span class="ml-1.5 mr-2 px-2.5 py-0.5 rounded-full border text-[10px] font-bold tracking-tight shadow-sm ${badgeColor}">
+                    ${escapeHtml(p.label)} • <span class="font-prayer-time font-extrabold">${escapeHtml(p.formatted)}</span>
+                  </span>
+                </div>
+              `;
+            })
+            .join('')
+        : '';
+
       const blocksHtml = blocks.map(block => {
         const colInfo = layoutMap[block.id] || { col: 0, totalCols: 1 };
-        const topPx = (block.startHour - 7) * TIMELINE_ROW_HEIGHT + 3;
+        const topPx = (block.startHour - startHr) * TIMELINE_ROW_HEIGHT + 3;
         const heightPx = block.span * TIMELINE_ROW_HEIGHT - 6;
         const widthPct = 100 / colInfo.totalCols;
         const leftPct = colInfo.col * widthPct;
@@ -3049,7 +4116,7 @@
                 />
               </div>
               <div class="flex items-center gap-1.5 shrink-0">
-                <span data-timeline-range="${block.id}" class="text-[10px] font-mono-clock font-semibold text-indigo-600 dark:text-indigo-300 bg-white/80 dark:bg-slate-900/80 px-1.5 py-0.2 rounded">${rangeLabel}</span>
+                <span data-timeline-range="${block.id}" class="text-[10px] font-prayer-time font-bold text-indigo-600 dark:text-indigo-300 bg-white/80 dark:bg-slate-900/80 px-1.5 py-0.2 rounded">${rangeLabel}</span>
                 <button
                   type="button"
                   onclick="event.stopPropagation(); removeTimelineBlock('${block.id}')"
@@ -3077,7 +4144,8 @@
       container.innerHTML = `
         <div class="relative" style="height: ${totalHeight}px">
           <div class="absolute inset-0">${rowsHtml}</div>
-          <div class="absolute top-0 bottom-0 right-0 pointer-events-none" style="left: 4.25rem;">
+          ${prayerMarkersHtml}
+          <div class="absolute top-0 bottom-0 right-0 pointer-events-none" style="left: 4.5rem;">
             ${blocksHtml}
           </div>
         </div>
@@ -3127,8 +4195,8 @@
       const lastDay = new Date(year, month, 0);
       const daysInMonth = lastDay.getDate();
 
-      // Monday-based index (0 = Mon ... 6 = Sun)
-      const startOffset = (firstDay.getDay() + 6) % 7;
+      // Saturday-based index (0 = Sat, 1 = Sun, 2 = Mon ... 6 = Fri)
+      const startOffset = (firstDay.getDay() + 1) % 7;
       const cells = [];
 
       for (let i = 0; i < startOffset; i++) {
@@ -3259,7 +4327,6 @@
         analyzedDayISO === todayISO ? 'Today' : formatReadableDate(analyzedDayISO);
       document.getElementById('analyticsDailyFocusTime').textContent = formatMinutesToHoursMin(dailyFocus.minutes);
       document.getElementById('analyticsDailyTasksRatio').textContent = `${dailyDone} / ${dailyTotal}`;
-      document.getElementById('analyticsDailyPending').textContent = `${dailyPending} pending`;
 
       // 2. Weekly Analytics (for chosen week)
       const weekDays = getWeekDates(analyzedWeekRefISO);
@@ -3272,6 +4339,7 @@
       }
 
       let weeklyFocusMin = 0;
+      let weeklySessions = 0;
       let weeklyDone = 0;
       let weeklyTotal = 0;
 
@@ -3283,6 +4351,7 @@
         const dFocus = state.focusByDate[iso] || { minutes: 0, sessions: 0 };
 
         weeklyFocusMin += dFocus.minutes;
+        weeklySessions += dFocus.sessions || 0;
         weeklyDone += dDone;
         weeklyTotal += dTotal;
       });
@@ -3291,10 +4360,11 @@
 
       document.getElementById('analyticsWeeklyFocusTime').textContent = formatMinutesToHoursMin(weeklyFocusMin);
       document.getElementById('analyticsWeeklyTasksRatio').textContent = `${weeklyDone} / ${weeklyTotal}`;
-      document.getElementById('analyticsWeeklyPending').textContent = `${weeklyPending} pending`;
 
       // 3. All-Time Analytics
       let allTimeFocusMin = 0;
+      let allTimeSessions = 0;
+      let allTimeDoneTasks = 0;
 
       const allDateKeys = new Set([
         ...Object.keys(state.tasksByDate || {}),
@@ -3305,11 +4375,20 @@
         const f = state.focusByDate[iso];
         if (f) {
           allTimeFocusMin += f.minutes || 0;
+          allTimeSessions += f.sessions || 0;
+        }
+        const tList = state.tasksByDate[iso];
+        if (Array.isArray(tList)) {
+          allTimeDoneTasks += tList.filter(t => t.completed).length;
         }
       });
 
       document.getElementById('analyticsAllTimeDaysLabel').textContent = `${allDateKeys.size} active day${allDateKeys.size === 1 ? '' : 's'}`;
       document.getElementById('analyticsAllTimeFocusTime').textContent = formatMinutesToHoursMin(allTimeFocusMin);
+      const allTimeSubEl = document.getElementById('analyticsAllTimeSubStats');
+      if (allTimeSubEl) {
+        allTimeSubEl.textContent = `${allTimeDoneTasks} task${allTimeDoneTasks === 1 ? '' : 's'} done`;
+      }
 
       // Highlight active analytics card and render interactive graph
       const mode = state.analyticsGraphMode || 'daily';
@@ -3317,15 +4396,15 @@
       const cardWeekly = document.getElementById('analyticsCardWeekly');
       const cardAllTime = document.getElementById('analyticsCardAllTime');
 
-      const inactiveCardCls = 'cursor-pointer rounded-2xl p-5 bg-slate-50 dark:bg-slate-800/60 border-2 border-transparent hover:border-slate-300 dark:hover:border-slate-700 space-y-4 transition-all hover:shadow-md';
+      const inactiveCardCls = 'cursor-pointer rounded-2xl p-5 bg-slate-50 dark:bg-slate-800/60 border-2 border-transparent hover:border-slate-300 dark:hover:border-slate-700 flex flex-col justify-between space-y-4 transition-all hover:shadow-md';
       cardDaily.className = mode === 'daily'
-        ? 'cursor-pointer rounded-2xl p-5 bg-indigo-50/40 dark:bg-indigo-950/25 border-2 border-indigo-500 space-y-4 transition-all shadow-sm'
+        ? 'cursor-pointer rounded-2xl p-5 bg-indigo-50/40 dark:bg-indigo-950/25 border-2 border-indigo-500 flex flex-col justify-between space-y-4 transition-all shadow-sm'
         : inactiveCardCls;
       cardWeekly.className = mode === 'weekly'
-        ? 'cursor-pointer rounded-2xl p-5 bg-emerald-50/40 dark:bg-emerald-950/25 border-2 border-emerald-500 space-y-4 transition-all shadow-sm'
+        ? 'cursor-pointer rounded-2xl p-5 bg-emerald-50/40 dark:bg-emerald-950/25 border-2 border-emerald-500 flex flex-col justify-between space-y-4 transition-all shadow-sm'
         : inactiveCardCls;
       cardAllTime.className = mode === 'alltime'
-        ? 'cursor-pointer rounded-2xl p-5 bg-amber-50/40 dark:bg-amber-950/25 border-2 border-amber-500 space-y-4 transition-all shadow-sm'
+        ? 'cursor-pointer rounded-2xl p-5 bg-amber-50/40 dark:bg-amber-950/25 border-2 border-amber-500 flex flex-col justify-between space-y-4 transition-all shadow-sm'
         : inactiveCardCls;
 
       renderAnalyticsGraph(mode, {
@@ -3428,8 +4507,7 @@
         const focusHoursEquiv = Math.round((totalFocusMin / 25) * 10) / 10; // normalized weight for pie slice
         const slices = [
           { label: 'Focus Time', rawLabel: `${totalFocusMin}m`, value: Math.max(0, focusHoursEquiv || (totalFocusMin > 0 ? 1 : 0)), color: '#6366f1', dotCls: 'bg-indigo-500' },
-          { label: 'Tasks Completed', rawLabel: `${totalDone} done`, value: Math.max(0, totalDone), color: '#10b981', dotCls: 'bg-emerald-500' },
-          { label: 'Tasks Pending', rawLabel: `${totalPending} pending`, value: Math.max(0, totalPending), color: '#fbbf24', dotCls: 'bg-amber-400' }
+          { label: 'Tasks Completed', rawLabel: `${totalDone} done`, value: Math.max(0, totalDone), color: '#10b981', dotCls: 'bg-emerald-500' }
         ];
         const sumValues = slices.reduce((acc, s) => acc + s.value, 0);
 
@@ -3457,7 +4535,7 @@
               <div class="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
                 <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Focus</span>
                 <span class="text-xl font-extrabold text-slate-900 dark:text-white">${formatMinutesToHoursMin(totalFocusMin)}</span>
-                <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">${totalDone}/${totalDone + totalPending} tasks</span>
+                <span class="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">${totalDone} done</span>
               </div>
             </div>
             <div class="space-y-3">
@@ -3492,7 +4570,7 @@
           : series;
 
         const maxFocus = Math.max(30, ...pts.map(p => p.focusMin));
-        const maxTasks = Math.max(5, ...pts.map(p => Math.max(p.done, p.pending)));
+        const maxTasks = Math.max(5, ...pts.map(p => p.done));
 
         const width = 680;
         const height = 210;
@@ -3509,7 +4587,6 @@
 
         const focusPoints = pts.map((p, i) => `${getX(i)},${getYFocus(p.focusMin)}`).join(' ');
         const donePoints = pts.map((p, i) => `${getX(i)},${getYTask(p.done)}`).join(' ');
-        const pendingPoints = pts.map((p, i) => `${getX(i)},${getYTask(p.pending)}`).join(' ');
 
         const focusArea = `${padLeft},${padTop + innerH} ${focusPoints} ${getX(pts.length - 1)},${padTop + innerH}`;
 
@@ -3531,7 +4608,6 @@
               <polygon points="${focusArea}" fill="url(#focusLineGrad)" />
 
               <!-- Lines -->
-              <polyline fill="none" stroke="#fbbf24" stroke-width="2.2" stroke-dasharray="4 3" points="${pendingPoints}" />
               <polyline fill="none" stroke="#10b981" stroke-width="2.6" points="${donePoints}" />
               <polyline fill="none" stroke="#6366f1" stroke-width="3" points="${focusPoints}" />
 
@@ -3540,15 +4616,13 @@
                 const cx = getX(i);
                 const fy = getYFocus(p.focusMin);
                 const dy = getYTask(p.done);
-                const py = getYTask(p.pending);
                 return `
                   <g>
-                    <circle cx="${cx}" cy="${py}" r="3.5" fill="#fbbf24" />
                     <circle cx="${cx}" cy="${dy}" r="4" fill="#10b981" />
                     <circle cx="${cx}" cy="${fy}" r="4.5" fill="#6366f1" />
                     <text x="${cx}" y="${fy - 8}" text-anchor="middle" class="fill-indigo-600 dark:fill-indigo-400 text-[9px] font-bold">${p.focusMin}m</text>
                     <text x="${cx}" y="${height - 18}" text-anchor="middle" class="fill-slate-700 dark:fill-slate-300 text-[10px] font-bold">${p.label}</text>
-                    <text x="${cx}" y="${height - 6}" text-anchor="middle" class="fill-slate-400 text-[9px]">${p.done}✓ ${p.pending}•</text>
+                    <text x="${cx}" y="${height - 6}" text-anchor="middle" class="fill-slate-400 text-[9px]">${p.done}✓</text>
                   </g>
                 `;
               }).join('')}
@@ -3560,7 +4634,7 @@
 
       // 3. BAR CHART RENDERER
       const maxFocus = Math.max(60, ...series.map(d => d.focusMin));
-      const maxTasks = Math.max(5, ...series.map(d => Math.max(d.done, d.pending)));
+      const maxTasks = Math.max(5, ...series.map(d => d.done));
       const colsCls = series.length === 1 ? 'grid-cols-1 max-w-xs mx-auto' : 'grid-cols-7';
 
       canvasEl.innerHTML = `
@@ -3568,13 +4642,11 @@
           ${series.map(d => {
             const fPct = Math.round((d.focusMin / maxFocus) * 100);
             const cPct = Math.round((d.done / maxTasks) * 100);
-            const pPct = Math.round((d.pending / maxTasks) * 100);
             return `
               <div class="flex flex-col items-center bg-white dark:bg-slate-900 p-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800">
-                <div class="h-32 w-full flex items-end justify-center gap-1.5 px-1 border-b border-slate-100 dark:border-slate-800 pb-1">
-                  <div class="w-3.5 bg-indigo-500 rounded-t transition-all duration-300" style="height:${Math.max(fPct, d.focusMin > 0 ? 10 : 3)}%" title="Focus: ${d.focusMin}m"></div>
-                  <div class="w-3.5 bg-emerald-500 rounded-t transition-all duration-300" style="height:${Math.max(cPct, d.done > 0 ? 10 : 3)}%" title="Done: ${d.done}"></div>
-                  <div class="w-3.5 bg-amber-400 rounded-t transition-all duration-300" style="height:${Math.max(pPct, d.pending > 0 ? 10 : 3)}%" title="Pending: ${d.pending}"></div>
+                <div class="h-32 w-full flex items-end justify-center gap-2 px-1 border-b border-slate-100 dark:border-slate-800 pb-1">
+                  <div class="w-4 bg-indigo-500 rounded-t transition-all duration-300" style="height:${Math.max(fPct, d.focusMin > 0 ? 10 : 3)}%" title="Focus: ${d.focusMin}m"></div>
+                  <div class="w-4 bg-emerald-500 rounded-t transition-all duration-300" style="height:${Math.max(cPct, d.done > 0 ? 10 : 3)}%" title="Done: ${d.done}"></div>
                 </div>
                 <span class="text-[11px] font-bold text-slate-700 dark:text-slate-200 mt-1.5">${d.label}</span>
                 <span class="text-[10px] text-slate-400">${d.sub}</span>
@@ -3629,13 +4701,26 @@
                   ${tasks.length > 0 ? `<span class="text-[10px] font-semibold text-slate-400">${done}/${tasks.length}</span>` : ''}
                 </div>
               </div>
-              <div class="space-y-1 mt-2 overflow-hidden">
-                ${tasks.slice(0, maxTasksToShow).map(t => `
-                  <div class="text-[11px] truncate px-1.5 py-0.5 rounded ${t.completed ? 'line-through text-slate-400 bg-slate-100 dark:bg-slate-800' : 'bg-white dark:bg-slate-900 text-slate-700 dark:text-slate-200 border border-slate-200/60 dark:border-slate-700'}">
-                    ${escapeHtml(t.title)}
-                  </div>
-                `).join('')}
-                ${tasks.length > maxTasksToShow ? `<div class="text-[10px] text-indigo-500 font-semibold pl-1">+${tasks.length - maxTasksToShow} more</div>` : ''}
+              <div class="space-y-1.5 mt-2 overflow-hidden">
+                ${tasks.slice(0, maxTasksToShow).map(t => {
+                  const isDone = Boolean(t.completed);
+                  const dotColor = isDone
+                    ? 'bg-emerald-500'
+                    : t.noteColor === 'amber'
+                      ? 'bg-orange-400'
+                      : t.noteColor === 'mint'
+                        ? 'bg-emerald-400'
+                        : t.noteColor === 'sky'
+                          ? 'bg-sky-400'
+                          : 'bg-indigo-500';
+                  return `
+                    <div class="month-mini-task ${isDone ? 'month-mini-task-done' : ''}">
+                      <span class="month-mini-task-dot ${dotColor}"></span>
+                      <span class="truncate flex-1 ${isDone ? 'line-through opacity-75' : ''}">${escapeHtml(t.title)}</span>
+                    </div>
+                  `;
+                }).join('')}
+                ${tasks.length > maxTasksToShow ? `<div class="inline-flex items-center px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/70 text-[10px] text-indigo-600 dark:text-indigo-400 font-bold">+${tasks.length - maxTasksToShow} more</div>` : ''}
               </div>
             </div>
           `;
@@ -3650,34 +4735,21 @@
     // =========================================================================
     function getWeekDates(referenceISO) {
       const ref = parseISO(referenceISO);
-      const dayOfWeek = (ref.getDay() + 6) % 7; // Monday = 0 ... Sunday = 6
-      const monday = new Date(ref);
-      monday.setDate(ref.getDate() - dayOfWeek);
+      const dayOfWeek = (ref.getDay() + 1) % 7; // Saturday = 0, Sunday = 1, Monday = 2 ... Friday = 6
+      const saturday = new Date(ref);
+      saturday.setDate(ref.getDate() - dayOfWeek);
 
       return Array.from({ length: 7 }, (_, i) => {
-        const d = new Date(monday);
-        d.setDate(monday.getDate() + i);
+        const d = new Date(saturday);
+        d.setDate(saturday.getDate() + i);
         return d;
       });
     }
 
-    let draggedWeekOrderIdx = null;
     let draggedWeekTask = null;
 
-    function handleWeekCardDragStart(e, orderPos) {
-      if (draggedWeekTask) return;
-      draggedWeekOrderIdx = orderPos;
-      e.currentTarget.classList.add('dragging-item');
-      e.dataTransfer.effectAllowed = 'move';
-    }
-
-    function handleWeekCardDragEnd(e) {
-      e.currentTarget.classList.remove('dragging-item');
-      draggedWeekOrderIdx = null;
-      document.querySelectorAll('.week-day-card').forEach(el => el.classList.remove('drag-over-target'));
-    }
-
     function handleWeekCardDragOver(e) {
+      if (!draggedWeekTask) return;
       e.preventDefault();
       e.currentTarget.classList.add('drag-over-target');
     }
@@ -3686,7 +4758,7 @@
       e.currentTarget.classList.remove('drag-over-target');
     }
 
-    function handleWeekCardDrop(e, targetOrderPos, targetDateISO) {
+    function handleWeekCardDrop(e, targetDateISO) {
       e.preventDefault();
       e.currentTarget.classList.remove('drag-over-target');
 
@@ -3704,18 +4776,6 @@
           }
         }
         draggedWeekTask = null;
-        return;
-      }
-
-      // Reordering day columns
-      if (draggedWeekOrderIdx !== null && draggedWeekOrderIdx !== targetOrderPos) {
-        const order = [...state.weeklyCardOrder];
-        const [movedDay] = order.splice(draggedWeekOrderIdx, 1);
-        order.splice(targetOrderPos, 0, movedDay);
-        state.weeklyCardOrder = order;
-        draggedWeekOrderIdx = null;
-        saveState();
-        renderWeeklyView();
       }
     }
 
@@ -3815,57 +4875,37 @@
 
       const todayISO = getTodayISO();
 
-      if (!Array.isArray(state.weeklyCardOrder) || state.weeklyCardOrder.length !== 7) {
-        state.weeklyCardOrder = [0, 1, 2, 3, 4, 5, 6];
-      }
-
-      grid.innerHTML = state.weeklyCardOrder.map((dayIndex, orderPos) => {
-        const dObj = baseWeekDays[dayIndex];
+      grid.innerHTML = baseWeekDays.map((dObj) => {
         const iso = toISO(dObj);
         const dayName = dObj.toLocaleDateString('en-US', { weekday: 'short' });
         const dayNum = dObj.getDate();
         const isToday = iso === todayISO;
         const isSelected = iso === state.selectedDate;
         const dayTasks = getTasksForDate(iso);
-        const doneCount = dayTasks.filter(t => t.completed).length;
 
         const sizeConf = state.weeklyCardSizes[iso] || { height: 300, wide: false };
-        const spanClass = layoutMode === 'grid' && sizeConf.wide ? 'md:col-span-2 xl:col-span-2' : '';
 
         return `
           <div
             data-week-card="${iso}"
-            draggable="true"
-            ondragstart="handleWeekCardDragStart(event, ${orderPos})"
-            ondragend="handleWeekCardDragEnd(event)"
             ondragover="handleWeekCardDragOver(event)"
             ondragleave="handleWeekCardDragLeave(event)"
-            ondrop="handleWeekCardDrop(event, ${orderPos}, '${iso}')"
+            ondrop="handleWeekCardDrop(event, '${iso}')"
             style="height: ${sizeConf.height || 300}px"
-            class="week-day-card relative rounded-2xl p-3.5 border transition flex flex-col justify-between select-none ${spanClass} ${
+            class="week-day-card relative rounded-2xl p-3.5 border transition flex flex-col justify-between select-none ${
               isSelected
                 ? 'bg-white dark:bg-slate-900 border-indigo-500 ring-2 ring-indigo-500/20 shadow-sm'
                 : 'bg-white dark:bg-slate-900 border-slate-200/80 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700'
             }"
           >
             <div class="flex flex-col flex-1 min-h-0">
-              <!-- Card Header with Drag Handle + Expand Width Button -->
+              <!-- Card Header -->
               <div class="flex items-center justify-between pb-2.5 mb-2.5 border-b border-slate-100 dark:border-slate-800">
                 <div class="flex items-center gap-1.5">
-                  <span class="cursor-grab active:cursor-grabbing text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs px-1" title="Drag to move day column">⋮⋮</span>
                   <button onclick="selectDateFromWeek('${iso}')" class="text-left group flex items-center gap-1.5">
                     <span class="text-xs font-bold uppercase tracking-wider ${isToday ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400'}">${dayName}</span>
                     <span class="text-sm font-extrabold ${isToday ? 'px-1.5 py-0.2 rounded bg-indigo-600 text-white' : 'text-slate-900 dark:text-white'}">${dayNum}</span>
                   </button>
-                </div>
-
-                <div class="flex items-center gap-1">
-                  <span class="text-[11px] font-semibold text-slate-400">${doneCount}/${dayTasks.length}</span>
-                  <button
-                    onclick="toggleWeekCardWide('${iso}')"
-                    class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-indigo-600 transition"
-                    title="Toggle Double Width"
-                  >${sizeConf.wide ? '1x' : '2x'}</button>
                 </div>
               </div>
 
@@ -3880,15 +4920,33 @@
                     class="p-2 rounded-lg bg-slate-50 dark:bg-slate-800/60 border border-slate-200/50 dark:border-slate-800/80 text-xs cursor-grab active:cursor-grabbing"
                   >
                     <div class="flex items-start gap-2">
-                      <input
-                        type="checkbox"
-                        ${t.completed ? 'checked' : ''}
-                        onchange="toggleTaskCompleted('${iso}', '${t.id}')"
-                        class="mt-0.5 w-3.5 h-3.5 rounded text-indigo-600 cursor-pointer"
-                      />
+                      <button
+                        type="button"
+                        role="checkbox"
+                        aria-checked="${t.completed ? 'true' : 'false'}"
+                        onclick="toggleTaskCompleted('${iso}', '${t.id}')"
+                        class="task-check-btn task-check-btn-sm mt-0.5 ${t.completed ? 'is-checked' : ''}"
+                        title="${t.completed ? 'Mark as incomplete' : 'Check task'}"
+                      >
+                        <svg class="task-check-icon" viewBox="0 0 16 16" fill="none">
+                          <path d="M3.5 8.5L6.5 11.5L12.5 4.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                      </button>
                       <span class="flex-1 leading-snug ${t.completed ? 'line-through text-slate-400' : 'text-slate-700 dark:text-slate-200'}">${escapeHtml(t.title)}</span>
+                      ${t.stickyNote && t.stickyNote.trim() ? `
+                        <button
+                          type="button"
+                          onclick="event.stopPropagation(); toggleTaskStickyNote('${iso}', '${t.id}')"
+                          class="p-0.5 rounded sticky-icon-btn-${t.noteColor || 'yellow'} border shrink-0"
+                          title="${t.showNote ? 'Hide sticky note' : 'Show sticky note'}"
+                        >
+                          <svg class="w-3 h-3" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                          </svg>
+                        </button>
+                      ` : ''}
                     </div>
-                    ${t.stickyNote ? `<p class="mt-1.5 text-[10px] px-2 py-1 rounded sticky-note-${t.noteColor || 'yellow'} truncate">${escapeHtml(t.stickyNote)}</p>` : ''}
+                    ${t.stickyNote && t.stickyNote.trim() && t.showNote ? `<p class="mt-1.5 text-[10px] px-2 py-1 rounded sticky-note-${t.noteColor || 'yellow'} truncate">${escapeHtml(t.stickyNote)}</p>` : ''}
                   </div>
                 `).join('')}
               </div>
@@ -3958,45 +5016,229 @@
     };
 
     let sharedAudioCtx = null;
+    let activeCustomAudio = null;
+    let activeCustomAudioStopTimer = null;
 
-    function playChime() {
-      if (state.timerSettings.muted) return;
-      try {
-        if (window.Tone) {
-          const synth = new Tone.Synth().toDestination();
-          const now = Tone.now();
-          synth.triggerAttackRelease('C5', '8n', now);
-          synth.triggerAttackRelease('E5', '8n', now + 0.14);
-          synth.triggerAttackRelease('G5', '4n', now + 0.28);
-          return;
-        }
-        // Native Web Audio API offline synth fallback (C5 -> E5 -> G5)
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        if (!AudioCtx) return;
-        if (!sharedAudioCtx) sharedAudioCtx = new AudioCtx();
-        if (sharedAudioCtx.state === 'suspended') sharedAudioCtx.resume();
-        const baseTime = sharedAudioCtx.currentTime;
-        const notes = [
-          { freq: 523.25, offset: 0, duration: 0.18 },
-          { freq: 659.25, offset: 0.14, duration: 0.18 },
-          { freq: 783.99, offset: 0.28, duration: 0.36 }
+    function stopCustomAudioPlayback() {
+      if (activeCustomAudioStopTimer) {
+        clearTimeout(activeCustomAudioStopTimer);
+        activeCustomAudioStopTimer = null;
+      }
+      if (activeCustomAudio) {
+        try {
+          activeCustomAudio.pause();
+          activeCustomAudio.currentTime = 0;
+        } catch (e) {}
+        activeCustomAudio = null;
+      }
+      const stopBtn = document.getElementById('stopSoundPreviewBtn');
+      if (stopBtn) stopBtn.classList.add('hidden');
+    }
+
+    function playSynthesizedPreset(soundType, volumeRatio) {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      if (!sharedAudioCtx) sharedAudioCtx = new AudioCtx();
+      if (sharedAudioCtx.state === 'suspended') sharedAudioCtx.resume();
+      const baseTime = sharedAudioCtx.currentTime;
+      const peakGain = Math.max(0.02, Math.min(0.45, 0.28 * volumeRatio));
+
+      let notes = [];
+      if (soundType === 'bell') {
+        notes = [
+          { freq: 659.25, offset: 0, duration: 0.45, type: 'sine' },
+          { freq: 880.0, offset: 0.24, duration: 0.65, type: 'sine' }
         ];
-        notes.forEach(({ freq, offset, duration }) => {
-          const osc = sharedAudioCtx.createOscillator();
-          const gain = sharedAudioCtx.createGain();
-          osc.type = 'triangle';
-          osc.frequency.setValueAtTime(freq, baseTime + offset);
-          gain.gain.setValueAtTime(0.0001, baseTime + offset);
-          gain.gain.exponentialRampToValueAtTime(0.22, baseTime + offset + 0.015);
-          gain.gain.exponentialRampToValueAtTime(0.0001, baseTime + offset + duration);
-          osc.connect(gain);
-          gain.connect(sharedAudioCtx.destination);
-          osc.start(baseTime + offset);
-          osc.stop(baseTime + offset + duration + 0.02);
-        });
+      } else if (soundType === 'digital') {
+        notes = [
+          { freq: 880, offset: 0, duration: 0.1, type: 'square' },
+          { freq: 880, offset: 0.14, duration: 0.1, type: 'square' },
+          { freq: 1174.66, offset: 0.28, duration: 0.22, type: 'square' }
+        ];
+      } else if (soundType === 'gong') {
+        notes = [
+          { freq: 220.0, offset: 0, duration: 1.1, type: 'sine' },
+          { freq: 329.63, offset: 0.02, duration: 0.9, type: 'triangle' },
+          { freq: 440.0, offset: 0.05, duration: 0.75, type: 'sine' }
+        ];
+      } else {
+        // Default 'chime' (C5 -> E5 -> G5)
+        notes = [
+          { freq: 523.25, offset: 0, duration: 0.18, type: 'triangle' },
+          { freq: 659.25, offset: 0.14, duration: 0.18, type: 'triangle' },
+          { freq: 783.99, offset: 0.28, duration: 0.36, type: 'triangle' }
+        ];
+      }
+
+      notes.forEach(({ freq, offset, duration, type }) => {
+        const osc = sharedAudioCtx.createOscillator();
+        const gain = sharedAudioCtx.createGain();
+        osc.type = type || 'triangle';
+        osc.frequency.setValueAtTime(freq, baseTime + offset);
+        gain.gain.setValueAtTime(0.0001, baseTime + offset);
+        gain.gain.exponentialRampToValueAtTime(peakGain, baseTime + offset + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.0001, baseTime + offset + duration);
+        osc.connect(gain);
+        gain.connect(sharedAudioCtx.destination);
+        osc.start(baseTime + offset);
+        osc.stop(baseTime + offset + duration + 0.02);
+      });
+    }
+
+    function playChime(forcePreview = false) {
+      if (!forcePreview && state.timerSettings.muted) return;
+      stopCustomAudioPlayback();
+
+      const volPct = Number(state.timerSettings.soundVolume);
+      const volumeRatio = Math.max(0.05, Math.min(1, (isNaN(volPct) ? 80 : volPct) / 100));
+      const soundType = state.timerSettings.soundType || 'chime';
+
+      if (soundType === 'custom' && state.timerSettings.customSoundDataUrl) {
+        try {
+          activeCustomAudio = new Audio(state.timerSettings.customSoundDataUrl);
+          activeCustomAudio.volume = volumeRatio;
+          const stopBtn = document.getElementById('stopSoundPreviewBtn');
+          if (stopBtn) stopBtn.classList.remove('hidden');
+
+          activeCustomAudio.onended = () => {
+            if (stopBtn) stopBtn.classList.add('hidden');
+            activeCustomAudio = null;
+          };
+
+          const playPromise = activeCustomAudio.play();
+          if (playPromise && typeof playPromise.catch === 'function') {
+            playPromise.catch(() => {
+              if (stopBtn) stopBtn.classList.add('hidden');
+              playSynthesizedPreset('chime', volumeRatio);
+            });
+          }
+
+          // Automatically stop after 15 seconds if a long song was uploaded
+          activeCustomAudioStopTimer = setTimeout(() => {
+            stopCustomAudioPlayback();
+          }, 15000);
+          return;
+        } catch (err) {
+          // Fallback to synth chime if custom audio fails
+        }
+      }
+
+      try {
+        playSynthesizedPreset(soundType, volumeRatio);
       } catch (e) {
         // Ignore audio context restrictions
       }
+    }
+
+    function previewTimerEndSound() {
+      playChime(true);
+    }
+
+    function setTimerSoundType(soundType) {
+      if (soundType === 'custom' && !state.timerSettings.customSoundDataUrl) {
+        const fileInput = document.getElementById('customTimerSoundInput');
+        if (fileInput) fileInput.click();
+        return;
+      }
+      state.timerSettings.soundType = soundType;
+      saveState();
+      updateTimerSoundSettingsUI();
+      playChime(true);
+    }
+
+    function handleCustomTimerSoundUpload(e) {
+      const file = e.target && e.target.files && e.target.files[0];
+      if (!file) return;
+
+      const validExts = /\.(mp3|wav|ogg|m4a|aac|flac|webm|opus|mp4|weba)$/i;
+      if (!file.type.startsWith('audio/') && !validExts.test(file.name)) {
+        showToast('Please select a supported audio file (MP3, WAV, OGG, M4A, AAC, FLAC, WebM)');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        const dataUrl = String(ev.target.result || '');
+        if (!dataUrl.startsWith('data:')) {
+          showToast('Could not read audio file');
+          return;
+        }
+        state.timerSettings.customSoundName = file.name;
+        state.timerSettings.customSoundDataUrl = dataUrl;
+        state.timerSettings.soundType = 'custom';
+        saveState();
+        updateTimerSoundSettingsUI();
+        playChime(true);
+        showToast(`Custom timer sound set: ${file.name}`);
+      };
+      reader.onerror = () => {
+        showToast('Error reading audio file');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearCustomTimerSound() {
+      stopCustomAudioPlayback();
+      state.timerSettings.customSoundName = '';
+      state.timerSettings.customSoundDataUrl = '';
+      if (state.timerSettings.soundType === 'custom') {
+        state.timerSettings.soundType = 'chime';
+      }
+      const fileInput = document.getElementById('customTimerSoundInput');
+      if (fileInput) fileInput.value = '';
+      saveState();
+      updateTimerSoundSettingsUI();
+      showToast('Custom sound removed');
+    }
+
+    function handleSoundVolumeInput(val) {
+      const vol = Math.max(5, Math.min(100, parseInt(val, 10) || 80));
+      state.timerSettings.soundVolume = vol;
+      const label = document.getElementById('settingSoundVolumeLabel');
+      if (label) label.textContent = `${vol}%`;
+      if (activeCustomAudio) {
+        activeCustomAudio.volume = vol / 100;
+      }
+      saveState();
+    }
+
+    function updateTimerSoundSettingsUI() {
+      const soundType = state.timerSettings.soundType || 'chime';
+      const hasCustom = !!state.timerSettings.customSoundDataUrl;
+      const customName = state.timerSettings.customSoundName || 'Custom Audio';
+      const vol = Number(state.timerSettings.soundVolume) || 80;
+
+      const statusLabel = document.getElementById('customSoundStatusLabel');
+      const clearBtn = document.getElementById('clearCustomSoundBtn');
+      const volInput = document.getElementById('settingSoundVolume');
+      const volLabel = document.getElementById('settingSoundVolumeLabel');
+
+      if (statusLabel) {
+        statusLabel.textContent = hasCustom ? `Custom Audio: ${customName}` : 'No custom sound uploaded';
+      }
+      if (clearBtn) {
+        clearBtn.classList.toggle('hidden', !hasCustom);
+      }
+      if (volInput) volInput.value = vol;
+      if (volLabel) volLabel.textContent = `${vol}%`;
+
+      const mapBtnIds = {
+        chime: 'soundBtnChime',
+        bell: 'soundBtnBell',
+        digital: 'soundBtnDigital',
+        gong: 'soundBtnGong',
+        custom: 'soundBtnCustom'
+      };
+
+      Object.keys(mapBtnIds).forEach((key) => {
+        const btn = document.getElementById(mapBtnIds[key]);
+        if (!btn) return;
+        if (key === soundType) {
+          btn.className = 'py-1.5 px-1.5 rounded-xl border-2 border-indigo-600 bg-indigo-50/50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 text-[11px] font-bold transition text-center';
+        } else {
+          btn.className = 'py-1.5 px-1.5 rounded-xl border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 text-[11px] font-semibold transition text-center';
+        }
+      });
     }
 
     function toggleSoundMute() {
@@ -4129,6 +5371,7 @@
 
     function resetTimer() {
       pauseTimer();
+      stopCustomAudioPlayback();
       if (timer.mode === 'flow') {
         timer.elapsedFlowSeconds = 0;
       } else if (timer.mode === 'custom') {
@@ -4384,10 +5627,12 @@
       document.getElementById('settingCustomTimerMin').value = state.timerSettings.customTimerMin || 45;
       document.getElementById('settingAutoAdvance').checked = !!state.timerSettings.autoAdvance;
       applyClockThemeAndStyle();
+      updateTimerSoundSettingsUI();
       document.getElementById('timerSettingsModal').classList.remove('hidden');
     }
 
     function closeTimerSettingsModal() {
+      stopCustomAudioPlayback();
       document.getElementById('timerSettingsModal').classList.add('hidden');
     }
 
@@ -4441,22 +5686,115 @@
     }
 
     // =========================================================================
-    // CLOCK-ONLY FULL VIEW MODE
+    // CLOCK-ONLY FULL VIEW, MINI CLOCK WINDOW & ALWAYS ON TOP
     // =========================================================================
+    function updateFullscreenToolbarUI() {
+      const miniBtn = document.getElementById('miniClockModeBtn');
+      const miniLabel = document.getElementById('miniClockModeBtnLabel');
+      const aotBtn = document.getElementById('alwaysOnTopBtn');
+      const aotLabel = document.getElementById('alwaysOnTopBtnLabel');
+
+      if (miniBtn) {
+        if (timer.isMiniMode) {
+          miniBtn.className = 'px-3 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold border border-indigo-400 shadow-lg flex items-center gap-1.5 transition';
+          if (miniLabel) miniLabel.textContent = 'Expand App';
+        } else {
+          miniBtn.className = 'px-3 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-100 text-xs font-semibold border border-slate-700 shadow-lg flex items-center gap-1.5 transition';
+          if (miniLabel) miniLabel.textContent = 'Mini Clock';
+        }
+      }
+
+      if (aotBtn) {
+        // Always on Top is only available for the Mini Clock (not for the full app)
+        if (!timer.isMiniMode) {
+          aotBtn.className = 'hidden';
+        } else if (timer.isAlwaysOnTop) {
+          aotBtn.className = 'px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold border border-emerald-400 shadow-lg flex items-center gap-1.5 transition';
+          if (aotLabel) aotLabel.textContent = 'Pinned on Top';
+        } else {
+          aotBtn.className = 'px-3 py-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-100 text-xs font-semibold border border-slate-700 shadow-lg flex items-center gap-1.5 transition';
+          if (aotLabel) aotLabel.textContent = 'Always on Top';
+        }
+      }
+    }
+
+    async function toggleMiniClockMode(forceValue) {
+      const nextMini = typeof forceValue === 'boolean' ? forceValue : !Boolean(timer.isMiniMode);
+      timer.isMiniMode = nextMini;
+
+      // Turn off Always on Top automatically when leaving Mini Clock mode
+      if (!nextMini && timer.isAlwaysOnTop) {
+        timer.isAlwaysOnTop = false;
+        if (window.electronDesktopAPI && typeof window.electronDesktopAPI.setAlwaysOnTop === 'function') {
+          try {
+            await window.electronDesktopAPI.setAlwaysOnTop(false);
+          } catch (e) {}
+        }
+      }
+
+      if (window.electronDesktopAPI && typeof window.electronDesktopAPI.setMiniClockMode === 'function') {
+        try {
+          const res = await window.electronDesktopAPI.setMiniClockMode(nextMini);
+          if (res && typeof res.miniMode === 'boolean') {
+            timer.isMiniMode = res.miniMode;
+          }
+          if (res && typeof res.alwaysOnTop === 'boolean') {
+            timer.isAlwaysOnTop = res.alwaysOnTop;
+          }
+        } catch (e) {}
+        document.body.classList.remove('clock-mini-browser-fallback');
+      } else {
+        document.body.classList.toggle('clock-mini-browser-fallback', timer.isMiniMode);
+      }
+
+      document.body.classList.toggle('clock-mini-mode', timer.isMiniMode);
+      updateFullscreenToolbarUI();
+      updateClockUI();
+    }
+
+    async function toggleAlwaysOnTop(forceValue) {
+      if (!timer.isMiniMode) {
+        timer.isAlwaysOnTop = false;
+        updateFullscreenToolbarUI();
+        return;
+      }
+      const nextAot = typeof forceValue === 'boolean' ? forceValue : !Boolean(timer.isAlwaysOnTop);
+      timer.isAlwaysOnTop = nextAot;
+
+      if (window.electronDesktopAPI && typeof window.electronDesktopAPI.setAlwaysOnTop === 'function') {
+        try {
+          const res = await window.electronDesktopAPI.setAlwaysOnTop(nextAot);
+          if (res && typeof res.alwaysOnTop === 'boolean') {
+            timer.isAlwaysOnTop = res.alwaysOnTop;
+          }
+        } catch (e) {}
+      }
+
+      updateFullscreenToolbarUI();
+      showToast(timer.isAlwaysOnTop ? 'Mini Clock Pinned on Top: ON' : 'Always on Top: OFF');
+    }
+
     function toggleFullScreenPomodoro() {
       const sidebar = document.getElementById('timerSidebar');
-      const exitBtn = document.getElementById('exitFullscreenFloatingBtn');
+      const toolbar = document.getElementById('fullscreenClockToolbar');
       timer.isFullscreen = !timer.isFullscreen;
 
       if (timer.isFullscreen) {
         sidebar.classList.remove('hidden');
         sidebar.classList.add('fullscreen-clock-only');
         document.body.classList.add('clock-fullscreen-open');
-        exitBtn.classList.remove('hidden');
+        if (toolbar) toolbar.classList.remove('hidden');
+        updateFullscreenToolbarUI();
       } else {
+        if (timer.isAlwaysOnTop) {
+          toggleAlwaysOnTop(false);
+        }
+        if (timer.isMiniMode) {
+          toggleMiniClockMode(false);
+        }
         sidebar.classList.remove('fullscreen-clock-only');
         document.body.classList.remove('clock-fullscreen-open');
-        exitBtn.classList.add('hidden');
+        if (toolbar) toolbar.classList.add('hidden');
         if (state.mainView === 'weekly' || state.mainView === 'monthly') {
           sidebar.classList.add('hidden');
         }
@@ -4464,9 +5802,564 @@
       updateClockUI();
     }
 
+    // =========================================================================
+    // REAL-TIME PRAYER TIMES ENGINE (Astronomical Calculation + Mosque Offsets)
+    // =========================================================================
+    const PRAYER_CITY_PRESETS = [
+      { id: 'makkah', name: 'Makkah', country: 'Saudi Arabia', lat: 21.4225, lng: 39.8262, tz: 3, method: 'umm_al_qura' },
+      { id: 'madinah', name: 'Madinah', country: 'Saudi Arabia', lat: 24.4672, lng: 39.6112, tz: 3, method: 'umm_al_qura' },
+      { id: 'riyadh', name: 'Riyadh', country: 'Saudi Arabia', lat: 24.7136, lng: 46.6753, tz: 3, method: 'umm_al_qura' },
+      { id: 'jeddah', name: 'Jeddah', country: 'Saudi Arabia', lat: 21.5433, lng: 39.1728, tz: 3, method: 'umm_al_qura' },
+      { id: 'dammam', name: 'Dammam', country: 'Saudi Arabia', lat: 26.4207, lng: 50.0888, tz: 3, method: 'umm_al_qura' },
+      { id: 'cairo', name: 'Cairo', country: 'Egypt', lat: 30.0444, lng: 31.2357, tz: 2, method: 'egypt' },
+      { id: 'alexandria', name: 'Alexandria', country: 'Egypt', lat: 31.2001, lng: 29.9187, tz: 2, method: 'egypt' },
+      { id: 'dubai', name: 'Dubai', country: 'UAE', lat: 25.2048, lng: 55.2708, tz: 4, method: 'dubai' },
+      { id: 'abudhabi', name: 'Abu Dhabi', country: 'UAE', lat: 24.4539, lng: 54.3773, tz: 4, method: 'dubai' },
+      { id: 'doha', name: 'Doha', country: 'Qatar', lat: 25.2854, lng: 51.5310, tz: 3, method: 'qatar' },
+      { id: 'kuwait', name: 'Kuwait City', country: 'Kuwait', lat: 29.3759, lng: 47.9774, tz: 3, method: 'kuwait' },
+      { id: 'manama', name: 'Manama', country: 'Bahrain', lat: 26.2285, lng: 50.5860, tz: 3, method: 'umm_al_qura' },
+      { id: 'muscat', name: 'Muscat', country: 'Oman', lat: 23.5880, lng: 58.3829, tz: 4, method: 'umm_al_qura' },
+      { id: 'amman', name: 'Amman', country: 'Jordan', lat: 31.9454, lng: 35.9284, tz: 3, method: 'mwl' },
+      { id: 'jerusalem', name: 'Jerusalem', country: 'Palestine', lat: 31.7683, lng: 35.2137, tz: 2, method: 'mwl' },
+      { id: 'beirut', name: 'Beirut', country: 'Lebanon', lat: 33.8938, lng: 35.5018, tz: 2, method: 'mwl' },
+      { id: 'damascus', name: 'Damascus', country: 'Syria', lat: 33.5138, lng: 36.2765, tz: 3, method: 'mwl' },
+      { id: 'baghdad', name: 'Baghdad', country: 'Iraq', lat: 33.3152, lng: 44.3661, tz: 3, method: 'mwl' },
+      { id: 'istanbul', name: 'Istanbul', country: 'Turkey', lat: 41.0082, lng: 28.9784, tz: 3, method: 'turkey' },
+      { id: 'ankara', name: 'Ankara', country: 'Turkey', lat: 39.9334, lng: 32.8597, tz: 3, method: 'turkey' },
+      { id: 'casablanca', name: 'Casablanca', country: 'Morocco', lat: 33.5731, lng: -7.5898, tz: 1, method: 'mwl' },
+      { id: 'algiers', name: 'Algiers', country: 'Algeria', lat: 36.7538, lng: 3.0588, tz: 1, method: 'mwl' },
+      { id: 'tunis', name: 'Tunis', country: 'Tunisia', lat: 36.8065, lng: 10.1815, tz: 1, method: 'mwl' },
+      { id: 'karachi', name: 'Karachi', country: 'Pakistan', lat: 24.8607, lng: 67.0011, tz: 5, method: 'karachi' },
+      { id: 'lahore', name: 'Lahore', country: 'Pakistan', lat: 31.5204, lng: 74.3587, tz: 5, method: 'karachi' },
+      { id: 'kualalumpur', name: 'Kuala Lumpur', country: 'Malaysia', lat: 3.1390, lng: 101.6869, tz: 8, method: 'singapore' },
+      { id: 'jakarta', name: 'Jakarta', country: 'Indonesia', lat: -6.2088, lng: 106.8456, tz: 7, method: 'singapore' },
+      { id: 'london', name: 'London', country: 'UK', lat: 51.5074, lng: -0.1278, tz: 0, method: 'mwl' },
+      { id: 'paris', name: 'Paris', country: 'France', lat: 48.8566, lng: 2.3522, tz: 1, method: 'mwl' },
+      { id: 'berlin', name: 'Berlin', country: 'Germany', lat: 52.5200, lng: 13.4050, tz: 1, method: 'mwl' },
+      { id: 'newyork', name: 'New York', country: 'USA', lat: 40.7128, lng: -74.0060, tz: -5, method: 'isna' },
+      { id: 'toronto', name: 'Toronto', country: 'Canada', lat: 43.6532, lng: -79.3832, tz: -5, method: 'isna' }
+    ];
+
+    const PRAYER_CALC_METHODS = {
+      umm_al_qura: { label: 'Umm al-Qura', fajrAngle: 18.5, ishaAngle: 0, ishaInterval: 90 },
+      mwl: { label: 'MWL', fajrAngle: 18, ishaAngle: 17, ishaInterval: 0 },
+      egypt: { label: 'Egyptian', fajrAngle: 19.5, ishaAngle: 17.5, ishaInterval: 0 },
+      isna: { label: 'ISNA', fajrAngle: 15, ishaAngle: 15, ishaInterval: 0 },
+      dubai: { label: 'Dubai / UAE', fajrAngle: 18.2, ishaAngle: 18.2, ishaInterval: 0 },
+      kuwait: { label: 'Kuwait', fajrAngle: 18, ishaAngle: 17.5, ishaInterval: 0 },
+      qatar: { label: 'Qatar', fajrAngle: 18, ishaAngle: 0, ishaInterval: 90 },
+      karachi: { label: 'Karachi', fajrAngle: 18, ishaAngle: 18, ishaInterval: 0 },
+      singapore: { label: 'Singapore', fajrAngle: 20, ishaAngle: 18, ishaInterval: 0 },
+      turkey: { label: 'Diyanet', fajrAngle: 18, ishaAngle: 17, ishaInterval: 0 }
+    };
+
+    function degToRad(d) {
+      return (d * Math.PI) / 180;
+    }
+
+    function radToDeg(r) {
+      return (r * 180) / Math.PI;
+    }
+
+    function normalizeAngle360(a) {
+      return a - 360 * Math.floor(a / 360);
+    }
+
+    function normalizeHour24(h) {
+      return h - 24 * Math.floor(h / 24);
+    }
+
+    function computeJulianDate(year, month, day) {
+      if (month <= 2) {
+        year -= 1;
+        month += 12;
+      }
+      const A = Math.floor(year / 100);
+      const B = 2 - A + Math.floor(A / 4);
+      return (
+        Math.floor(365.25 * (year + 4716)) +
+        Math.floor(30.6001 * (month + 1)) +
+        day +
+        B -
+        1524.5
+      );
+    }
+
+    function computeSolarDeclinationAndEqT(jd) {
+      const D = jd - 2451545.0;
+      const g = normalizeAngle360(357.529 + 0.98560028 * D);
+      const q = normalizeAngle360(280.459 + 0.98564736 * D);
+      const L = normalizeAngle360(q + 1.915 * Math.sin(degToRad(g)) + 0.020 * Math.sin(degToRad(2 * g)));
+      const e = 23.439 - 0.00000036 * D;
+      const RA = radToDeg(Math.atan2(Math.cos(degToRad(e)) * Math.sin(degToRad(L)), Math.cos(degToRad(L)))) / 15;
+      let eqt = q / 15 - normalizeHour24(RA);
+      if (eqt > 12) eqt -= 24;
+      if (eqt < -12) eqt += 24;
+      const decl = radToDeg(Math.asin(Math.sin(degToRad(e)) * Math.sin(degToRad(L))));
+      return { decl, eqt };
+    }
+
+    function formatMinutesToPrayerTime(totalMins, timeFormat) {
+      const wrapped = ((Math.round(totalMins) % 1440) + 1440) % 1440;
+      const h24 = Math.floor(wrapped / 60);
+      const m = wrapped % 60;
+      const mm = String(m).padStart(2, '0');
+      if (timeFormat === '24h') {
+        return `${String(h24).padStart(2, '0')}:${mm}`;
+      }
+      const suffix = h24 >= 12 ? 'PM' : 'AM';
+      const h12 = h24 % 12 || 12;
+      return `${String(h12).padStart(2, '0')}:${mm} ${suffix}`;
+    }
+
+    function getPrayerScheduleForISO(isoDate) {
+      const cfg = {
+        ...defaultState.prayerSettings,
+        ...(state.prayerSettings || {}),
+        offsets: {
+          ...defaultState.prayerSettings.offsets,
+          ...((state.prayerSettings && state.prayerSettings.offsets) || {})
+        }
+      };
+
+      const [year, month, day] = (isoDate || getTodayISO()).split('-').map(Number);
+      const lat = Number(cfg.latitude) || 21.4225;
+      const lng = Number(cfg.longitude) || 39.8262;
+      const tz =
+        cfg.tzMode === 'custom' && !isNaN(Number(cfg.tzOffset))
+          ? Number(cfg.tzOffset)
+          : -new Date().getTimezoneOffset() / 60;
+
+      const methodConf = PRAYER_CALC_METHODS[cfg.method] || PRAYER_CALC_METHODS.umm_al_qura;
+      const asrFactor = cfg.asrJuristic === 'hanafi' ? 2 : 1;
+
+      const jd = computeJulianDate(year, month, day) - lng / (15 * 24);
+      const { decl, eqt } = computeSolarDeclinationAndEqT(jd + 0.5);
+      const solarNoon = 12 + tz - lng / 15 - eqt;
+
+      const calcHourAngle = (depressionAngle) => {
+        const num = -Math.sin(degToRad(depressionAngle)) - Math.sin(degToRad(lat)) * Math.sin(degToRad(decl));
+        const den = Math.cos(degToRad(lat)) * Math.cos(degToRad(decl));
+        const ratio = Math.max(-1, Math.min(1, num / den));
+        return radToDeg(Math.acos(ratio)) / 15;
+      };
+
+      const asrAltitude = radToDeg(Math.atan(1 / (asrFactor + Math.tan(degToRad(Math.abs(lat - decl))))));
+
+      const rawFajrHrs = solarNoon - calcHourAngle(methodConf.fajrAngle);
+      const rawSunriseHrs = solarNoon - calcHourAngle(0.8333);
+      const rawDhuhrHrs = solarNoon + 1 / 60;
+      const rawAsrHrs = solarNoon + calcHourAngle(-asrAltitude);
+      const rawMaghribHrs = solarNoon + calcHourAngle(0.8333);
+      const rawIshaHrs = methodConf.ishaInterval
+        ? rawMaghribHrs + methodConf.ishaInterval / 60
+        : solarNoon + calcHourAngle(methodConf.ishaAngle);
+
+      const offsets = cfg.offsets || {};
+      const items = [
+        {
+          id: 'fajr',
+          label: 'Fajr',
+          isFard: true,
+          totalMinutes: Math.round(rawFajrHrs * 60) + (Number(offsets.fajr) || 0)
+        },
+        ...(cfg.showSunrise !== false
+          ? [
+              {
+                id: 'sunrise',
+                label: 'Sunrise',
+                isFard: false,
+                totalMinutes: Math.round(rawSunriseHrs * 60) + (Number(offsets.sunrise) || 0)
+              }
+            ]
+          : []),
+        {
+          id: 'dhuhr',
+          label: 'Dhuhr',
+          isFard: true,
+          totalMinutes: Math.round(rawDhuhrHrs * 60) + (Number(offsets.dhuhr) || 0)
+        },
+        {
+          id: 'asr',
+          label: 'Asr',
+          isFard: true,
+          totalMinutes: Math.round(rawAsrHrs * 60) + (Number(offsets.asr) || 0)
+        },
+        {
+          id: 'maghrib',
+          label: 'Maghrib',
+          isFard: true,
+          totalMinutes: Math.round(rawMaghribHrs * 60) + (Number(offsets.maghrib) || 0)
+        },
+        {
+          id: 'isha',
+          label: 'Isha',
+          isFard: true,
+          totalMinutes: Math.round(rawIshaHrs * 60) + (Number(offsets.isha) || 0)
+        }
+      ];
+
+      return items.map((item) => ({
+        ...item,
+        formatted: formatMinutesToPrayerTime(item.totalMinutes, cfg.timeFormat || '12h')
+      }));
+    }
+
+    function formatCountdownHMS(totalSeconds) {
+      const sec = Math.max(0, Math.floor(totalSeconds));
+      const h = Math.floor(sec / 3600);
+      const m = Math.floor((sec % 3600) / 60);
+      const s = sec % 60;
+      return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+    }
+
+    function formatPrayerTimeHtml(formattedTime) {
+      const parts = String(formattedTime || '').trim().split(' ');
+      if (parts.length === 2) {
+        return `<span class="text-xs font-extrabold tracking-tight">${escapeHtml(parts[0])}</span><span class="text-[10px] font-bold uppercase opacity-75 ml-0.5">${escapeHtml(parts[1])}</span>`;
+      }
+      return `<span class="text-xs font-extrabold tracking-tight">${escapeHtml(formattedTime)}</span>`;
+    }
+
+    function formatElapsedAmountOnly(elapsedSeconds) {
+      const sec = Math.max(0, Math.floor(elapsedSeconds || 0));
+      const totalMins = Math.floor(sec / 60);
+      const h = Math.floor(totalMins / 60);
+      const m = totalMins % 60;
+      if (h > 0) {
+        return `${h}h ${m}m`;
+      }
+      if (m > 0) {
+        return `${m}m`;
+      }
+      return `${sec}s`;
+    }
+
+    function renderPrayerTimesCard() {
+      const listContainer = document.getElementById('prayerTimesListContainer');
+      if (!listContainer) return;
+
+      const cfg = {
+        ...defaultState.prayerSettings,
+        ...(state.prayerSettings || {})
+      };
+      const methodConf = PRAYER_CALC_METHODS[cfg.method] || PRAYER_CALC_METHODS.umm_al_qura;
+
+      const locEl = document.getElementById('prayerLocationLabel');
+      if (locEl) {
+        locEl.textContent = `${cfg.cityName || 'Makkah'} • ${methodConf.label}`;
+      }
+
+      const now = new Date();
+      const todayISO = getTodayISO();
+      const isViewingToday = state.selectedDate === todayISO;
+      const nowSecondsOfDay = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+
+      // Compute Today's real-time prayer state (for live countdown & elapsed time since past prayer)
+      const todaySchedule = getPrayerScheduleForISO(todayISO);
+      let nextPrayer = null;
+      let currentPrayer = null;
+      let elapsedSincePastSec = 0;
+
+      for (let i = 0; i < todaySchedule.length; i++) {
+        const pSec = todaySchedule[i].totalMinutes * 60;
+        if (pSec > nowSecondsOfDay) {
+          nextPrayer = { ...todaySchedule[i], remainingSec: pSec - nowSecondsOfDay };
+          if (i > 0) {
+            currentPrayer = todaySchedule[i - 1];
+            elapsedSincePastSec = nowSecondsOfDay - currentPrayer.totalMinutes * 60;
+          } else {
+            currentPrayer = todaySchedule[todaySchedule.length - 1];
+            elapsedSincePastSec = (86400 - currentPrayer.totalMinutes * 60) + nowSecondsOfDay;
+          }
+          break;
+        }
+      }
+
+      if (!nextPrayer && todaySchedule.length > 0) {
+        // After Isha: next prayer is tomorrow's Fajr
+        const tomorrowDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+        const tomorrowISO = toISO(tomorrowDate);
+        const tomorrowSchedule = getPrayerScheduleForISO(tomorrowISO);
+        const tomorrowFajr = tomorrowSchedule[0];
+        const remainingToMidnight = 86400 - nowSecondsOfDay;
+        nextPrayer = {
+          ...tomorrowFajr,
+          remainingSec: remainingToMidnight + tomorrowFajr.totalMinutes * 60
+        };
+        currentPrayer = todaySchedule[todaySchedule.length - 1];
+        elapsedSincePastSec = Math.max(0, nowSecondsOfDay - currentPrayer.totalMinutes * 60);
+      }
+
+      const dateLabelEl = document.getElementById('prayerCardDateLabel');
+      const elapsedAmountEl = document.getElementById('prayerElapsedAmount');
+      if (dateLabelEl && currentPrayer) {
+        dateLabelEl.textContent = `Time passed since ${currentPrayer.label}`;
+      }
+      if (elapsedAmountEl && currentPrayer) {
+        elapsedAmountEl.textContent = formatElapsedAmountOnly(elapsedSincePastSec);
+      }
+
+      const nextNameEl = document.getElementById('prayerNextName');
+      const nextTimeEl = document.getElementById('prayerNextTimeFormatted');
+      const countdownEl = document.getElementById('prayerLiveCountdown');
+
+      if (nextNameEl && nextPrayer) {
+        nextNameEl.textContent = nextPrayer.label;
+      }
+      if (nextTimeEl && nextPrayer) {
+        nextTimeEl.textContent = nextPrayer.formatted;
+      }
+      if (countdownEl && nextPrayer) {
+        countdownEl.textContent = `-${formatCountdownHMS(nextPrayer.remainingSec)}`;
+      }
+
+      // Render schedule rows for the currently selected date in the planner
+      const displayedSchedule = isViewingToday ? todaySchedule : getPrayerScheduleForISO(state.selectedDate);
+      listContainer.innerHTML = displayedSchedule
+        .map((p) => {
+          const isNext = isViewingToday && nextPrayer && nextPrayer.id === p.id && nextPrayer.remainingSec < 86400;
+          const isCurrent = isViewingToday && currentPrayer && currentPrayer.id === p.id && !isNext;
+          const rowStateClass = isNext
+            ? 'prayer-item-next border-indigo-400/60'
+            : isCurrent
+              ? 'prayer-item-current border-emerald-400/50'
+              : 'bg-slate-50/80 dark:bg-slate-800/50 border-slate-200/60 dark:border-slate-800';
+
+          return `
+            <div class="prayer-item-row px-3.5 py-2 rounded-xl border flex items-center justify-between ${rowStateClass}">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full ${
+                  isNext
+                    ? 'bg-indigo-500 animate-pulse'
+                    : isCurrent
+                      ? 'bg-emerald-500'
+                      : p.id === 'sunrise'
+                        ? 'bg-amber-400'
+                        : 'bg-slate-300 dark:bg-slate-600'
+                }"></span>
+                <span class="text-xs font-bold ${
+                  isNext
+                    ? 'text-indigo-700 dark:text-indigo-300'
+                    : isCurrent
+                      ? 'text-emerald-700 dark:text-emerald-300'
+                      : 'text-slate-700 dark:text-slate-200'
+                }">${escapeHtml(p.label)}</span>
+                ${
+                  isNext
+                    ? `<span class="text-[9px] font-extrabold uppercase tracking-wider px-1.5 py-0.2 rounded bg-indigo-600 text-white">Next</span>`
+                    : ''
+                }
+              </div>
+              <span class="prayer-time-badge ${
+                isNext
+                  ? 'text-indigo-700 dark:text-indigo-200 border-indigo-300/80 dark:border-indigo-700/70'
+                  : 'text-slate-800 dark:text-slate-100'
+              }">${formatPrayerTimeHtml(p.formatted)}</span>
+            </div>
+          `;
+        })
+        .join('');
+    }
+
+    let prayerLiveIntervalId = null;
+    let lastObservedRealTodayISO = getTodayISO();
+
+    function startPrayerLiveTicker() {
+      if (prayerLiveIntervalId) clearInterval(prayerLiveIntervalId);
+      renderPrayerTimesCard();
+      prayerLiveIntervalId = setInterval(() => {
+        const currentRealISO = getTodayISO();
+        if (currentRealISO !== lastObservedRealTodayISO) {
+          const wasOnToday = state.selectedDate === lastObservedRealTodayISO;
+          lastObservedRealTodayISO = currentRealISO;
+          if (wasOnToday) {
+            state.selectedDate = currentRealISO;
+          }
+          renderAll();
+        }
+        renderPrayerTimesCard();
+      }, 1000);
+    }
+
+    function populatePrayerPresetSelectOptions(selectedId) {
+      const sel = document.getElementById('prayerCityPresetSelect');
+      if (!sel) return;
+      const optionsHtml =
+        PRAYER_CITY_PRESETS.map(
+          (c) => `<option value="${c.id}" ${c.id === selectedId ? 'selected' : ''}>${escapeHtml(c.name)} (${escapeHtml(c.country)})</option>`
+        ).join('') + `<option value="custom" ${selectedId === 'custom' ? 'selected' : ''}>Custom Coordinates...</option>`;
+      sel.innerHTML = optionsHtml;
+    }
+
+    function openPrayerSettingsModal() {
+      const cfg = {
+        ...defaultState.prayerSettings,
+        ...(state.prayerSettings || {}),
+        offsets: {
+          ...defaultState.prayerSettings.offsets,
+          ...((state.prayerSettings && state.prayerSettings.offsets) || {})
+        }
+      };
+
+      populatePrayerPresetSelectOptions(cfg.presetId || 'makkah');
+      document.getElementById('prayerCityNameInput').value = cfg.cityName || 'Makkah';
+      document.getElementById('prayerLatInput').value = cfg.latitude;
+      document.getElementById('prayerLngInput').value = cfg.longitude;
+      document.getElementById('prayerTzModeSelect').value = cfg.tzMode || 'auto';
+      document.getElementById('prayerTzOffsetInput').value = cfg.tzOffset ?? 3;
+      document.getElementById('prayerTzCustomWrap').classList.toggle('opacity-50', (cfg.tzMode || 'auto') === 'auto');
+
+      document.getElementById('prayerMethodSelect').value = cfg.method || 'umm_al_qura';
+      document.getElementById('prayerAsrJuristicSelect').value = cfg.asrJuristic || 'standard';
+      document.getElementById('prayerTimeFormatSelect').value = cfg.timeFormat || '12h';
+      document.getElementById('prayerShowSunriseCheck').checked = cfg.showSunrise !== false;
+      document.getElementById('prayerShowOnTimelineCheck').checked = cfg.showOnTimeline !== false;
+
+      document.getElementById('prayerOffsetFajr').value = cfg.offsets.fajr || 0;
+      document.getElementById('prayerOffsetSunrise').value = cfg.offsets.sunrise || 0;
+      document.getElementById('prayerOffsetDhuhr').value = cfg.offsets.dhuhr || 0;
+      document.getElementById('prayerOffsetAsr').value = cfg.offsets.asr || 0;
+      document.getElementById('prayerOffsetMaghrib').value = cfg.offsets.maghrib || 0;
+      document.getElementById('prayerOffsetIsha').value = cfg.offsets.isha || 0;
+
+      document.getElementById('prayerSettingsModal').classList.remove('hidden');
+    }
+
+    function closePrayerSettingsModal() {
+      document.getElementById('prayerSettingsModal').classList.add('hidden');
+    }
+
+    function handlePrayerCityPresetChange(presetId) {
+      const preset = PRAYER_CITY_PRESETS.find((c) => c.id === presetId);
+      if (!preset) return;
+      document.getElementById('prayerCityNameInput').value = preset.name;
+      document.getElementById('prayerLatInput').value = preset.lat;
+      document.getElementById('prayerLngInput').value = preset.lng;
+      document.getElementById('prayerTzOffsetInput').value = preset.tz;
+      document.getElementById('prayerMethodSelect').value = preset.method;
+    }
+
+    async function searchPrayerCityOnline() {
+      const inputEl = document.getElementById('prayerCitySearchInput');
+      const btnEl = document.getElementById('prayerCitySearchBtn');
+      const query = inputEl ? inputEl.value.trim() : '';
+      if (!query) {
+        showToast('Enter a city name to search');
+        return;
+      }
+
+      // First check offline presets for an instant match
+      const localMatch = PRAYER_CITY_PRESETS.find(
+        (c) => c.name.toLowerCase() === query.toLowerCase() || `${c.name}, ${c.country}`.toLowerCase().includes(query.toLowerCase())
+      );
+      if (localMatch) {
+        populatePrayerPresetSelectOptions(localMatch.id);
+        handlePrayerCityPresetChange(localMatch.id);
+        showToast(`Selected ${localMatch.name} (${localMatch.country})`);
+        return;
+      }
+
+      if (btnEl) {
+        btnEl.disabled = true;
+        btnEl.textContent = '...';
+      }
+      try {
+        const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query)}`;
+        const res = await fetch(url, { headers: { Accept: 'application/json' } });
+        if (!res.ok) throw new Error('Network lookup failed');
+        const data = await res.json();
+        if (!Array.isArray(data) || data.length === 0) {
+          showToast('City not found — try another name or enter coordinates');
+          return;
+        }
+        const hit = data[0];
+        const shortName = (hit.display_name || query).split(',')[0].trim();
+        const lat = parseFloat(hit.lat);
+        const lng = parseFloat(hit.lon);
+        if (!isNaN(lat) && !isNaN(lng)) {
+          populatePrayerPresetSelectOptions('custom');
+          document.getElementById('prayerCityNameInput').value = shortName;
+          document.getElementById('prayerLatInput').value = Number(lat.toFixed(4));
+          document.getElementById('prayerLngInput').value = Number(lng.toFixed(4));
+          showToast(`Found ${shortName} (${lat.toFixed(2)}, ${lng.toFixed(2)})`);
+        }
+      } catch (err) {
+        showToast('Offline or lookup unavailable — use presets or coordinates');
+      } finally {
+        if (btnEl) {
+          btnEl.disabled = false;
+          btnEl.textContent = 'Find';
+        }
+      }
+    }
+
+    function resetPrayerOffsetsInModal() {
+      ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'].forEach((name) => {
+        const el = document.getElementById('prayerOffset' + name);
+        if (el) el.value = 0;
+      });
+    }
+
+    function savePrayerSettingsFromModal() {
+      const presetId = document.getElementById('prayerCityPresetSelect').value || 'custom';
+      const cityName = document.getElementById('prayerCityNameInput').value.trim() || 'Makkah';
+      const latitude = parseFloat(document.getElementById('prayerLatInput').value);
+      const longitude = parseFloat(document.getElementById('prayerLngInput').value);
+      const tzMode = document.getElementById('prayerTzModeSelect').value || 'auto';
+      const tzOffset = parseFloat(document.getElementById('prayerTzOffsetInput').value);
+      const method = document.getElementById('prayerMethodSelect').value || 'umm_al_qura';
+      const asrJuristic = document.getElementById('prayerAsrJuristicSelect').value || 'standard';
+      const timeFormat = document.getElementById('prayerTimeFormatSelect').value || '12h';
+      const showSunrise = document.getElementById('prayerShowSunriseCheck').checked;
+      const showOnTimeline = document.getElementById('prayerShowOnTimelineCheck').checked;
+
+      state.prayerSettings = {
+        presetId,
+        cityName,
+        latitude: !isNaN(latitude) ? Math.max(-89, Math.min(89, latitude)) : 21.4225,
+        longitude: !isNaN(longitude) ? Math.max(-180, Math.min(180, longitude)) : 39.8262,
+        tzMode,
+        tzOffset: !isNaN(tzOffset) ? Math.max(-12, Math.min(14, tzOffset)) : 3,
+        method,
+        asrJuristic,
+        timeFormat,
+        showSunrise,
+        showOnTimeline,
+        offsets: {
+          fajr: parseInt(document.getElementById('prayerOffsetFajr').value, 10) || 0,
+          sunrise: parseInt(document.getElementById('prayerOffsetSunrise').value, 10) || 0,
+          dhuhr: parseInt(document.getElementById('prayerOffsetDhuhr').value, 10) || 0,
+          asr: parseInt(document.getElementById('prayerOffsetAsr').value, 10) || 0,
+          maghrib: parseInt(document.getElementById('prayerOffsetMaghrib').value, 10) || 0,
+          isha: parseInt(document.getElementById('prayerOffsetIsha').value, 10) || 0
+        }
+      };
+
+      saveState();
+      renderPrayerTimesCard();
+      renderTimeline();
+      closePrayerSettingsModal();
+      showToast(`Prayer times updated for ${cityName}`);
+    }
+
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && timer.isFullscreen) {
-        toggleFullScreenPomodoro();
+      if (e.key === 'Escape') {
+        closeFileMenuDropdown();
+        closePrayerSettingsModal();
+        if (timer.isFullscreen) {
+          toggleFullScreenPomodoro();
+        }
+      }
+      if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey) {
+        const key = (e.key || '').toLowerCase();
+        if (key === 's') {
+          e.preventDefault();
+          exportFlowPlanDataFile();
+        } else if (key === 'o') {
+          e.preventDefault();
+          triggerImportFlowPlanDataFile();
+        }
       }
     });
 
@@ -4494,11 +6387,13 @@
       renderTimeline();
       renderWeeklyView();
       renderMonthlyView();
+      renderPrayerTimesCard();
     }
 
     function applyFullStateToUI() {
       applyDarkMode();
       updateSoundMuteUI();
+      updateTimerSoundSettingsUI();
 
       // Restore draft inputs
       const taskInput = document.getElementById('newTaskTitle');
@@ -4523,6 +6418,7 @@
       switchDailySubTab(state.dailySubTab || 'tasks');
       switchMainView(state.mainView || 'daily');
       updateClockUI();
+      renderPrayerTimesCard();
     }
 
     window.addEventListener('beforeunload', () => {
@@ -4602,6 +6498,27 @@
       loadStateSynchronously();
       applyFullStateToUI();
       isHydratingState = false;
+      startPrayerLiveTicker();
+
+      // Hook up native Electron File Menu actions if running in Electron
+      if (window.electronDesktopAPI) {
+        if (typeof window.electronDesktopAPI.onMenuExport === 'function') {
+          window.electronDesktopAPI.onMenuExport(() => {
+            exportFlowPlanDataFile();
+          });
+        }
+        if (typeof window.electronDesktopAPI.onMenuImport === 'function') {
+          window.electronDesktopAPI.onMenuImport(() => {
+            triggerImportFlowPlanDataFile();
+          });
+        }
+        if (typeof window.electronDesktopAPI.onAlwaysOnTopChanged === 'function') {
+          window.electronDesktopAPI.onAlwaysOnTopChanged((flag) => {
+            timer.isAlwaysOnTop = Boolean(flag);
+            updateFullscreenToolbarUI();
+          });
+        }
+      }
 
       // If a baked-in Custom Cloud URL is present (for Google Sites), fetch the latest state from it immediately
       if (getActiveCustomEndpoint()) {
@@ -4622,6 +6539,7 @@
       }
 
       // Also check IndexedDB & CacheStorage asynchronously in case localStorage was cleared by the iframe
+      // or if localStorage used the slim quota fallback without customSoundDataUrl
       Promise.all([loadFromIDB(), loadFromCacheStorage()])
         .then(([idbRaw, cacheRaw]) => {
           const asyncCandidates = [idbRaw, cacheRaw].filter(Boolean);
@@ -4632,7 +6550,9 @@
             try {
               const parsed = JSON.parse(raw);
               const ts = Number(parsed && parsed.lastSavedAt) || 0;
-              if (ts > newestTs) {
+              const hasCustomAudioInAsync = !!(parsed && parsed.timerSettings && parsed.timerSettings.customSoundDataUrl);
+              const missingCustomAudioInSync = !(state.timerSettings && state.timerSettings.customSoundDataUrl);
+              if (ts > newestTs || (ts === newestTs && hasCustomAudioInAsync && missingCustomAudioInSync)) {
                 newestTs = ts;
                 newestObj = parsed;
               }

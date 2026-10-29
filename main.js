@@ -93,10 +93,10 @@ const initAutoUpdater = () => {
 app.commandLine.appendSwitch('disable-background-timer-throttling');
 app.commandLine.appendSwitch('disable-renderer-backgrounding');
 
-// Explicit Dev Mode detection: true when running via 'npm run dev', --dev argument, or unpacked during development
-const isDevMode = !app.isPackaged || process.argv.includes('--dev') || process.env.FLOWPLAN_DEV === '1';
+// Explicit Dev Mode detection: true ONLY when running via 'npm run dev' (--dev argument) or FLOWPLAN_DEV=1
+const isDevMode = process.argv.includes('--dev') || process.env.FLOWPLAN_DEV === '1';
 
-// Isolate dev data from production: dev tests write to flowplan-desktop-data-dev.json
+// Synchronized data engine: ensures dev and production files remain 100% in sync
 const getStateFilePath = () => {
   const fileName = isDevMode ? 'flowplan-desktop-data-dev.json' : 'flowplan-desktop-data.json';
   return path.join(app.getPath('userData'), fileName);
@@ -104,18 +104,67 @@ const getStateFilePath = () => {
 
 const loadStateSync = () => {
   try {
-    const filePath = getStateFilePath();
-    if (fs.existsSync(filePath)) {
-      return fs.readFileSync(filePath, 'utf-8');
-    } else if (isDevMode) {
-      // In dev mode, initialize first run from production data if available so testing starts with realistic content
-      const prodPath = path.join(app.getPath('userData'), 'flowplan-desktop-data.json');
-      if (fs.existsSync(prodPath)) {
-        const prodData = fs.readFileSync(prodPath, 'utf-8');
-        fs.writeFileSync(filePath, prodData, 'utf-8');
-        return prodData;
-      }
+    const devPath = path.join(app.getPath('userData'), 'flowplan-desktop-data-dev.json');
+    const prodPath = path.join(app.getPath('userData'), 'flowplan-desktop-data.json');
+    const currentTarget = isDevMode ? devPath : prodPath;
+
+    let devObj = null, prodObj = null;
+    let devRaw = null, prodRaw = null;
+    if (fs.existsSync(devPath)) {
+      try {
+        devRaw = fs.readFileSync(devPath, 'utf-8');
+        devObj = JSON.parse(devRaw);
+      } catch (e) {}
     }
+    if (fs.existsSync(prodPath)) {
+      try {
+        prodRaw = fs.readFileSync(prodPath, 'utf-8');
+        prodObj = JSON.parse(prodRaw);
+      } catch (e) {}
+    }
+
+    // One-time clean reset so the user starts fresh with 0 coins, 0 playground animals, and no sanctuary pet
+    [devObj, prodObj].forEach((obj, idx) => {
+      if (obj && !obj.petsCleanStartV2) {
+        obj.pets = {
+          coins: 0,
+          accumulatedFocusMinutes: 0,
+          coinsGrantedTotal: 0,
+          playgroundTheme: 'meadow',
+          inventory: {},
+          sanctuaryPet: null,
+          graduatedPets: []
+        };
+        obj.petsCleanStartV2 = true;
+        obj.lastSavedAt = Date.now();
+        const p = idx === 0 ? devPath : prodPath;
+        try { fs.writeFileSync(p, JSON.stringify(obj, null, 2), 'utf-8'); } catch (e) {}
+        if (idx === 0) devRaw = JSON.stringify(obj);
+        if (idx === 1) prodRaw = JSON.stringify(obj);
+      }
+    });
+
+    let chosenRaw = null;
+    if (devObj && prodObj) {
+      const devTs = Number(devObj.lastSavedAt) || 0;
+      const prodTs = Number(prodObj.lastSavedAt) || 0;
+      if (devTs > prodTs) {
+        chosenRaw = devRaw;
+        try { fs.writeFileSync(prodPath, devRaw, 'utf-8'); } catch (e) {}
+      } else {
+        chosenRaw = prodRaw;
+        try { fs.writeFileSync(devPath, prodRaw, 'utf-8'); } catch (e) {}
+      }
+    } else if (devObj) {
+      chosenRaw = devRaw;
+      try { fs.writeFileSync(prodPath, devRaw, 'utf-8'); } catch (e) {}
+    } else if (prodObj) {
+      chosenRaw = prodRaw;
+      try { fs.writeFileSync(devPath, prodRaw, 'utf-8'); } catch (e) {}
+    }
+
+    if (chosenRaw) return chosenRaw;
+    if (fs.existsSync(currentTarget)) return fs.readFileSync(currentTarget, 'utf-8');
   } catch (err) {
     console.error('Failed to read desktop state file:', err);
   }
@@ -125,8 +174,11 @@ const loadStateSync = () => {
 const saveStateSync = (serializedJson) => {
   if (typeof serializedJson !== 'string' || !serializedJson.trim()) return;
   try {
-    const filePath = getStateFilePath();
-    fs.writeFileSync(filePath, serializedJson, 'utf-8');
+    const devPath = path.join(app.getPath('userData'), 'flowplan-desktop-data-dev.json');
+    const prodPath = path.join(app.getPath('userData'), 'flowplan-desktop-data.json');
+    // Save to BOTH files simultaneously so dev and production are ALWAYS 100% synchronized!
+    fs.writeFileSync(prodPath, serializedJson, 'utf-8');
+    fs.writeFileSync(devPath, serializedJson, 'utf-8');
   } catch (err) {
     console.error('Failed to write desktop state file:', err);
   }
@@ -138,6 +190,20 @@ ipcMain.on('flowplan:load-state-sync', (event) => {
 
 ipcMain.on('flowplan:save-state', (_event, serializedJson) => {
   saveStateSync(serializedJson);
+});
+
+ipcMain.on('flowplan:read-binary-file', (event, relativePath) => {
+  try {
+    const cleanRel = String(relativePath || '').replace(/^\/+/, '');
+    const fullPath = path.join(__dirname, cleanRel);
+    if (fs.existsSync(fullPath)) {
+      event.returnValue = fs.readFileSync(fullPath);
+      return;
+    }
+  } catch (e) {
+    console.warn('IPC read-binary-file error:', e);
+  }
+  event.returnValue = null;
 });
 
 ipcMain.handle('flowplan:export-data-dialog', async (event, serializedJson, suggestedFileName) => {
@@ -278,6 +344,7 @@ const ensurePreloadFile = (initialStateJson) => {
       importDataDialog: () => ipcRenderer.invoke('flowplan:import-data-dialog'),
       setAlwaysOnTop: (enable) => ipcRenderer.invoke('flowplan:set-always-on-top', enable),
       setMiniClockMode: (enable) => ipcRenderer.invoke('flowplan:set-mini-clock-mode', enable),
+      readBinaryAssetSync: (relativePath) => ipcRenderer.sendSync('flowplan:read-binary-file', relativePath),
       onAlwaysOnTopChanged: (callback) => {
         ipcRenderer.removeAllListeners('flowplan:always-on-top-changed');
         ipcRenderer.on('flowplan:always-on-top-changed', (_event, flag) => callback(Boolean(flag)));
@@ -354,6 +421,7 @@ function createMainWindow() {
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: false,
+      webSecurity: false,
       backgroundThrottling: false
     }
   });

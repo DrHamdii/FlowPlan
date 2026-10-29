@@ -2634,10 +2634,6 @@
           <!-- Food cards populated by renderPetShopCards() -->
         </div>
       </div>
-
-      <div class="px-6 py-3.5 bg-slate-50 dark:bg-slate-800/60 border-t border-slate-100 dark:border-slate-800 flex justify-end">
-        <button onclick="closePetShopModal()" class="px-5 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow transition">Done</button>
-      </div>
     </div>
   </div>
 
@@ -2662,16 +2658,6 @@
         <div id="adoptPetModalGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
           <!-- 24 Pet species cards rendered dynamically via renderAdoptPetCards() -->
         </div>
-      </div>
-
-      <div class="px-6 py-3.5 bg-slate-50 dark:bg-slate-800/60 border-t border-slate-100 dark:border-slate-800 flex justify-end">
-        <button onclick="closeAdoptPetModal()" class="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow transition">Done</button>
-      </div>
-    </div>
-  </div>
-
-      <div class="px-5 py-3.5 bg-slate-50 dark:bg-slate-800/60 border-t border-slate-100 dark:border-slate-800 flex justify-end">
-        <button onclick="closeAdoptPetModal()" class="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow transition">Done</button>
       </div>
     </div>
   </div>
@@ -2820,20 +2806,36 @@
   <script id="flowplanEmbeddedState" type="application/json">{}</script>
   <script id="flowplanCustomEndpointConfig" type="text/plain"></script>
 
-  <!-- Three.js 3D Engine & GLTFLoader Import Map for Cube Pets -->
+  <!-- Three.js 3D Engine & GLTFLoader Import Map for Cube Pets (Self-contained in assets to prevent electron-builder stripping) -->
   <script type="importmap">
   {
     "imports": {
-      "three": "./node_modules/three/build/three.module.js",
-      "three/addons/": "./node_modules/three/examples/jsm/"
+      "three": "./assets/three/build/three.module.js",
+      "three/addons/": "./assets/three/examples/jsm/"
     }
   }
   </script>
   <script type="module">
     (async () => {
       try {
-        const THREE = await import('three');
-        const { GLTFLoader } = await import('three/addons/loaders/GLTFLoader.js');
+        let THREE, GLTFLoader;
+        try {
+          THREE = await import('three');
+          const gltfModule = await import('three/addons/loaders/GLTFLoader.js');
+          GLTFLoader = gltfModule.GLTFLoader;
+        } catch (importmapErr) {
+          console.warn('Importmap load failed, falling back to direct relative assets:', importmapErr);
+          try {
+            THREE = await import('./assets/three/build/three.module.js');
+            const gltfModule = await import('./assets/three/examples/jsm/loaders/GLTFLoader.js');
+            GLTFLoader = gltfModule.GLTFLoader;
+          } catch (assetsErr) {
+            console.warn('Assets path failed, falling back to node_modules:', assetsErr);
+            THREE = await import('./node_modules/three/build/three.module.js');
+            const gltfModule = await import('./node_modules/three/examples/jsm/loaders/GLTFLoader.js');
+            GLTFLoader = gltfModule.GLTFLoader;
+          }
+        }
         window.THREE = THREE;
         window.GLTFLoader = GLTFLoader;
         window.isThreeAvailable = true;
@@ -3028,17 +3030,17 @@
     // =========================================================================
     // STATE & PERSISTENCE (Cloud Firestore + Multi-Engine Local Cache)
     // =========================================================================
-    // DEV MODE DETECTION: True when running unpacked or with --dev in Electron or ?dev=1
+    // DEV MODE DETECTION: True ONLY when running with --dev in Electron or ?dev=1 in URL
     const IS_DEV_MODE = Boolean(
       (window.electronDesktopAPI && window.electronDesktopAPI.isDev) ||
       window.location.search.includes('dev=1') ||
-      (window.location.protocol === 'file:' && !(window.electronDesktopAPI && window.electronDesktopAPI.isPackaged))
+      window.location.search.includes('dev=true')
     );
 
-    // Isolate storage so Dev testing never modifies or corrupts production state
-    const STORAGE_KEY = IS_DEV_MODE ? 'flowplan_dev_v4_state' : 'flowplan_clean_v4_state';
-    const LEGACY_KEYS = IS_DEV_MODE ? [] : ['flowplan_clean_v3_state', 'flowplan_clean_v2_state', 'flowplan_state_v1'];
-    const IDB_NAME = IS_DEV_MODE ? 'FlowPlanDevPersistentDB' : 'FlowPlanPersistentDB';
+    // Seamless unified storage so dev mode and production are ALWAYS 100% in sync
+    const STORAGE_KEY = 'flowplan_clean_v4_state';
+    const LEGACY_KEYS = ['flowplan_dev_v4_state', 'flowplan_clean_v3_state', 'flowplan_clean_v2_state', 'flowplan_state_v1'];
+    const IDB_NAME = 'FlowPlanPersistentDB';
     const IDB_STORE = 'stateStore';
     const TIMELINE_START_HOUR = 4;
     const TIMELINE_END_HOUR = 24;
@@ -3136,28 +3138,12 @@
       weeklyCardOrder: [0, 1, 2, 3, 4, 5, 6],
       weeklyCardSizes: {},   // { 'YYYY-MM-DD': { height: 280, wide: false } }
       pets: {
-        coins: 5,
+        coins: 0,
         accumulatedFocusMinutes: 0,
         coinsGrantedTotal: 0,
         playgroundTheme: 'meadow',
-        inventory: {
-          '001-carrot': 3,
-          '002-cabbage': 2,
-          '003-corn': 2,
-          '005-meat': 1
-        },
-        sanctuaryPet: {
-          species: 'bunny',
-          nickname: 'Pip',
-          stage: 1,
-          stageFocusMinutes: 0,
-          vitality: 100,
-          isSick: false,
-          isDead: false,
-          adoptedAt: '',
-          totalPets: 0,
-          totalFeeds: 0
-        },
+        inventory: {},
+        sanctuaryPet: null,
         graduatedPets: []
       },
       lastSavedAt: 0
@@ -3281,16 +3267,11 @@
         pets: {
           ...defaultState.pets,
           ...((parsed && parsed.pets) || {}),
+          coins: typeof (parsed && parsed.pets && parsed.pets.coins) === 'number' ? parsed.pets.coins : 0,
           inventory: {
-            ...defaultState.pets.inventory,
             ...((parsed && parsed.pets && parsed.pets.inventory) || {})
           },
           sanctuaryPet: (parsed && parsed.pets && parsed.pets.sanctuaryPet) ? {
-            ...defaultState.pets.sanctuaryPet,
-            ...parsed.pets.sanctuaryPet
-          } : (parsed && parsed.garden ? {
-            species: (parsed.garden.activeAnimalSpecies === 'pup' ? 'dog' : parsed.garden.activeAnimalSpecies) || 'bunny',
-            nickname: (parsed.garden.animalProgress && parsed.garden.animalProgress[parsed.garden.activeAnimalSpecies] && parsed.garden.animalProgress[parsed.garden.activeAnimalSpecies].nickname) || 'Pip',
             stage: 1,
             stageFocusMinutes: 0,
             vitality: 100,
@@ -3298,12 +3279,21 @@
             isDead: false,
             adoptedAt: '',
             totalPets: 0,
-            totalFeeds: 0
-          } : { ...defaultState.pets.sanctuaryPet }),
+            totalFeeds: 0,
+            ...parsed.pets.sanctuaryPet
+          } : null,
           graduatedPets: Array.isArray(parsed && parsed.pets && parsed.pets.graduatedPets) ? parsed.pets.graduatedPets : []
         },
+        petsCleanStartV2: true,
         lastSavedAt: Number(parsed.lastSavedAt) || Date.now()
       };
+
+      // One-time pristine clean reset requested by user so state starts at 0 coins, 0 champions, null sanctuary pet
+      if (!parsed.petsCleanStartV2) {
+        state.pets = JSON.parse(JSON.stringify(defaultState.pets));
+        state.petsCleanStartV2 = true;
+      }
+
       return true;
     }
 
@@ -7569,17 +7559,12 @@ function ensurePetsState() {
   if (!state.pets) {
     state.pets = JSON.parse(JSON.stringify(defaultState.pets));
   }
-  if (typeof state.pets.coins !== 'number') state.pets.coins = 5;
+  if (typeof state.pets.coins !== 'number') state.pets.coins = 0;
   if (typeof state.pets.accumulatedFocusMinutes !== 'number') state.pets.accumulatedFocusMinutes = 0;
   if (typeof state.pets.coinsGrantedTotal !== 'number') state.pets.coinsGrantedTotal = 0;
   if (!state.pets.playgroundTheme) state.pets.playgroundTheme = 'meadow';
   if (!state.pets.inventory) {
-    state.pets.inventory = {
-      '001-carrot': 3,
-      '002-cabbage': 2,
-      '003-corn': 2,
-      '005-meat': 1
-    };
+    state.pets.inventory = {};
   }
   if (!Array.isArray(state.pets.graduatedPets)) {
     state.pets.graduatedPets = [];
@@ -8220,20 +8205,48 @@ function pgLoadSpecies(loader, species, onLoad, onError) {
     return;
   }
   cache[species] = { waiting: [{ onLoad, onError }] };
-  loader.load(
-    `assets/Animals/Models/GLB format/animal-${species}.glb`,
-    (gltf) => {
-      const waiting = cache[species].waiting || [];
-      cache[species] = { gltf };
-      waiting.forEach((w) => w.onLoad(gltf));
-    },
-    undefined,
-    (err) => {
-      console.warn('Playground GLB failed, using sprite:', species, err);
-      const waiting = cache[species].waiting || [];
-      delete cache[species];
-      waiting.forEach((w) => w.onError(err));
+  const glbPath = `assets/Animals/Models/GLB format/animal-${species}.glb`;
+
+  function handleSuccess(gltf) {
+    const waiting = cache[species] ? (cache[species].waiting || []) : [];
+    cache[species] = { gltf };
+    waiting.forEach((w) => w.onLoad(gltf));
+  }
+
+  function handleFail(err) {
+    if (window.electronDesktopAPI && typeof window.electronDesktopAPI.readBinaryAssetSync === 'function') {
+      try {
+        const rawBuffer = window.electronDesktopAPI.readBinaryAssetSync(glbPath);
+        if (rawBuffer && (rawBuffer.buffer || rawBuffer.byteLength)) {
+          const ab = rawBuffer.buffer.slice(rawBuffer.byteOffset || 0, (rawBuffer.byteOffset || 0) + rawBuffer.byteLength);
+          loader.parse(
+            ab,
+            'assets/Animals/Models/GLB format/',
+            handleSuccess,
+            (parseErr) => {
+              console.warn('Playground GLB parse failed, using sprite:', species, parseErr);
+              const waiting = cache[species] ? (cache[species].waiting || []) : [];
+              delete cache[species];
+              waiting.forEach((w) => w.onError(parseErr));
+            }
+          );
+          return;
+        }
+      } catch (ipcErr) {
+        console.warn('Playground IPC binary read failed:', ipcErr);
+      }
     }
+    console.warn('Playground GLB failed, using sprite:', species, err);
+    const waiting = cache[species] ? (cache[species].waiting || []) : [];
+    delete cache[species];
+    waiting.forEach((w) => w.onError(err));
+  }
+
+  loader.load(
+    glbPath,
+    handleSuccess,
+    undefined,
+    handleFail
   );
 }
 
@@ -9131,45 +9144,69 @@ function renderSanctuaryPet3D(pet) {
   const glbPath = `assets/Animals/Models/GLB format/animal-${pet.species}.glb`;
   const loader = new GLTFLoader();
 
+  function onSanctuaryModelSuccess(gltf) {
+    const model = gltf.scene;
+    FlowPlanPet3D.sanctuary.model = model;
+
+    const stageDef = PET_STAGE_DEFINITIONS[Math.max(0, Math.min(4, (pet.stage || 1) - 1))];
+    const speciesDef = PET_SPECIES_CATALOG[pet.species] || { scaleBase: 1.0 };
+    const scale = (speciesDef.scaleBase || 1.0) * (stageDef.scaleFactor || 1.0);
+    model.scale.set(scale, scale, scale);
+    model.position.set(0, 0, 0);
+    scene.add(model);
+
+    const mixer = new THREE.AnimationMixer(model);
+    FlowPlanPet3D.sanctuary.mixer = mixer;
+    FlowPlanPet3D.sanctuary.actions = {};
+
+    if (gltf.animations && gltf.animations.length > 0) {
+      gltf.animations.forEach((clip) => {
+        const action = mixer.clipAction(clip);
+        FlowPlanPet3D.sanctuary.actions[clip.name.toLowerCase()] = action;
+      });
+
+      const initialClip = pet.isDead ? 'gesture-negative' : pet.isSick ? 'gesture-negative' : 'idle';
+      playSanctuaryAction(initialClip);
+    }
+
+    FlowPlanPet3D.sanctuary.renderer = renderer;
+    FlowPlanPet3D.sanctuary.scene = scene;
+    FlowPlanPet3D.sanctuary.camera = camera;
+    FlowPlanPet3D.sanctuary.clock = new THREE.Clock();
+
+    startSanctuaryAnimationLoop();
+  }
+
+  function onSanctuaryModelFail(err) {
+    console.warn('Standard 3D GLB load failed, trying native binary IPC loader:', err);
+    if (window.electronDesktopAPI && typeof window.electronDesktopAPI.readBinaryAssetSync === 'function') {
+      try {
+        const rawBuffer = window.electronDesktopAPI.readBinaryAssetSync(glbPath);
+        if (rawBuffer && (rawBuffer.buffer || rawBuffer.byteLength)) {
+          const ab = rawBuffer.buffer.slice(rawBuffer.byteOffset || 0, (rawBuffer.byteOffset || 0) + rawBuffer.byteLength);
+          loader.parse(
+            ab,
+            'assets/Animals/Models/GLB format/',
+            onSanctuaryModelSuccess,
+            (parseErr) => {
+              console.warn('Binary parse also failed, falling back to 2D:', parseErr);
+              renderSanctuary2DFallback(pet, container);
+            }
+          );
+          return;
+        }
+      } catch (ipcErr) {
+        console.warn('Native IPC model read failed:', ipcErr);
+      }
+    }
+    renderSanctuary2DFallback(pet, container);
+  }
+
   loader.load(
     glbPath,
-    (gltf) => {
-      const model = gltf.scene;
-      FlowPlanPet3D.sanctuary.model = model;
-
-      const stageDef = PET_STAGE_DEFINITIONS[Math.max(0, Math.min(4, (pet.stage || 1) - 1))];
-      const speciesDef = PET_SPECIES_CATALOG[pet.species] || { scaleBase: 1.0 };
-      const scale = (speciesDef.scaleBase || 1.0) * (stageDef.scaleFactor || 1.0);
-      model.scale.set(scale, scale, scale);
-      model.position.set(0, 0, 0);
-      scene.add(model);
-
-      const mixer = new THREE.AnimationMixer(model);
-      FlowPlanPet3D.sanctuary.mixer = mixer;
-      FlowPlanPet3D.sanctuary.actions = {};
-
-      if (gltf.animations && gltf.animations.length > 0) {
-        gltf.animations.forEach((clip) => {
-          const action = mixer.clipAction(clip);
-          FlowPlanPet3D.sanctuary.actions[clip.name.toLowerCase()] = action;
-        });
-
-        const initialClip = pet.isDead ? 'gesture-negative' : pet.isSick ? 'gesture-negative' : 'idle';
-        playSanctuaryAction(initialClip);
-      }
-
-      FlowPlanPet3D.sanctuary.renderer = renderer;
-      FlowPlanPet3D.sanctuary.scene = scene;
-      FlowPlanPet3D.sanctuary.camera = camera;
-      FlowPlanPet3D.sanctuary.clock = new THREE.Clock();
-
-      startSanctuaryAnimationLoop();
-    },
+    onSanctuaryModelSuccess,
     undefined,
-    (err) => {
-      console.warn('Failed to load 3D GLB model, falling back to 2D:', err);
-      renderSanctuary2DFallback(pet, container);
-    }
+    onSanctuaryModelFail
   );
 }
 
@@ -9316,24 +9353,63 @@ function setupSanctuaryHoldToRotate() {
   });
 }
 
-// 2D High-Res Fallback for Sanctuary Pet
+// 2D High-Res Fallback for Sanctuary Pet with Autonomous Roaming & 3D Tilt
+let sanctuary2DLoopId = null;
+let sanctuary2DState = { x: 0, y: 0, targetX: 0, targetY: 0, facing: 1, isWalking: false, nextTime: 0 };
+
+function startSanctuary2DWanderingLoop() {
+  if (sanctuary2DLoopId) cancelAnimationFrame(sanctuary2DLoopId);
+  function loop() {
+    sanctuary2DLoopId = requestAnimationFrame(loop);
+    const wrap = document.getElementById('sanctuary2DWrap');
+    const pet = state.pets && state.pets.sanctuaryPet;
+    if (!wrap || !pet || pet.isDead || FlowPlanPet3D.sanctuary.userRotating) return;
+
+    const now = Date.now();
+    if (!sanctuary2DState.isWalking && now >= sanctuary2DState.nextTime) {
+      sanctuary2DState.targetX = (Math.random() - 0.5) * 120;
+      sanctuary2DState.targetY = (Math.random() - 0.5) * 24;
+      sanctuary2DState.isWalking = true;
+      sanctuary2DState.facing = sanctuary2DState.targetX >= sanctuary2DState.x ? 1 : -1;
+    }
+
+    if (sanctuary2DState.isWalking) {
+      const dx = sanctuary2DState.targetX - sanctuary2DState.x;
+      const dy = sanctuary2DState.targetY - sanctuary2DState.y;
+      const dist = Math.hypot(dx, dy);
+      if (dist > 1.5) {
+        sanctuary2DState.x += (dx / dist) * 0.8;
+        sanctuary2DState.y += (dy / dist) * 0.8;
+        const bob = Math.sin(now / 130) * 4;
+        wrap.style.transform = `translate(${sanctuary2DState.x}px, ${sanctuary2DState.y + bob}px)`;
+      } else {
+        sanctuary2DState.isWalking = false;
+        sanctuary2DState.nextTime = now + 2500 + Math.random() * 3000;
+        wrap.style.transform = `translate(${sanctuary2DState.x}px, ${sanctuary2DState.y}px)`;
+      }
+    }
+  }
+  loop();
+}
+
 function renderSanctuary2DFallback(pet, container) {
   const speciesDef = PET_SPECIES_CATALOG[pet.species] || PET_SPECIES_CATALOG.bunny;
   const stageDef = PET_STAGE_DEFINITIONS[Math.max(0, Math.min(4, (pet.stage || 1) - 1))];
   const scale = (speciesDef.scaleBase || 1.0) * (stageDef.scaleFactor || 1.0);
 
   container.innerHTML = `
-    <div class="relative flex flex-col items-center justify-center p-4">
+    <div id="sanctuary2DWrap" class="relative flex flex-col items-center justify-center p-4 transition-transform duration-75 select-none pointer-events-none">
       <img
         id="pet2DGraphicImg"
         src="assets/Animals/Previews/animal-${pet.species}.png"
         alt="${pet.nickname}"
-        class="w-36 h-36 object-contain filter drop-shadow-xl transition-transform duration-200 ${pet.isDead ? 'rotate-90 opacity-60' : pet.isSick ? 'hue-rotate-90 animate-pulse' : 'hover:scale-105'}"
-        style="--pet-scale: ${scale}; transform: scale(${scale}) rotateY(${sanctuary2DAngle}deg);"
+        class="w-36 h-36 object-contain filter drop-shadow-xl transition-transform duration-100 ${pet.isDead ? 'rotate-90 opacity-60' : pet.isSick ? 'hue-rotate-90 animate-pulse' : 'hover:scale-105'}"
+        style="--pet-scale: ${scale}; transform: scale(${scale}) scaleX(${sanctuary2DState.facing}) rotateY(${sanctuary2DAngle}deg);"
       />
       <div class="w-32 h-4 rounded-full bg-slate-900/10 dark:bg-black/40 blur-sm mt-1"></div>
     </div>
   `;
+  startSanctuary2DWanderingLoop();
 }
 
 // -------------------------------------------------------------------------

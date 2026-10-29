@@ -19,6 +19,7 @@
   "build": {
     "appId": "com.flowplan.desktop",
     "productName": "FlowPlan",
+    "asar": false,
     "files": [
       "daily_weekly_planner.html",
       "main.js",

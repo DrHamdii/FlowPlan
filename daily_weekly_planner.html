@@ -15,7 +15,10 @@
         theme: {
           extend: {
             fontFamily: {
-              sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+              sans: ['Plus Jakarta Sans', 'Inter', 'system-ui', '-apple-system', 'sans-serif'],
+              display: ['Outfit', 'sans-serif'],
+              outfit: ['Outfit', 'sans-serif'],
+              jakarta: ['Plus Jakarta Sans', 'sans-serif'],
               mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace']
             }
           }
@@ -28,7 +31,9 @@
     /* Offline Tailwind v3 Preflight & Utilities */
     *, ::before, ::after { box-sizing: border-box; border-width: 0; border-style: solid; border-color: #e2e8f0; }
     .dark *, .dark ::before, .dark ::after { border-color: #1e293b; }
-    html { line-height: 1.5; -webkit-text-size-adjust: 100%; tab-size: 4; font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    html { line-height: 1.5; -webkit-text-size-adjust: 100%; tab-size: 4; font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    .font-display, .font-outfit { font-family: 'Outfit', sans-serif !important; }
+    .font-jakarta { font-family: 'Plus Jakarta Sans', sans-serif !important; }
     body { margin: 0; line-height: inherit; }
     hr { height: 0; color: inherit; border-top-width: 1px; }
     h1, h2, h3, h4, h5, h6 { font-size: inherit; font-weight: inherit; margin: 0; }
@@ -1215,6 +1220,10 @@
           <button id="tabMonthlyBtn" onclick="switchMainView('monthly')" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
             Month Glance
           </button>
+          <button id="tabPetsBtn" onclick="switchMainView('pets')" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5">
+            <span>🐾</span>
+            <span>Pets</span>
+          </button>
         </nav>
 
         <!-- Date Navigation & Night Mode -->
@@ -1571,6 +1580,277 @@
 
                 <!-- Dynamic Bars / Visual Chart -->
                 <div id="analyticsGraphCanvas" class="pt-2"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Pets View (Playground, Sanctuary, 3D Roaming, Shop & Life Stages) -->
+          <section id="viewPets" class="hidden space-y-6">
+            <!-- Pets Top Header & Coin Economy Bar -->
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+              <div class="space-y-1">
+                <h2 class="text-2xl sm:text-3xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-2.5">
+                  <span class="text-2xl">🐾</span>
+                  <span class="bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 bg-clip-text text-transparent">Pet Sanctuary &amp; Playground</span>
+                </h2>
+                <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+                  Focus 30 minutes to earn 1 coin. Nurture your pet through 5 stages (10 focus hours per stage) to graduate them to the Playground!
+                </p>
+              </div>
+
+              <!-- Coins Balance & Shop Button -->
+              <div class="flex flex-wrap items-center gap-3">
+                <!-- Coins Reserve with Custom Money Asset -->
+                <div class="flex items-center gap-2.5 px-3.5 py-2 rounded-2xl bg-amber-50/90 dark:bg-amber-950/50 border border-amber-300/80 dark:border-amber-800/70 shadow-sm" title="Earn 1 coin for every 30 minutes of focus work">
+                  <img src="assets/Icons/money.png" alt="Coin" class="w-8 h-8 object-contain drop-shadow" />
+                  <div id="petCoinBalance" class="text-lg font-black text-slate-900 dark:text-white font-mono">5</div>
+                </div>
+
+                <!-- Animated Shop Basket Button (No background, outline fitted to icon) -->
+                <button
+                  type="button"
+                  onclick="openPetShopModal()"
+                  class="p-2 rounded-2xl border-2 border-slate-200 dark:border-slate-700 hover:border-amber-400 dark:hover:border-amber-400 bg-transparent active:scale-95 transition group shadow-sm flex items-center justify-center"
+                  title="Open Pet Food Shop"
+                >
+                  <img src="assets/Icons/basket.gif" alt="Shop Basket" class="w-8 h-8 object-contain group-hover:scale-110 transition-transform" />
+                </button>
+              </div>
+            </div>
+
+            <!-- SECTION 1: THE PLAYGROUND (Stage 5 Hall of Champions) -->
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-4">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 text-white flex items-center justify-center text-lg shadow-sm">
+                    🎡
+                  </div>
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <h3 class="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
+                      <span>The Playground</span>
+                    </h3>
+                    <span id="playgroundCapacityBadge" class="px-2.5 py-0.5 rounded-full font-display font-black text-xs bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 shadow-xs">
+                      0 / 8 Champions
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Playground Theme Selector -->
+                <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700">
+                  <span class="text-xs font-bold text-slate-600 dark:text-slate-300 shrink-0">Theme:</span>
+                  <select id="playgroundThemeSelect" onchange="setPlaygroundTheme(this.value)" class="bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded-lg px-2.5 py-1 text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+                    <option value="meadow">☀️ Flowery Meadow</option>
+                    <option value="carnival">🎪 Fun Carnival</option>
+                    <option value="beach">🏖️ Sunny Beach Resort</option>
+                    <option value="woodland">🌲 Mystic Forest</option>
+                    <option value="cosmic">🌌 Cosmic Starlight</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Playground Visual Roaming Canvas (16:9 to match the background artwork) -->
+              <div id="playgroundCanvasStage" class="relative w-full overflow-hidden rounded-3xl border border-slate-200/80 dark:border-slate-800 select-none shadow-inner bg-emerald-950" style="aspect-ratio: 16 / 9; max-height: 620px; min-height: 260px;">
+                <!-- Theme Ambience Details -->
+                <div id="playgroundAmbienceContainer" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
+
+                <!-- Playground 3D Viewport / Canvas Container -->
+                <div id="playground3DContainer" class="absolute inset-0 z-10">
+                  <!-- Empty State when 0 pets have graduated -->
+                  <div id="playgroundEmptyNotice" class="absolute inset-6 flex flex-col items-center justify-center text-center p-6 bg-white/60 dark:bg-slate-900/60 backdrop-blur-sm rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
+                    <span class="text-4xl animate-bounce mb-2">🐾</span>
+                    <h4 class="text-sm font-extrabold text-slate-800 dark:text-slate-100">Playground is Waiting for Champions!</h4>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 max-w-sm mt-1">
+                      Nurture your pet below in the Sanctuary through 5 stages (40 focus hours) to graduate them here to roam and play freely! (Max 8 champions)
+                    </p>
+                  </div>
+
+                  <!-- Roaming Pets 3D Canvas / Multi-Pet Roamer -->
+                  <div id="playgroundRoamingField" class="hidden absolute inset-0"></div>
+                </div>
+              </div>
+
+              <!-- Champions Roster Management Bar (Cap: 8 Animals) -->
+              <div id="playgroundChampionsRoster" class="hidden pt-3 border-t border-slate-100 dark:border-slate-800 space-y-2">
+                <div class="flex items-center justify-between text-xs font-black text-slate-700 dark:text-slate-200">
+                  <span class="flex items-center gap-1.5 font-display">
+                    <span>👑 Active Champions</span>
+                    <span id="playgroundRosterCountBadge" class="px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300">0/8 Max</span>
+                  </span>
+                  <span class="text-[11px] font-medium text-slate-400">Click ✕ to remove any champion</span>
+                </div>
+                <!-- Champion Chips Grid -->
+                <div id="playgroundChampionsGrid" class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-2"></div>
+              </div>
+            </div>
+
+            <!-- SECTION 2: THE SANCTUARY (Active Growth Chamber: Stages 1–4) -->
+            <div class="bg-white dark:bg-slate-900 rounded-3xl p-5 sm:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-5">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-100 dark:border-slate-800 pb-3">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-9 h-9 rounded-2xl bg-gradient-to-br from-emerald-500 to-teal-600 text-white flex items-center justify-center text-lg shadow-sm">
+                    🌿
+                  </div>
+                  <div>
+                    <h3 class="text-base font-black text-slate-900 dark:text-white flex items-center gap-2">
+                      <span>The Sanctuary</span>
+                    </h3>
+                    <p class="text-xs text-slate-500 dark:text-slate-400">Care for your active animal companion. Feed &amp; pet them to keep them healthy while you focus.</p>
+                  </div>
+                </div>
+
+                <button
+                  type="button"
+                  onclick="openAdoptPetModal()"
+                  class="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-100 text-xs font-bold border border-slate-200 dark:border-slate-700 transition"
+                  title="Choose a different companion animal to raise"
+                >
+                  <span>🐾</span>
+                  <span>Choose Companion</span>
+                </button>
+              </div>
+
+              <!-- Main Sanctuary Layout: 3D Stage on left, Pet Status & Actions on right -->
+              <div class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+                <!-- 3D Active Pet Canvas Stage (7 columns) with Themed Scenery Background -->
+                <div id="sanctuaryStageContainer" class="lg:col-span-7 relative overflow-hidden rounded-3xl border border-slate-200 dark:border-slate-800 min-h-[360px] sm:min-h-[420px] flex flex-col justify-between p-5 bg-gradient-to-b from-sky-200 via-emerald-100 to-green-200 dark:from-slate-900 dark:via-emerald-950/40 dark:to-slate-950 select-none shadow-inner">
+                  <!-- Sanctuary Themed Scenery Ambience Background -->
+                  <div id="sanctuaryAmbienceContainer" class="absolute inset-0 pointer-events-none overflow-hidden"></div>
+
+                  <!-- Sick Alert Banner (<15%) -->
+                  <div id="petSickAlertBanner" class="hidden relative z-20 px-3.5 py-2 rounded-2xl bg-amber-500/90 text-slate-950 font-bold text-xs shadow-md border border-amber-300 flex items-center justify-between animate-pulse">
+                    <span class="flex items-center gap-1.5">
+                      <span class="text-base">🤒</span>
+                      <span>Your pet is sick! Feed or pet them immediately to restore vitality!</span>
+                    </span>
+                    <span class="text-[10px] uppercase font-black bg-slate-950 text-white px-2 py-0.5 rounded-full">&lt;15%</span>
+                  </div>
+
+                  <!-- Death Alert Banner (0%) -->
+                  <div id="petDeathAlertBanner" class="hidden relative z-20 px-3.5 py-2.5 rounded-2xl bg-rose-600 text-white font-bold text-xs shadow-lg border border-rose-400 flex items-center justify-between">
+                    <span class="flex items-center gap-1.5">
+                      <span class="text-base">💀</span>
+                      <span>Your pet has collapsed from neglect! Revive with medicine to save them.</span>
+                    </span>
+                    <button onclick="revivePetWithMedicine()" class="px-2.5 py-1 rounded-xl bg-white text-rose-700 hover:bg-rose-50 text-xs font-black shadow-sm transition">
+                      Revive (3 <img src="assets/Icons/money.png" alt="Coin" class="w-3.5 h-3.5 inline-block align-middle" />)
+                    </button>
+                  </div>
+
+                  <!-- Particle Effects Layer (Hearts, Food crumbs, Sickness bubbles) -->
+                  <div id="sanctuaryEffectLayer" class="absolute inset-0 pointer-events-none overflow-hidden z-20"></div>
+
+                  <!-- 3D Pet WebGL Container (Click & Hold to Rotate, Click to Pet) -->
+                  <div id="sanctuary3DViewport" class="relative z-10 flex-1 flex items-center justify-center cursor-grab active:cursor-grabbing group" title="Hold click to rotate pet, or click to pet!">
+                    <!-- 3D WebGL Canvas or 2D Fallback injected via renderSanctuaryPet3D() -->
+                    <div id="sanctuaryPetGraphic" class="w-full h-[260px] sm:h-[300px] flex items-center justify-center"></div>
+                  </div>
+
+                  <!-- Ground Strip -->
+                  <div class="relative z-10 flex items-center justify-between text-[11px] font-bold text-slate-700 dark:text-slate-300 bg-white/70 dark:bg-slate-900/70 backdrop-blur-md px-4 py-2 rounded-xl border border-white/60 dark:border-slate-800">
+                    <span class="flex items-center gap-1.5">
+                      <span id="sanctuaryPetMoodEmoji">❤️</span>
+                      <span id="sanctuaryPetMoodLabel">Happy &amp; Content</span>
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Pet Status, Vitality & Care Controls (5 columns) -->
+                <div class="lg:col-span-5 bg-slate-50 dark:bg-slate-800/60 rounded-3xl p-5 border border-slate-200/70 dark:border-slate-800 flex flex-col justify-between space-y-4">
+                  <!-- Pet Identity Header -->
+                  <div class="flex items-center justify-between gap-3">
+                    <div class="flex items-center gap-3">
+                      <img id="sanctuaryPetPreviewImg" src="assets/Animals/Previews/animal-bunny.png" alt="Pet Preview" class="w-12 h-12 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-1 object-contain shadow-sm" />
+                      <div>
+                        <h4 id="sanctuaryPetNameLabel" class="text-base font-black text-slate-900 dark:text-white">Pip the Bunny</h4>
+                        <p id="sanctuaryPetSpeciesLabel" class="text-xs text-slate-500 dark:text-slate-400 font-medium">Meadow Bunny Companion</p>
+                      </div>
+                    </div>
+                    <span id="sanctuaryStagePill" class="text-xs font-black px-2.5 py-1 rounded-xl bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300">
+                      Stage 1 of 5
+                    </span>
+                  </div>
+
+                  <!-- Vitality Bar (0% - 100%) -->
+                  <div id="sanctuaryVitalityCard" class="space-y-2.5 bg-white dark:bg-slate-900 p-4 rounded-2xl border-2 border-emerald-500/80 dark:border-emerald-500/60 shadow-sm transition-all duration-300">
+                    <div class="flex items-center justify-between">
+                      <span class="font-display font-black text-xs uppercase tracking-wider text-slate-700 dark:text-slate-200 flex items-center gap-1.5">
+                        <span id="vitalityStatusIcon" class="text-sm">❤️</span>
+                        <span>Vitality &amp; Health</span>
+                      </span>
+                      <span id="sanctuaryVitalityPctLabel" class="font-display tracking-tight font-black text-base text-emerald-600 dark:text-emerald-400">100%</span>
+                    </div>
+
+                    <!-- Dynamic colored vitality meter -->
+                    <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-3.5 overflow-hidden p-0.5 border border-slate-200 dark:border-slate-700">
+                      <div id="sanctuaryVitalityBar" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-300" style="width: 100%"></div>
+                    </div>
+
+                    <!-- Centered Health Status Pill matching card outline -->
+                    <div class="flex items-center justify-center pt-1">
+                      <span id="sanctuaryHealthStateText" class="font-display font-black text-xs tracking-wide px-3.5 py-1 rounded-full text-center bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700/60 shadow-xs transition-all">
+                        Healthy &amp; Well-Fed
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Stage Progression (10 Hours Focus per Stage) -->
+                  <div id="sanctuaryStageGrowthCard" class="space-y-2 bg-white dark:bg-slate-900 p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
+                    <div class="flex items-center justify-between">
+                      <span class="font-display font-black text-xs uppercase tracking-wider text-slate-700 dark:text-slate-200">Stage Growth (10h Focus)</span>
+                      <span id="sanctuaryFocusHoursLabel" class="font-display tracking-tight font-black text-base text-purple-600 dark:text-purple-400">0.0h / 10.0h</span>
+                    </div>
+
+                    <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2.5 overflow-hidden">
+                      <div id="sanctuaryStageProgressBar" class="h-full bg-gradient-to-r from-purple-500 to-indigo-500 rounded-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+
+                    <div class="flex items-center justify-between text-xs font-semibold text-slate-500 dark:text-slate-400">
+                      <span id="sanctuaryStageTargetLabel" class="font-jakarta font-bold">Next: Stage 2 (Toddler)</span>
+                      <span id="sanctuaryTotalFocusAccLabel" class="font-display font-black text-[11px] text-slate-400">Total: 0.0h / 40.0h</span>
+                    </div>
+                  </div>
+
+                  <!-- Care Action Buttons (Feed & Pet) -->
+                  <div class="space-y-2 pt-1">
+                    <!-- Feed Button (50% Vitality) -->
+                    <button
+                      type="button"
+                      onclick="feedActiveSanctuaryAnimal()"
+                      id="feedPetActionBtn"
+                      class="w-full py-3 px-4 rounded-2xl bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 font-black text-xs shadow-md border-2 border-amber-600 transition flex items-center justify-between"
+                    >
+                      <div class="flex items-center gap-2">
+                        <img id="sanctuaryFavoriteFoodIcon" src="assets/Icons/png/001-carrot.png" alt="Food" class="w-6 h-6 object-contain" />
+                        <span id="feedBtnText">Feed Crispy Carrot (+50%)</span>
+                      </div>
+                      <span id="feedFoodOwnedBadge" class="px-2 py-0.5 rounded-full bg-slate-950 text-white font-mono text-[10px]">
+                        Owned: 3
+                      </span>
+                    </button>
+
+                    <div class="grid grid-cols-2 gap-2">
+                      <!-- Pet Button (1% Vitality) -->
+                      <button
+                        type="button"
+                        onclick="petActiveSanctuaryAnimal()"
+                        class="py-2.5 px-3 rounded-xl bg-white dark:bg-slate-900 hover:bg-rose-50 dark:hover:bg-rose-950/40 text-rose-600 dark:text-rose-400 border border-slate-200 dark:border-slate-700 text-xs font-black shadow-sm transition flex items-center justify-center gap-1.5"
+                      >
+                        <span>🐾</span>
+                        <span>Pet (+1%)</span>
+                      </button>
+
+                      <!-- Buy Food Shortcut -->
+                      <button
+                        type="button"
+                        onclick="openPetShopModal()"
+                        class="py-2.5 px-3 rounded-xl bg-white dark:bg-slate-900 hover:bg-amber-50 dark:hover:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-slate-200 dark:border-slate-700 text-xs font-black shadow-sm transition flex items-center justify-center gap-1.5"
+                      >
+                        <span>🛒</span>
+                        <span>Buy Food</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -2320,12 +2600,256 @@
     </div>
   </div>
 
+  <!-- Pet Shop Modal (Animated Basket Shop) -->
+  <div id="petShopModal" class="fixed inset-0 z-50 hidden bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-5xl rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-gradient-to-r from-amber-50 to-yellow-50 dark:from-slate-900 dark:to-amber-950/20">
+        <div class="flex items-center gap-3">
+          <img src="assets/Icons/basket.gif" alt="Shop Basket" class="w-11 h-11 object-contain drop-shadow" />
+          <div>
+            <h3 class="text-lg font-black text-slate-900 dark:text-white">Pet Food Shop</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400">Fresh foods tailored for each companion. Purchase with your focus coins!</p>
+          </div>
+        </div>
+        <button onclick="closePetShopModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-white/80 dark:hover:bg-slate-800 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <!-- Current Balance Banner inside Modal -->
+      <div class="px-6 py-2.5 bg-amber-100/60 dark:bg-amber-950/40 border-b border-amber-200/60 dark:border-amber-900/40 flex items-center justify-between">
+        <span class="text-xs font-bold text-amber-900 dark:text-amber-200 flex items-center gap-2">
+          <img src="assets/Icons/money.png" alt="Coin" class="w-5 h-5 object-contain" />
+          <span>Your Coins:</span>
+        </span>
+        <div class="flex items-center gap-2">
+          <span id="petShopModalBalance" class="text-base font-black text-slate-900 dark:text-white font-mono">5</span>
+          <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400">(Earn 1 coin for every 30m focused)</span>
+        </div>
+      </div>
+
+      <!-- Expanded Food Items Board -->
+      <div class="p-6 overflow-y-auto space-y-4 flex-1">
+        <div id="petShopFoodGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Food cards populated by renderPetShopCards() -->
+        </div>
+      </div>
+
+      <div class="px-6 py-3.5 bg-slate-50 dark:bg-slate-800/60 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+        <button onclick="closePetShopModal()" class="px-5 py-2 rounded-xl text-xs font-bold bg-amber-500 hover:bg-amber-400 text-slate-950 shadow transition">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Pet Sanctuary Adoption Modal (24 Cube Pets) -->
+  <div id="adoptPetModal" class="fixed inset-0 z-50 hidden bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-5xl rounded-3xl border border-slate-200 dark:border-slate-800 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-gradient-to-r from-emerald-50 to-teal-50 dark:from-slate-900 dark:to-emerald-950/20">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center text-xl shadow-sm">
+            🐾
+          </div>
+          <div>
+            <h3 class="text-lg font-black text-slate-900 dark:text-white">Sanctuary Adoption</h3>
+          </div>
+        </div>
+        <button onclick="closeAdoptPetModal()" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-white/80 dark:hover:bg-slate-800 transition">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <div class="p-6 overflow-y-auto space-y-4 flex-1 bg-slate-50/50 dark:bg-slate-950/30">
+        <div id="adoptPetModalGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <!-- 24 Pet species cards rendered dynamically via renderAdoptPetCards() -->
+        </div>
+      </div>
+
+      <div class="px-6 py-3.5 bg-slate-50 dark:bg-slate-800/60 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+        <button onclick="closeAdoptPetModal()" class="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow transition">Done</button>
+      </div>
+    </div>
+  </div>
+
+      <div class="px-5 py-3.5 bg-slate-50 dark:bg-slate-800/60 border-t border-slate-100 dark:border-slate-800 flex justify-end">
+        <button onclick="closeAdoptPetModal()" class="px-5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow transition">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Dev Mode Badge & Dev Superpowers Panel (Strictly removed in production builds) -->
+  <div id="devModeBadgeBtn" class="fixed bottom-4 left-4 z-40">
+    <button
+      type="button"
+      onclick="toggleDevToolbar()"
+      class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-amber-400 hover:bg-amber-300 active:scale-95 text-slate-900 border-2 border-amber-500 shadow-xl text-xs font-extrabold transition select-none"
+      title="Open Developer Superpowers Panel (Ctrl+Shift+D)"
+    >
+      <span class="w-2.5 h-2.5 rounded-full bg-red-600 animate-ping"></span>
+      <span>🛠️ DEV BUILD</span>
+      <span class="text-[10px] bg-amber-500/80 px-1.5 py-0.5 rounded font-mono">Ctrl+Shift+D</span>
+    </button>
+  </div>
+
+  <div id="devSuperpowersPanel" class="fixed inset-0 z-50 hidden bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl border-2 border-amber-500 shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <!-- Header -->
+      <div class="px-5 py-3.5 bg-gradient-to-r from-amber-500 via-amber-400 to-yellow-400 text-slate-950 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="text-xl">🛠️</span>
+          <div>
+            <h3 class="text-sm font-black uppercase tracking-wider">FlowPlan Developer Superpowers</h3>
+            <p class="text-[11px] font-semibold opacity-90">Isolated Testing Sandbox — Changes here DO NOT touch your real FlowPlan data</p>
+          </div>
+        </div>
+        <button onclick="closeDevToolbar()" class="p-1 rounded-lg hover:bg-amber-600/30 text-slate-950 transition font-bold text-lg leading-none">
+          ✕
+        </button>
+      </div>
+
+      <!-- Content -->
+      <div class="p-5 overflow-y-auto space-y-4">
+        <!-- Banner notice -->
+        <div class="p-3 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-xs text-amber-900 dark:text-amber-200 flex items-center gap-2">
+          <span>🛡️</span>
+          <span><strong>Safety Active:</strong> This sandbox writes to <code class="font-mono text-[11px] bg-amber-200/60 dark:bg-amber-900/60 px-1 py-0.5 rounded">flowplan-desktop-data-dev.json</code>. Your real production data is isolated and safe.</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Focus & Timer Powers -->
+          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2.5">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-indigo-600 dark:text-indigo-400 flex items-center gap-1.5">
+              <span>⏱️</span>
+              <span>Focus Timer Cheats</span>
+            </h4>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="devAddFocusMinutes(15)" class="px-2.5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition">
+                +15m Focus
+              </button>
+              <button onclick="devAddFocusMinutes(60)" class="px-2.5 py-2 rounded-lg bg-indigo-700 hover:bg-indigo-600 text-white text-xs font-bold transition">
+                +60m Focus
+              </button>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="devToggleTimerSpeed()" class="px-2.5 py-2 rounded-lg bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-100 text-xs font-bold transition">
+                <span id="devSpeedBtnText">Fast Clock (10x)</span>
+              </button>
+              <button onclick="devTriggerCompleteTimer()" class="px-2.5 py-2 rounded-lg bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-100 text-xs font-bold transition">
+                Finish Timer Now
+              </button>
+            </div>
+          </div>
+
+          <!-- Pet Sanctuary & Playground Powers -->
+          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2.5">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-amber-600 dark:text-amber-400 flex items-center gap-1.5">
+              <span>🐾</span>
+              <span>Pets Sanctuary &amp; Economy Cheats</span>
+            </h4>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="devAddPetCoins(10)" class="px-2.5 py-2 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black transition">
+                +10 🪙 Coins
+              </button>
+              <button onclick="devAddAllFoods(5)" class="px-2.5 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-slate-950 text-xs font-bold transition">
+                +5 All Foods
+              </button>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="devAdvancePetStage()" class="px-2.5 py-2 rounded-lg bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition" title="Add 10h focus work to advance stage">
+                +10h (Stage Up)
+              </button>
+              <button onclick="devGraduateActivePet()" class="px-2.5 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition" title="Instantly graduate to Playground">
+                Graduate to 🎡
+              </button>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-600 dark:text-slate-300 shrink-0">Vitality:</span>
+              <button onclick="devSetPetVitality(100)" class="flex-1 px-1.5 py-1 rounded bg-emerald-600 text-white text-[11px] font-bold">100%</button>
+              <button onclick="devSetPetVitality(10)" class="flex-1 px-1.5 py-1 rounded bg-amber-600 text-white text-[11px] font-bold" title="Set to 10% (Sick)">&lt;15% 🤒</button>
+              <button onclick="devSetPetVitality(0)" class="flex-1 px-1.5 py-1 rounded bg-rose-600 text-white text-[11px] font-bold" title="Set to 0% (Faint)">0% 💀</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <!-- Tasks & Schedule Powers -->
+          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2.5">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+              <span>📋</span>
+              <span>Tasks &amp; Schedule</span>
+            </h4>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="devSeedSampleTasks()" class="px-2.5 py-2 rounded-lg bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-800 dark:text-slate-100 text-xs font-bold transition">
+                Seed Demo Tasks
+              </button>
+              <button onclick="devClearTodayTasks()" class="px-2.5 py-2 rounded-lg bg-rose-100 dark:bg-rose-950/60 hover:bg-rose-200 text-rose-700 dark:text-rose-300 text-xs font-bold transition">
+                Clear Tasks
+              </button>
+            </div>
+          </div>
+
+          <!-- Sandbox Data Tools -->
+          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 space-y-2.5">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-rose-600 dark:text-rose-400 flex items-center gap-1.5">
+              <span>🔄</span>
+              <span>Sandbox Reset</span>
+            </h4>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="devResetPets()" class="px-2.5 py-2 rounded-lg bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition">
+                Reset Pets
+              </button>
+              <button onclick="devResetEntireDevSandbox()" class="px-2.5 py-2 rounded-lg bg-rose-800 hover:bg-rose-700 text-white text-xs font-bold transition" title="Wipe dev test data back to clean slate">
+                Wipe Dev Data
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-5 py-3 bg-slate-100 dark:bg-slate-800/80 border-t border-slate-200 dark:border-slate-800 flex justify-end">
+        <button onclick="closeDevToolbar()" class="px-4 py-1.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 dark:bg-slate-200 dark:hover:bg-white text-white dark:text-slate-900 transition">
+          Close Dev Panel
+        </button>
+      </div>
+    </div>
+  </div>
+
   <!-- Toast Notification -->
   <div id="toastNotice" class="fixed bottom-5 right-5 z-50 hidden bg-slate-900 dark:bg-white text-white dark:text-slate-900 px-4 py-2.5 rounded-xl shadow-lg text-xs font-semibold transition-all"></div>
 
   <!-- Embedded State Snapshot & Baked-in Cloud Endpoint for Google Sites -->
   <script id="flowplanEmbeddedState" type="application/json">{}</script>
   <script id="flowplanCustomEndpointConfig" type="text/plain"></script>
+
+  <!-- Three.js 3D Engine & GLTFLoader Import Map for Cube Pets -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "./node_modules/three/build/three.module.js",
+      "three/addons/": "./node_modules/three/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module">
+    (async () => {
+      try {
+        const THREE = await import('three');
+        const { GLTFLoader } = await import('three/addons/loaders/GLTFLoader.js');
+        window.THREE = THREE;
+        window.GLTFLoader = GLTFLoader;
+        window.isThreeAvailable = true;
+        console.log('🐾 Three.js v' + THREE.REVISION + ' 3D engine loaded for Pets Sanctuary & Playground');
+        if (typeof window.onThreeReady === 'function') {
+          window.onThreeReady();
+        }
+      } catch (e) {
+        console.warn('Three.js 3D engine unavailable, using high-res 2D preview mode:', e);
+        window.isThreeAvailable = false;
+        if (typeof window.onThreeReady === 'function') {
+          window.onThreeReady();
+        }
+      }
+    })();
+  </script>
 
   <!-- Firebase Cloud Persistence Module (Lazy-loaded only when configured) -->
   <script type="module">
@@ -2504,9 +3028,17 @@
     // =========================================================================
     // STATE & PERSISTENCE (Cloud Firestore + Multi-Engine Local Cache)
     // =========================================================================
-    const STORAGE_KEY = 'flowplan_clean_v4_state';
-    const LEGACY_KEYS = ['flowplan_clean_v3_state', 'flowplan_clean_v2_state', 'flowplan_state_v1'];
-    const IDB_NAME = 'FlowPlanPersistentDB';
+    // DEV MODE DETECTION: True when running unpacked or with --dev in Electron or ?dev=1
+    const IS_DEV_MODE = Boolean(
+      (window.electronDesktopAPI && window.electronDesktopAPI.isDev) ||
+      window.location.search.includes('dev=1') ||
+      (window.location.protocol === 'file:' && !(window.electronDesktopAPI && window.electronDesktopAPI.isPackaged))
+    );
+
+    // Isolate storage so Dev testing never modifies or corrupts production state
+    const STORAGE_KEY = IS_DEV_MODE ? 'flowplan_dev_v4_state' : 'flowplan_clean_v4_state';
+    const LEGACY_KEYS = IS_DEV_MODE ? [] : ['flowplan_clean_v3_state', 'flowplan_clean_v2_state', 'flowplan_state_v1'];
+    const IDB_NAME = IS_DEV_MODE ? 'FlowPlanDevPersistentDB' : 'FlowPlanPersistentDB';
     const IDB_STORE = 'stateStore';
     const TIMELINE_START_HOUR = 4;
     const TIMELINE_END_HOUR = 24;
@@ -2603,6 +3135,31 @@
       focusByDate: {},       // { 'YYYY-MM-DD': { minutes: 0, sessions: 0 } }
       weeklyCardOrder: [0, 1, 2, 3, 4, 5, 6],
       weeklyCardSizes: {},   // { 'YYYY-MM-DD': { height: 280, wide: false } }
+      pets: {
+        coins: 5,
+        accumulatedFocusMinutes: 0,
+        coinsGrantedTotal: 0,
+        playgroundTheme: 'meadow',
+        inventory: {
+          '001-carrot': 3,
+          '002-cabbage': 2,
+          '003-corn': 2,
+          '005-meat': 1
+        },
+        sanctuaryPet: {
+          species: 'bunny',
+          nickname: 'Pip',
+          stage: 1,
+          stageFocusMinutes: 0,
+          vitality: 100,
+          isSick: false,
+          isDead: false,
+          adoptedAt: '',
+          totalPets: 0,
+          totalFeeds: 0
+        },
+        graduatedPets: []
+      },
       lastSavedAt: 0
     };
 
@@ -2721,6 +3278,30 @@
             ? parsed.weeklyCardOrder
             : [0, 1, 2, 3, 4, 5, 6],
         weeklyCardSizes: parsed.weeklyCardSizes || {},
+        pets: {
+          ...defaultState.pets,
+          ...((parsed && parsed.pets) || {}),
+          inventory: {
+            ...defaultState.pets.inventory,
+            ...((parsed && parsed.pets && parsed.pets.inventory) || {})
+          },
+          sanctuaryPet: (parsed && parsed.pets && parsed.pets.sanctuaryPet) ? {
+            ...defaultState.pets.sanctuaryPet,
+            ...parsed.pets.sanctuaryPet
+          } : (parsed && parsed.garden ? {
+            species: (parsed.garden.activeAnimalSpecies === 'pup' ? 'dog' : parsed.garden.activeAnimalSpecies) || 'bunny',
+            nickname: (parsed.garden.animalProgress && parsed.garden.animalProgress[parsed.garden.activeAnimalSpecies] && parsed.garden.animalProgress[parsed.garden.activeAnimalSpecies].nickname) || 'Pip',
+            stage: 1,
+            stageFocusMinutes: 0,
+            vitality: 100,
+            isSick: false,
+            isDead: false,
+            adoptedAt: '',
+            totalPets: 0,
+            totalFeeds: 0
+          } : { ...defaultState.pets.sanctuaryPet }),
+          graduatedPets: Array.isArray(parsed && parsed.pets && parsed.pets.graduatedPets) ? parsed.pets.graduatedPets : []
+        },
         lastSavedAt: Number(parsed.lastSavedAt) || Date.now()
       };
       return true;
@@ -3324,6 +3905,7 @@
         moonIcon.classList.remove('hidden');
         if (label) label.textContent = 'Night';
       }
+
     }
 
     function toggleDarkMode() {
@@ -3386,29 +3968,32 @@
       const views = {
         daily: document.getElementById('viewDaily'),
         weekly: document.getElementById('viewWeekly'),
-        monthly: document.getElementById('viewMonthly')
+        monthly: document.getElementById('viewMonthly'),
+        pets: document.getElementById('viewPets')
       };
       const btns = {
         daily: document.getElementById('tabDailyBtn'),
         weekly: document.getElementById('tabWeeklyBtn'),
-        monthly: document.getElementById('tabMonthlyBtn')
+        monthly: document.getElementById('tabMonthlyBtn'),
+        pets: document.getElementById('tabPetsBtn')
       };
 
       Object.keys(views).forEach(k => {
+        if (!views[k] || !btns[k]) return;
         if (k === view) {
           views[k].classList.remove('hidden');
-          btns[k].className = 'px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm';
+          btns[k].className = 'px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm flex items-center gap-1.5';
         } else {
           views[k].classList.add('hidden');
-          btns[k].className = 'px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white';
+          btns[k].className = 'px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5';
         }
       });
 
-      // Remove focus timer from Weekly and Month Glance tabs so both expand to full 12-column width
+      // Remove focus timer from Weekly, Month Glance, and Pets tabs so they expand to full 12-column width
       const timerSidebar = document.getElementById('timerSidebar');
       const workspaceColumn = document.getElementById('workspaceColumn');
 
-      if (view === 'weekly' || view === 'monthly') {
+      if (view === 'weekly' || view === 'monthly' || view === 'pets') {
         timerSidebar.classList.add('hidden');
         workspaceColumn.classList.remove('lg:col-span-8');
         workspaceColumn.classList.add('lg:col-span-12');
@@ -4227,6 +4812,7 @@
       }
       state.focusByDate[targetDate].minutes += mins;
       state.focusByDate[targetDate].sessions += 1;
+      addPetFocusSeconds(mins * 60);
       saveState();
       renderMonthlyView();
       showToast(`Logged ${mins}m focus session for ${targetDate}`);
@@ -5342,7 +5928,9 @@
       document.getElementById('startPauseBtnText').textContent = 'Pause';
 
       timer.intervalId = setInterval(() => {
+        let isFocusing = false;
         if (timer.mode === 'flow') {
+          isFocusing = true;
           timer.elapsedFlowSeconds += 1;
           if (timer.elapsedFlowSeconds > 0 && timer.elapsedFlowSeconds % 60 === 0) {
             recordFocusAnalytics(1, 0);
@@ -5350,13 +5938,19 @@
           updateClockUI();
         } else {
           if (timer.remainingSeconds > 0) {
+            if (timer.mode === 'custom' || (timer.mode === 'pomodoro' && timer.stage === 'focus')) {
+              isFocusing = true;
+            }
             timer.remainingSeconds -= 1;
             updateClockUI();
           } else {
             handleCountdownComplete();
           }
         }
-      }, 1000);
+        if (isFocusing) {
+          tickPetFocusSecond(1);
+        }
+      }, (IS_DEV_MODE && timer.speedMultiplier && timer.speedMultiplier > 1) ? Math.max(20, Math.floor(1000 / timer.speedMultiplier)) : 1000);
     }
 
     function pauseTimer() {
@@ -6347,8 +6941,17 @@
       if (e.key === 'Escape') {
         closeFileMenuDropdown();
         closePrayerSettingsModal();
+        closePetShopModal();
+        closeAdoptPetModal();
+        closeDevToolbar();
         if (timer.isFullscreen) {
           toggleFullScreenPomodoro();
+        }
+      }
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'D' || e.key === 'd')) {
+        e.preventDefault();
+        if (IS_DEV_MODE) {
+          toggleDevToolbar();
         }
       }
       if ((e.ctrlKey || e.metaKey) && !e.shiftKey && !e.altKey) {
@@ -6362,6 +6965,2822 @@
         }
       }
     });
+
+    // =========================================================================
+    // DEVELOPER BUILD SUPERPOWERS (TESTING SHORTCUTS ONLY — INERT IN PROD BUILDS)
+    // =========================================================================
+    function toggleDevToolbar() {
+      if (!IS_DEV_MODE) return;
+      const panel = document.getElementById('devSuperpowersPanel');
+      if (panel) {
+        panel.classList.toggle('hidden');
+      }
+    }
+
+    function openDevToolbar() {
+      if (!IS_DEV_MODE) return;
+      const panel = document.getElementById('devSuperpowersPanel');
+      if (panel) panel.classList.remove('hidden');
+    }
+
+    function closeDevToolbar() {
+      const panel = document.getElementById('devSuperpowersPanel');
+      if (panel) panel.classList.add('hidden');
+    }
+
+    function devAddFocusMinutes(mins) {
+      if (!IS_DEV_MODE) return;
+      const iso = state.selectedDate || getTodayISO();
+      if (!state.focusByDate[iso]) {
+        state.focusByDate[iso] = { minutes: 0, sessions: 0 };
+      }
+      state.focusByDate[iso].minutes += mins;
+      state.focusByDate[iso].sessions += 1;
+      addPetFocusSeconds(mins * 60);
+      saveState();
+      renderAll();
+      showToast(`⚡ DEV: Added +${mins}m focus time & accrued pet progress!`);
+    }
+
+    function devToggleTimerSpeed() {
+      if (!IS_DEV_MODE) return;
+      timer.speedMultiplier = timer.speedMultiplier === 10 ? 1 : 10;
+      const isRunning = timer.running;
+      if (isRunning) {
+        pauseTimer();
+        startTimer();
+      }
+      const btn = document.getElementById('devSpeedBtnText');
+      if (btn) btn.textContent = timer.speedMultiplier === 10 ? 'Normal Clock (1x)' : 'Fast Clock (10x)';
+      showToast(`⚡ DEV: Timer clock speed set to ${timer.speedMultiplier}x`);
+    }
+
+    function devTriggerCompleteTimer() {
+      if (!IS_DEV_MODE) return;
+      handleCountdownComplete();
+      showToast('⚡ DEV: Triggered timer completion!');
+    }
+
+    function devAddPetCoins(amount = 10) {
+      if (!IS_DEV_MODE) return;
+      ensurePetsState();
+      state.pets.coins = (Number(state.pets.coins) || 0) + amount;
+      saveState();
+      renderPetsView();
+      showToast(`⚡ DEV: Granted +${amount} 🪙 Focus Coins!`);
+    }
+
+    function devAddAllFoods(amount = 5) {
+      if (!IS_DEV_MODE) return;
+      ensurePetsState();
+      if (!state.pets.inventory) state.pets.inventory = {};
+      Object.keys(PET_FOODS_CATALOG).forEach(fKey => {
+        state.pets.inventory[fKey] = (Number(state.pets.inventory[fKey]) || 0) + amount;
+      });
+      saveState();
+      renderPetsView();
+      showToast(`⚡ DEV: Added +${amount} of all 15 food types!`);
+    }
+
+    function devAdvancePetStage() {
+      if (!IS_DEV_MODE) return;
+      ensurePetsState();
+      const p = state.pets.sanctuaryPet;
+      if (!p) {
+        showToast('Adopt a companion first to stage up!');
+        return;
+      }
+      addPetFocusSeconds(600 * 60);
+      showToast(`⚡ DEV: Added +10h focus work to advance stage!`);
+    }
+
+    function devGraduateActivePet() {
+      if (!IS_DEV_MODE) return;
+      ensurePetsState();
+      const p = state.pets.sanctuaryPet;
+      if (!p) {
+        showToast('Adopt a companion first to graduate!');
+        return;
+      }
+      p.stage = 5;
+      p.stageFocusMinutes = 600;
+      state.pets.graduatedPets.push({
+        species: p.species,
+        nickname: p.nickname,
+        graduatedAt: getTodayISO(),
+        totalPets: p.totalPets || 0,
+        totalFeeds: p.totalFeeds || 0
+      });
+      state.pets.sanctuaryPet = null;
+      saveState();
+      renderPetsView();
+      showToast(`⚡ DEV: Graduated ${p.nickname} to the Playground!`);
+    }
+
+    function devSetPetVitality(pct) {
+      if (!IS_DEV_MODE) return;
+      ensurePetsState();
+      const p = state.pets.sanctuaryPet;
+      if (!p) {
+        showToast('Adopt a companion first!');
+        return;
+      }
+      const target = Math.max(0, Math.min(100, Number(pct) || 0));
+      p.vitality = target;
+      p.isSick = target > 0 && target < 15;
+      p.isDead = target === 0;
+      state.pets.lastVitalityDecayTime = Date.now();
+      saveState();
+      renderPetsView();
+      showToast(`⚡ DEV: Set vitality to ${target}% (${p.isDead ? '💀 Faint' : p.isSick ? '🤒 Sick' : '❤️ Healthy'})`);
+    }
+
+    function devSeedSampleTasks() {
+      if (!IS_DEV_MODE) return;
+      seedSampleTasksForToday();
+      saveState();
+      renderAll();
+      showToast('⚡ DEV: Seeded demo tasks for today!');
+    }
+
+    function devClearTodayTasks() {
+      if (!IS_DEV_MODE) return;
+      const today = state.selectedDate || getTodayISO();
+      state.tasksByDate[today] = [];
+      saveState();
+      renderAll();
+      showToast('⚡ DEV: Cleared tasks for today.');
+    }
+
+    function devResetPets() {
+      if (!IS_DEV_MODE) return;
+      state.pets = JSON.parse(JSON.stringify(defaultState.pets));
+      saveState();
+      renderPetsView();
+      showToast('⚡ DEV: Reset pets system to initial clean state.');
+    }
+
+    function devResetEntireDevSandbox() {
+      if (!IS_DEV_MODE) return;
+      if (!confirm('Reset entire dev sandbox? This will restore clean defaults in your isolated dev file.')) return;
+      state = JSON.parse(JSON.stringify(defaultState));
+      saveState();
+      renderAll();
+      showToast('⚡ DEV: Entire Dev sandbox reset to clean defaults.');
+    }
+
+    function setupDevModeUI() {
+      if (!IS_DEV_MODE) {
+        // Enforce strict security: remove all dev elements from DOM in production builds
+        const badge = document.getElementById('devModeBadgeBtn');
+        if (badge) badge.remove();
+        const panel = document.getElementById('devSuperpowersPanel');
+        if (panel) panel.remove();
+      } else {
+        const badge = document.getElementById('devModeBadgeBtn');
+        if (badge) badge.classList.remove('hidden');
+      }
+    }
+
+// =========================================================================
+// FLOWPLAN PETS SYSTEM (SANCTUARY, PLAYGROUND, 3D WANDERING, SHOP & LIFE STAGES)
+// =========================================================================
+
+const PET_FOODS_CATALOG = {
+  '001-carrot': {
+    id: '001-carrot',
+    name: 'Crispy Carrot',
+    icon: 'assets/Icons/png/001-carrot.png',
+    price: 1,
+    pets: ['bunny', 'beaver'],
+    description: 'Sweet, vitamin-rich garden root beloved by burrowers.'
+  },
+  '002-cabbage': {
+    id: '002-cabbage',
+    name: 'Crisp Cabbage',
+    icon: 'assets/Icons/png/002-cabbage.png',
+    price: 1,
+    pets: ['cow', 'caterpillar'],
+    description: 'Fresh leafy greens packed with hydration and crunch.'
+  },
+  '003-corn': {
+    id: '003-corn',
+    name: 'Golden Sweetcorn',
+    icon: 'assets/Icons/png/003-corn.png',
+    price: 1,
+    pets: ['chick'],
+    description: 'Sun-ripened golden kernels that chicks eagerly peck.'
+  },
+  '004-sesame': {
+    id: '004-sesame',
+    name: 'Nutritious Seeds',
+    icon: 'assets/Icons/png/004-sesame.png',
+    price: 1,
+    pets: ['parrot'],
+    description: 'Toasted seeds rich in essential oils and energy.'
+  },
+  '005-meat': {
+    id: '005-meat',
+    name: 'Prime Meat Cut',
+    icon: 'assets/Icons/png/005-meat.png',
+    price: 2,
+    pets: ['lion', 'tiger', 'dog', 'fox'],
+    description: 'Savory protein cut giving strength and high spirits.'
+  },
+  '006-fish': {
+    id: '006-fish',
+    name: 'Fresh Golden Trout',
+    icon: 'assets/Icons/png/006-fish.png',
+    price: 2,
+    pets: ['cat', 'penguin', 'polar'],
+    description: 'Stream-fresh trout shimmering with healthy omega oils.'
+  },
+  '007-bamboo': {
+    id: '007-bamboo',
+    name: 'Tender Bamboo Shoot',
+    icon: 'assets/Icons/png/007-bamboo.png',
+    price: 2,
+    pets: ['panda'],
+    description: 'Sweet highland bamboo stalks loved by gentle giants.'
+  },
+  '008-eucalyptus': {
+    id: '008-eucalyptus',
+    name: 'Eucalyptus Leaves',
+    icon: 'assets/Icons/png/008-eucalyptus.png',
+    price: 2,
+    pets: ['koala', 'giraffe'],
+    description: 'Fragrant aromatic leaves providing cozy nourishment.'
+  },
+  '009-banana': {
+    id: '009-banana',
+    name: 'Sweet Yellow Banana',
+    icon: 'assets/Icons/png/009-banana.png',
+    price: 2,
+    pets: ['monkey'],
+    description: 'Creamy potassium-rich tropical fruit full of fun.'
+  },
+  '010-honey': {
+    id: '010-honey',
+    name: 'Wild Honeycomb Jar',
+    icon: 'assets/Icons/png/010-honey.png',
+    price: 2,
+    pets: ['bee'],
+    description: 'Pure golden forest nectar dripping with natural sweetness.'
+  },
+  '011-peanuts': {
+    id: '011-peanuts',
+    name: 'Roasted Peanuts',
+    icon: 'assets/Icons/png/011-peanuts.png',
+    price: 2,
+    pets: ['elephant'],
+    description: 'Crunchy roasted nuts that make playful trunks dance.'
+  },
+  '012-acorn': {
+    id: '012-acorn',
+    name: 'Woodland Oak Acorn',
+    icon: 'assets/Icons/png/012-acorn.png',
+    price: 2,
+    pets: ['deer', 'hog'],
+    description: 'Nutritious autumn forest nut with a wholesome earthy flavor.'
+  },
+  '013-algae': {
+    id: '013-algae',
+    name: 'Crisp Sea Grass',
+    icon: 'assets/Icons/png/013-algae.png',
+    price: 2,
+    pets: ['fish', 'crab'],
+    description: 'Mineral-rich marine greens providing deep stamina.'
+  },
+  '014-melon': {
+    id: '014-melon',
+    name: 'Juicy Sweet Melon',
+    icon: 'assets/Icons/png/014-melon.png',
+    price: 2,
+    pets: ['pig'],
+    description: 'Refreshing slice of summer melon with crisp sweet juice.'
+  },
+  '015-berries': {
+    id: '015-berries',
+    name: 'Wild Gourmet Berries',
+    icon: 'assets/Icons/png/015-berries.png',
+    price: 3,
+    pets: ['all'],
+    description: 'Rare handpicked forest berries that every animal adores.'
+  }
+};
+
+const PET_SPECIES_CATALOG = {
+  beaver: {
+    id: 'beaver',
+    name: 'Beaver',
+    defaultNickname: 'Chippy',
+    favoriteFood: '001-carrot',
+    tagline: 'Industrious builder who takes pride in great craftsmanship.',
+    scaleBase: 1.0
+  },
+  bee: {
+    id: 'bee',
+    name: 'Honey Bee',
+    defaultNickname: 'Buzzy',
+    favoriteFood: '010-honey',
+    tagline: 'Hardworking pollinator humming with sweet energy.',
+    scaleBase: 0.85
+  },
+  bunny: {
+    id: 'bunny',
+    name: 'Bunny',
+    defaultNickname: 'Pip',
+    favoriteFood: '001-carrot',
+    tagline: 'Energetic hopper with twitching whiskers and boundless joy.',
+    scaleBase: 0.9
+  },
+  cat: {
+    id: 'cat',
+    name: 'Cat',
+    defaultNickname: 'Mochi',
+    favoriteFood: '006-fish',
+    tagline: 'Elegant feline whose purrs bring serene calm to focus sessions.',
+    scaleBase: 0.95
+  },
+  caterpillar: {
+    id: 'caterpillar',
+    name: 'Caterpillar',
+    defaultNickname: 'Wiggle',
+    favoriteFood: '002-cabbage',
+    tagline: 'Tiny green wanderer munching happily on crisp leafy greens.',
+    scaleBase: 0.85
+  },
+  chick: {
+    id: 'chick',
+    name: 'Chick',
+    defaultNickname: 'Peep',
+    favoriteFood: '003-corn',
+    tagline: 'Fluffy yellow hatchling pecking eagerly at golden corn.',
+    scaleBase: 0.85
+  },
+  cow: {
+    id: 'cow',
+    name: 'Pasture Cow',
+    defaultNickname: 'Bessie',
+    favoriteFood: '002-cabbage',
+    tagline: 'Gentle grazing companion bringing tranquil grounding vibes.',
+    scaleBase: 1.1
+  },
+  crab: {
+    id: 'crab',
+    name: 'Crab',
+    defaultNickname: 'Claws',
+    favoriteFood: '013-algae',
+    tagline: 'Playful beach dweller with snappy claws and tidal cheer.',
+    scaleBase: 0.9
+  },
+  deer: {
+    id: 'deer',
+    name: 'Forest Deer',
+    defaultNickname: 'Fawn',
+    favoriteFood: '012-acorn',
+    tagline: 'Graceful forest wanderer with gentle eyes and soft steps.',
+    scaleBase: 1.05
+  },
+  dog: {
+    id: 'dog',
+    name: 'Faithful Dog',
+    defaultNickname: 'Barnaby',
+    favoriteFood: '005-meat',
+    tagline: 'Devoted best friend always wagging their tail right beside you.',
+    scaleBase: 1.0
+  },
+  elephant: {
+    id: 'elephant',
+    name: 'Elephant',
+    defaultNickname: 'Peanut',
+    favoriteFood: '011-peanuts',
+    tagline: 'Wise gentle giant who never forgets your productivity streaks.',
+    scaleBase: 1.25
+  },
+  fish: {
+    id: 'fish',
+    name: 'River Fish',
+    defaultNickname: 'Finny',
+    favoriteFood: '013-algae',
+    tagline: 'Gleaming swimmer gliding peacefully through cool clear waters.',
+    scaleBase: 0.85
+  },
+  fox: {
+    id: 'fox',
+    name: 'Red Fox',
+    defaultNickname: 'Rusty',
+    favoriteFood: '005-meat',
+    tagline: 'Clever woodland kit with a bushy tail and curious golden gaze.',
+    scaleBase: 1.0
+  },
+  giraffe: {
+    id: 'giraffe',
+    name: 'Giraffe',
+    defaultNickname: 'Stretch',
+    favoriteFood: '008-eucalyptus',
+    tagline: 'Towering gentle giant who reaches for high treetops and big goals.',
+    scaleBase: 1.3
+  },
+  hog: {
+    id: 'hog',
+    name: 'Wild Hog',
+    defaultNickname: 'Bristle',
+    favoriteFood: '012-acorn',
+    tagline: 'Sturdy woodland forager with a super nose for buried treats.',
+    scaleBase: 1.05
+  },
+  koala: {
+    id: 'koala',
+    name: 'Koala',
+    defaultNickname: 'Koko',
+    favoriteFood: '008-eucalyptus',
+    tagline: 'Peaceful treetop dreamer hugging branches through the day.',
+    scaleBase: 0.95
+  },
+  lion: {
+    id: 'lion',
+    name: 'Noble Lion',
+    defaultNickname: 'Simba',
+    favoriteFood: '005-meat',
+    tagline: 'Proud king of the savannah cheering on your daily victories.',
+    scaleBase: 1.15
+  },
+  monkey: {
+    id: 'monkey',
+    name: 'Monkey',
+    defaultNickname: 'Milo',
+    favoriteFood: '009-banana',
+    tagline: 'Playful acrobat who does joyful flips whenever you focus.',
+    scaleBase: 0.95
+  },
+  panda: {
+    id: 'panda',
+    name: 'Panda',
+    defaultNickname: 'Bao',
+    favoriteFood: '007-bamboo',
+    tagline: 'Chubby bamboo connoisseur who rolls with pure content.',
+    scaleBase: 1.15
+  },
+  parrot: {
+    id: 'parrot',
+    name: 'Parrot',
+    defaultNickname: 'Rio',
+    favoriteFood: '004-sesame',
+    tagline: 'Colorful tropical singer who repeats words of encouragement.',
+    scaleBase: 0.85
+  },
+  penguin: {
+    id: 'penguin',
+    name: 'Penguin',
+    defaultNickname: 'Waddles',
+    favoriteFood: '006-fish',
+    tagline: 'Dapper tuxedo explorer who slides across the ice with style.',
+    scaleBase: 0.95
+  },
+  pig: {
+    id: 'pig',
+    name: 'Piglet',
+    defaultNickname: 'Truffle',
+    favoriteFood: '014-melon',
+    tagline: 'Cheery pink forager who snorts with joy for sweet melons.',
+    scaleBase: 1.0
+  },
+  polar: {
+    id: 'polar',
+    name: 'Polar Bear',
+    defaultNickname: 'Blizzard',
+    favoriteFood: '006-fish',
+    tagline: 'Magnificent Arctic protector with a warm and cuddly heart.',
+    scaleBase: 1.2
+  },
+  tiger: {
+    id: 'tiger',
+    name: 'Bengal Tiger',
+    defaultNickname: 'Rajah',
+    favoriteFood: '005-meat',
+    tagline: 'Fierce striped guardian inspiring unstoppable focus and drive.',
+    scaleBase: 1.15
+  }
+};
+
+const PET_STAGE_DEFINITIONS = [
+  { stage: 1, name: 'Baby', hoursReq: 10, scaleFactor: 0.65, subtitle: 'Newborn Sprout' },
+  { stage: 2, name: 'Toddler', hoursReq: 10, scaleFactor: 0.80, subtitle: 'Playful Explorer' },
+  { stage: 3, name: 'Juvenile', hoursReq: 10, scaleFactor: 0.95, subtitle: 'Sturdy Companion' },
+  { stage: 4, name: 'Adult', hoursReq: 10, scaleFactor: 1.10, subtitle: 'Devoted Guardian' },
+  { stage: 5, name: 'Champion', hoursReq: 0, scaleFactor: 1.25, subtitle: 'Playground Legend' }
+];
+
+const PLAYGROUND_THEMES = {
+  meadow: {
+    id: 'meadow',
+    name: '☀️ Flowery Meadow',
+    containerClass: 'bg-emerald-950',
+    // Walkable ground area in screen NDC (-1..1, y up): open lawn between the trees
+    walkBand: { x: [-0.66, 0.66], y: [-0.78, 0.62] },
+    ambienceHtml: `
+      <div class="absolute inset-0 pointer-events-none overflow-hidden select-none">
+        <img src="assets/Background/Playground_Flowery_HD.jpg" alt="Flowery Meadow" decoding="async" class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none" />
+      </div>
+    `
+  },
+  carnival: {
+    id: 'carnival',
+    name: '🎪 Fun Carnival',
+    containerClass: 'bg-purple-950',
+    // Pets stay on the wooden floor in front of the wall
+    walkBand: { x: [-0.86, 0.86], y: [-0.94, -0.58] },
+    ambienceHtml: `
+      <div class="absolute inset-0 pointer-events-none overflow-hidden select-none">
+        <img src="assets/Background/Playground_Carnival_HD.jpg" alt="Fun Carnival" decoding="async" class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none" />
+      </div>
+    `
+  },
+  beach: {
+    id: 'beach',
+    name: '🏖️ Sunny Beach Resort',
+    containerClass: 'bg-cyan-950',
+    // Dry sand strip between the two shorelines
+    walkBand: { x: [-0.36, 0.34], y: [-0.82, 0.62] },
+    ambienceHtml: `
+      <div class="absolute inset-0 pointer-events-none overflow-hidden select-none">
+        <img src="assets/Background/Playground_Beach.jpg" alt="Sunny Beach" class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none transition-opacity duration-500" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none"></div>
+      </div>
+    `
+  },
+  woodland: {
+    id: 'woodland',
+    name: '🌲 Mystic Forest',
+    containerClass: 'bg-teal-950',
+    // Grass clearing below the tree line
+    walkBand: { x: [-0.66, 0.62], y: [-0.86, 0.0] },
+    ambienceHtml: `
+      <div class="absolute inset-0 pointer-events-none overflow-hidden select-none">
+        <img src="assets/Background/Playground_Forest.jpg" alt="Mystic Forest" class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none transition-opacity duration-500" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-transparent pointer-events-none"></div>
+      </div>
+    `
+  },
+  cosmic: {
+    id: 'cosmic',
+    name: '🌌 Cosmic Starlight',
+    containerClass: 'bg-slate-950 text-white',
+    // Zero-gravity: pets drift anywhere and float
+    walkBand: { x: [-0.84, 0.84], y: [-0.8, 0.45] },
+    floating: true,
+    ambienceHtml: `
+      <div class="absolute inset-0 pointer-events-none overflow-hidden select-none">
+        <img src="assets/Background/Playground_cosmic.jpg" alt="Cosmic Starlight" class="absolute inset-0 w-full h-full object-cover object-center pointer-events-none select-none transition-opacity duration-500" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/45 via-transparent to-transparent pointer-events-none"></div>
+      </div>
+    `
+  }
+};
+
+const SANCTUARY_THEME_AMBIENCE = `
+  <div class="absolute inset-0 pointer-events-none overflow-hidden select-none">
+    <img src="assets/Background/sanctuary.jpg" alt="Sanctuary Haven" class="absolute inset-0 w-full h-full object-cover object-bottom pointer-events-none select-none transition-opacity duration-500" />
+    <div class="absolute inset-0 bg-gradient-to-t from-slate-950/40 via-transparent to-slate-950/20 pointer-events-none"></div>
+  </div>
+`;
+
+// Global 3D Manager for Sanctuary & Playground
+let FlowPlanPet3D = {
+  sanctuary: {
+    renderer: null,
+    scene: null,
+    camera: null,
+    mixer: null,
+    actions: {},
+    activeAction: null,
+    model: null,
+    animFrameId: null,
+    clock: null,
+    waypoint: { x: 0, z: 0 },
+    nextMoveTime: 0,
+    isWandering: false,
+    userRotating: false
+  }
+};
+
+function ensurePetsState() {
+  if (!state.pets) {
+    state.pets = JSON.parse(JSON.stringify(defaultState.pets));
+  }
+  if (typeof state.pets.coins !== 'number') state.pets.coins = 5;
+  if (typeof state.pets.accumulatedFocusMinutes !== 'number') state.pets.accumulatedFocusMinutes = 0;
+  if (typeof state.pets.coinsGrantedTotal !== 'number') state.pets.coinsGrantedTotal = 0;
+  if (!state.pets.playgroundTheme) state.pets.playgroundTheme = 'meadow';
+  if (!state.pets.inventory) {
+    state.pets.inventory = {
+      '001-carrot': 3,
+      '002-cabbage': 2,
+      '003-corn': 2,
+      '005-meat': 1
+    };
+  }
+  if (!Array.isArray(state.pets.graduatedPets)) {
+    state.pets.graduatedPets = [];
+  }
+  if (state.pets.sanctuaryPet) {
+    const sp = state.pets.sanctuaryPet;
+    if (typeof sp.stage !== 'number') sp.stage = 1;
+    if (typeof sp.stageFocusMinutes !== 'number') sp.stageFocusMinutes = 0;
+    if (typeof sp.vitality !== 'number') sp.vitality = 100;
+    if (typeof sp.isSick !== 'boolean') sp.isSick = sp.vitality < 15;
+    if (typeof sp.isDead !== 'boolean') sp.isDead = sp.vitality === 0;
+    if (!state.pets.lastVitalityDecayTime) {
+      state.pets.lastVitalityDecayTime = Date.now();
+    }
+  }
+}
+
+// -------------------------------------------------------------------------
+// Sanctuary Vitality Health Decay: -2% Every 5 Minutes
+// -------------------------------------------------------------------------
+function checkSanctuaryVitalityDecay(save = true) {
+  if (!state || !state.pets) return false;
+  const pet = state.pets.sanctuaryPet;
+  if (!pet || pet.isDead) return false;
+
+  const now = Date.now();
+  if (!state.pets.lastVitalityDecayTime) {
+    state.pets.lastVitalityDecayTime = now;
+    if (save) saveState();
+    return false;
+  }
+
+  const INTERVAL_MS = 5 * 60 * 1000; // 5 minutes in milliseconds
+  const elapsed = now - state.pets.lastVitalityDecayTime;
+
+  if (elapsed >= INTERVAL_MS) {
+    const ticks = Math.floor(elapsed / INTERVAL_MS);
+    const decayAmount = ticks * 2; // 2% per 5 minutes
+    state.pets.lastVitalityDecayTime += ticks * INTERVAL_MS;
+
+    pet.vitality = Math.max(0, Math.min(100, (Number(pet.vitality) || 0) - decayAmount));
+
+    if (pet.vitality === 0) {
+      pet.isDead = true;
+      pet.isSick = false;
+    } else if (pet.vitality < 15) {
+      pet.isSick = true;
+      pet.isDead = false;
+    } else {
+      pet.isSick = false;
+      pet.isDead = false;
+    }
+
+    if (save) saveState();
+    if (state.mainView === 'pets') {
+      renderSanctuarySection();
+    }
+    return true;
+  }
+  return false;
+}
+
+// Standing interval: check vitality decay every 15 seconds
+if (typeof window !== 'undefined') {
+  if (window._sanctuaryVitalityDecayInterval) clearInterval(window._sanctuaryVitalityDecayInterval);
+  window._sanctuaryVitalityDecayInterval = setInterval(checkSanctuaryVitalityDecay, 15000);
+}
+
+// -------------------------------------------------------------------------
+// Focus Timer Hooks (Coins & Stage Growth)
+// -------------------------------------------------------------------------
+let petFocusSecondAccumulator = 0;
+
+function tickPetFocusSecond(deltaSec = 1) {
+  ensurePetsState();
+  petFocusSecondAccumulator += deltaSec;
+  if (petFocusSecondAccumulator >= 60) {
+    const minsToAdd = Math.floor(petFocusSecondAccumulator / 60);
+    petFocusSecondAccumulator %= 60;
+    addPetFocusMinutesInternal(minsToAdd);
+  }
+}
+
+function addPetFocusSeconds(seconds) {
+  if (!seconds || seconds <= 0) return;
+  ensurePetsState();
+  const minsToAdd = Math.floor(seconds / 60);
+  const remSec = seconds % 60;
+  petFocusSecondAccumulator += remSec;
+  if (petFocusSecondAccumulator >= 60) {
+    addPetFocusMinutesInternal(minsToAdd + Math.floor(petFocusSecondAccumulator / 60));
+    petFocusSecondAccumulator %= 60;
+  } else if (minsToAdd > 0) {
+    addPetFocusMinutesInternal(minsToAdd);
+  }
+}
+
+function addPetFocusMinutesInternal(mins) {
+  if (mins <= 0) return;
+  ensurePetsState();
+
+  // 1. Accrue Focus Coins (1 coin per 30 minutes focused)
+  state.pets.accumulatedFocusMinutes = (state.pets.accumulatedFocusMinutes || 0) + mins;
+  const targetCoinTotal = Math.floor(state.pets.accumulatedFocusMinutes / 30);
+  const coinsDue = targetCoinTotal - (state.pets.coinsGrantedTotal || 0);
+
+  if (coinsDue > 0) {
+    state.pets.coins = (Number(state.pets.coins) || 0) + coinsDue;
+    state.pets.coinsGrantedTotal = targetCoinTotal;
+    showToast(`🪙 Earned +${coinsDue} Focus Coin${coinsDue > 1 ? 's' : ''} for ${coinsDue * 30}m of focus work!`);
+    playPetCoinChime();
+  }
+
+  // 2. Accrue Sanctuary Pet Stage Progress (10 hours = 600 minutes per stage)
+  const pet = state.pets.sanctuaryPet;
+  if (pet && !pet.isDead) {
+    pet.stageFocusMinutes = (Number(pet.stageFocusMinutes) || 0) + mins;
+
+    // Check real-time vitality health decay (-2% every 5 minutes)
+    checkSanctuaryVitalityDecay(false);
+
+    // Check Stage Up (600 minutes = 10 hours)
+    if (pet.stageFocusMinutes >= 600) {
+      if (pet.stage < 4) {
+        pet.stage += 1;
+        pet.stageFocusMinutes = 0;
+        showToast(`🎉 Level Up! ${pet.nickname} grew to Stage ${pet.stage} (${PET_STAGE_DEFINITIONS[pet.stage - 1].name})!`);
+        spawnSanctuaryBurstParticles('✨');
+      } else if (pet.stage === 4) {
+        // Playground capacity cap at 8 animals
+        const currentGraduated = state.pets.graduatedPets || [];
+        if (currentGraduated.length >= 8) {
+          pet.stageFocusMinutes = 600; // Hold at 100% until space opens up
+          showToast(`⚠️ Playground is full (8/8 champions)! Remove an animal from the playground to graduate ${pet.nickname}.`);
+        } else {
+          // Graduate to Playground!
+          pet.stage = 5;
+          currentGraduated.push({
+            species: pet.species,
+            nickname: pet.nickname,
+            graduatedAt: getTodayISO(),
+            totalPets: pet.totalPets || 0,
+            totalFeeds: pet.totalFeeds || 0
+          });
+          state.pets.graduatedPets = currentGraduated;
+          showToast(`🎓 CHAMPION GRADUATION! ${pet.nickname} completed all 5 stages and entered the Playground!`);
+          spawnSanctuaryBurstParticles('🏆');
+          state.pets.sanctuaryPet = null;
+        }
+      }
+    }
+  }
+
+  saveState();
+  if (state.mainView === 'pets') {
+    renderPetsView();
+  }
+}
+
+// -------------------------------------------------------------------------
+// Master Pets View Renderer
+// -------------------------------------------------------------------------
+function renderPetsView() {
+  ensurePetsState();
+
+  // 1. Coin Balance
+  const coinBal = document.getElementById('petCoinBalance');
+  if (coinBal) coinBal.textContent = state.pets.coins || 0;
+
+  const modalBal = document.getElementById('petShopModalBalance');
+  if (modalBal) modalBal.textContent = state.pets.coins || 0;
+
+  // 2. Playground Section
+  renderPlaygroundSection();
+
+  // 3. Sanctuary Section
+  renderSanctuarySection();
+}
+
+// -------------------------------------------------------------------------
+// Playground Renderer (Free-Roaming Champions)
+// -------------------------------------------------------------------------
+function renderPlaygroundSection() {
+  ensurePetsState();
+  const themeKey = state.pets.playgroundTheme || 'meadow';
+  const theme = PLAYGROUND_THEMES[themeKey] || PLAYGROUND_THEMES.meadow;
+
+  // Theme selector
+  const select = document.getElementById('playgroundThemeSelect');
+  if (select && select.value !== themeKey) select.value = themeKey;
+
+  // Container styling
+  const stage = document.getElementById('playgroundCanvasStage');
+  if (stage) {
+    stage.className = `relative w-full overflow-hidden rounded-3xl border border-slate-200/80 dark:border-slate-800 select-none shadow-inner ${theme.containerClass}`;
+  }
+
+  // Theme Ambience (only swap the image when the theme actually changes)
+  const amb = document.getElementById('playgroundAmbienceContainer');
+  if (amb && amb.dataset.theme !== theme.id) {
+    amb.innerHTML = theme.ambienceHtml;
+    amb.dataset.theme = theme.id;
+  }
+
+  // Cap active playground animals at 8
+  const allGraduated = state.pets.graduatedPets || [];
+  const graduated = allGraduated.slice(0, 8);
+
+  // Update capacity badge
+  const badge = document.getElementById('playgroundCapacityBadge');
+  if (badge) {
+    badge.textContent = `${graduated.length} / 8 Champions`;
+    if (graduated.length >= 8) {
+      badge.className = 'px-2.5 py-0.5 rounded-full font-display font-black text-xs bg-amber-100 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700 shadow-xs';
+      badge.title = 'Playground is at maximum capacity (8/8)';
+    } else {
+      badge.className = 'px-2.5 py-0.5 rounded-full font-display font-black text-xs bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 shadow-xs';
+      badge.title = `${8 - graduated.length} slots available`;
+    }
+  }
+
+  const emptyNotice = document.getElementById('playgroundEmptyNotice');
+  const roamingField = document.getElementById('playgroundRoamingField');
+  const rosterBar = document.getElementById('playgroundChampionsRoster');
+  const rosterGrid = document.getElementById('playgroundChampionsGrid');
+  const rosterCount = document.getElementById('playgroundRosterCountBadge');
+
+  if (graduated.length === 0) {
+    stopPlaygroundEngines();
+    if (emptyNotice) emptyNotice.classList.remove('hidden');
+    if (roamingField) {
+      roamingField.classList.add('hidden');
+      roamingField.innerHTML = '';
+    }
+    if (rosterBar) rosterBar.classList.add('hidden');
+  } else {
+    if (emptyNotice) emptyNotice.classList.add('hidden');
+    if (roamingField) {
+      roamingField.classList.remove('hidden');
+      renderPlayground3DOr2D(graduated);
+    }
+    if (rosterBar) {
+      rosterBar.classList.remove('hidden');
+      if (rosterCount) {
+        rosterCount.textContent = `${graduated.length}/8 Max`;
+        rosterCount.className = graduated.length >= 8
+          ? 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-200 border border-amber-300 dark:border-amber-700'
+          : 'px-2 py-0.5 rounded-full text-[10px] font-bold bg-purple-100 dark:bg-purple-950/80 text-purple-700 dark:text-purple-300';
+      }
+      if (rosterGrid) {
+        rosterGrid.innerHTML = graduated.map((p, idx) => `
+          <div class="p-2 rounded-2xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 flex items-center justify-between gap-1.5 shadow-xs hover:border-purple-300 dark:hover:border-purple-600 transition group">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <img src="assets/Animals/Previews/animal-${p.species}.png" alt="${p.nickname}" class="w-7 h-7 object-contain rounded-lg bg-white dark:bg-slate-900 p-0.5 border border-slate-200 dark:border-slate-700 shrink-0" />
+              <div class="min-w-0">
+                <div class="font-display font-black text-[11px] text-slate-900 dark:text-white truncate" title="${p.nickname}">${escapeHtml(p.nickname)}</div>
+                <div class="text-[9px] text-slate-400 truncate capitalize">${p.species}</div>
+              </div>
+            </div>
+            <button
+              type="button"
+              onclick="removePetFromPlayground(${idx})"
+              class="w-6 h-6 rounded-lg bg-rose-50 dark:bg-rose-950/50 hover:bg-rose-100 dark:hover:bg-rose-900/80 text-rose-600 dark:text-rose-400 border border-rose-200 dark:border-rose-800/80 flex items-center justify-center shrink-0 transition"
+              title="Remove ${p.nickname} from Playground"
+            >
+              ✕
+            </button>
+          </div>
+        `).join('');
+      }
+    }
+  }
+}
+
+function removePetFromPlayground(idx) {
+  ensurePetsState();
+  const list = state.pets.graduatedPets || [];
+  const pet = list[idx];
+  if (!pet) return;
+
+  const confirmed = confirm(`Remove "${pet.nickname}" from the Playground?`);
+  if (!confirmed) return;
+
+  list.splice(idx, 1);
+  state.pets.graduatedPets = list;
+  saveState();
+
+  stopPlaygroundEngines();
+  renderPlaygroundSection();
+  showToast(`👋 Removed ${pet.nickname} from the Playground.`);
+
+  // If sanctuary pet was waiting to graduate, graduate them now!
+  const waitingPet = state.pets.sanctuaryPet;
+  if (waitingPet && waitingPet.stage === 4 && (waitingPet.stageFocusMinutes || 0) >= 600 && list.length < 8) {
+    waitingPet.stage = 5;
+    list.push({
+      species: waitingPet.species,
+      nickname: waitingPet.nickname,
+      graduatedAt: getTodayISO(),
+      totalPets: waitingPet.totalPets || 0,
+      totalFeeds: waitingPet.totalFeeds || 0
+    });
+    state.pets.graduatedPets = list;
+    state.pets.sanctuaryPet = null;
+    saveState();
+    showToast(`🎓 CHAMPION GRADUATION! ${waitingPet.nickname} entered the playground!`);
+    spawnSanctuaryBurstParticles('🏆');
+    renderAll();
+  }
+}
+
+function setPlaygroundTheme(themeKey) {
+  ensurePetsState();
+  if (!PLAYGROUND_THEMES[themeKey]) return;
+  state.pets.playgroundTheme = themeKey;
+  saveState();
+  // Pets standing outside the new theme's walkable ground get re-placed
+  PlaygroundWorld.needsRescatter = true;
+  renderPlaygroundSection();
+  showToast(`Playground theme changed to ${PLAYGROUND_THEMES[themeKey].name}!`);
+}
+
+// =========================================================================
+// Playground Engine v3
+//  - 3D mode: every champion is a real Cube Pet GLB model using its built-in
+//    skeletal clips (idle / walk / run / eat / dance / gesture-positive),
+//    steering between waypoints inside the theme's walkable ground area.
+//  - 2D fallback (no WebGL / Three.js): sprite pets with waddle-walk,
+//    breathing idle, hop greeting, ground shadows and depth scaling.
+// =========================================================================
+let playgroundAnimFrameId = null;
+let playgroundLastTime = performance.now();
+let playgroundPetPositions = [];
+
+const PlaygroundWorld = {
+  renderer: null,
+  scene: null,
+  camera: null,
+  clock: null,
+  host: null,
+  labelLayer: null,
+  pets: [],
+  signature: '',
+  resizeObserver: null,
+  needsRescatter: false,
+  gltfCache: {}
+};
+
+const PG_DEFAULT_BAND = { x: [-0.82, 0.82], y: [-0.85, 0.45] };
+const PG_PET_HEIGHT = 1.3;     // world units for a scaleBase 1.0 champion
+const PG_WALK_SPEED = 0.95;    // world units / second
+const PG_RUN_SPEED = 2.1;
+
+function getPlaygroundTheme() {
+  const key = (state.pets && state.pets.playgroundTheme) || 'meadow';
+  return PLAYGROUND_THEMES[key] || PLAYGROUND_THEMES.meadow;
+}
+
+function getPlaygroundBand() {
+  return getPlaygroundTheme().walkBand || PG_DEFAULT_BAND;
+}
+
+function pgRand(min, max) {
+  return min + Math.random() * (max - min);
+}
+
+function pgLerpAngle(a, b, t) {
+  let d = (b - a) % (Math.PI * 2);
+  if (d > Math.PI) d -= Math.PI * 2;
+  if (d < -Math.PI) d += Math.PI * 2;
+  return a + d * t;
+}
+
+function getPlaygroundSignature(graduatedPets) {
+  return graduatedPets.map((p) => `${p.species}:${p.nickname}`).join('|');
+}
+
+function stopPlaygroundEngines() {
+  if (playgroundAnimFrameId) cancelAnimationFrame(playgroundAnimFrameId);
+  playgroundAnimFrameId = null;
+
+  if (PlaygroundWorld.resizeObserver) {
+    PlaygroundWorld.resizeObserver.disconnect();
+    PlaygroundWorld.resizeObserver = null;
+  }
+  if (PlaygroundWorld.renderer) {
+    try {
+      PlaygroundWorld.renderer.dispose();
+      const canvas = PlaygroundWorld.renderer.domElement;
+      if (canvas && canvas.parentNode) canvas.parentNode.removeChild(canvas);
+    } catch (e) {}
+  }
+  PlaygroundWorld.renderer = null;
+  PlaygroundWorld.scene = null;
+  PlaygroundWorld.camera = null;
+  PlaygroundWorld.clock = null;
+  PlaygroundWorld.host = null;
+  PlaygroundWorld.labelLayer = null;
+  PlaygroundWorld.pets = [];
+  PlaygroundWorld.signature = '';
+}
+
+function renderPlayground3DOr2D(graduatedPets) {
+  const field = document.getElementById('playgroundRoamingField');
+  if (!field) return;
+
+  const sig = getPlaygroundSignature(graduatedPets);
+  const use3D = !!(window.isThreeAvailable && window.THREE && window.GLTFLoader);
+
+  if (use3D) {
+    // Keep the running world alive when nothing about the roster changed
+    if (
+      PlaygroundWorld.signature === sig &&
+      PlaygroundWorld.renderer &&
+      field.contains(PlaygroundWorld.renderer.domElement)
+    ) {
+      return;
+    }
+    stopPlaygroundEngines();
+    buildPlayground3D(field, graduatedPets, sig);
+  } else {
+    if (PlaygroundWorld.signature === `${sig}#2d` && field.querySelector('#playgroundRoamingCanvas')) {
+      return;
+    }
+    stopPlaygroundEngines();
+    PlaygroundWorld.signature = `${sig}#2d`;
+    renderPlayground2D(field, graduatedPets);
+  }
+}
+
+// -------------------------------------------------------------------------
+// 3D Playground
+// -------------------------------------------------------------------------
+function pgFieldSize(field) {
+  return {
+    w: field.clientWidth || 800,
+    h: field.clientHeight || 450
+  };
+}
+
+function pgNdcToGround(nx, ny) {
+  const THREE = window.THREE;
+  const camera = PlaygroundWorld.camera;
+  const v = new THREE.Vector3(nx, ny, 0.5).unproject(camera);
+  const dir = v.sub(camera.position).normalize();
+  const t = -camera.position.y / dir.y;
+  return camera.position.clone().add(dir.multiplyScalar(t));
+}
+
+function pgRandomGroundPoint() {
+  const band = getPlaygroundBand();
+  return pgNdcToGround(pgRand(band.x[0], band.x[1]), pgRand(band.y[0], band.y[1]));
+}
+
+function pgIsInsideBand(x, z) {
+  const THREE = window.THREE;
+  const band = getPlaygroundBand();
+  const p = new THREE.Vector3(x, 0, z).project(PlaygroundWorld.camera);
+  return p.x >= band.x[0] - 0.02 && p.x <= band.x[1] + 0.02 && p.y >= band.y[0] - 0.02 && p.y <= band.y[1] + 0.02;
+}
+
+function pgMakeShadowTexture() {
+  const THREE = window.THREE;
+  const c = document.createElement('canvas');
+  c.width = c.height = 128;
+  const g = c.getContext('2d');
+  const grad = g.createRadialGradient(64, 64, 4, 64, 64, 62);
+  grad.addColorStop(0, 'rgba(0,0,0,0.55)');
+  grad.addColorStop(0.6, 'rgba(0,0,0,0.22)');
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  g.fillStyle = grad;
+  g.fillRect(0, 0, 128, 128);
+  const tex = new THREE.CanvasTexture(c);
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
+
+function buildPlayground3D(field, graduatedPets, sig) {
+  const THREE = window.THREE;
+  const GLTFLoader = window.GLTFLoader;
+
+  field.innerHTML = `
+    <div id="playgroundRoamingCanvas" class="absolute inset-0 select-none" style="touch-action: none;"></div>
+    <div id="playgroundLabelLayer" class="absolute inset-0 pointer-events-none overflow-hidden select-none"></div>
+  `;
+  const host = field.querySelector('#playgroundRoamingCanvas');
+  const labelLayer = field.querySelector('#playgroundLabelLayer');
+  const { w, h } = pgFieldSize(field);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(30, w / h, 0.1, 100);
+  camera.position.set(0, 7.2, 10.5);
+  camera.lookAt(0, 0, 0);
+
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.setSize(w, h);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.domElement.style.width = '100%';
+  renderer.domElement.style.height = '100%';
+  renderer.domElement.style.display = 'block';
+  host.appendChild(renderer.domElement);
+
+  scene.add(new THREE.AmbientLight(0xffffff, 1.35));
+  const sun = new THREE.DirectionalLight(0xfff8e7, 1.8);
+  sun.position.set(4, 8, 6);
+  scene.add(sun);
+  const rim = new THREE.DirectionalLight(0x9fd4ff, 0.7);
+  rim.position.set(-4, 4, -4);
+  scene.add(rim);
+
+  Object.assign(PlaygroundWorld, {
+    renderer,
+    scene,
+    camera,
+    clock: new THREE.Clock(),
+    host,
+    labelLayer,
+    pets: [],
+    signature: sig,
+    needsRescatter: false
+  });
+
+  const shadowTex = pgMakeShadowTexture();
+  const loader = new GLTFLoader();
+
+  graduatedPets.forEach((pet, idx) => {
+    const speciesDef = PET_SPECIES_CATALOG[pet.species] || { scaleBase: 1.0 };
+    const heightTarget = PG_PET_HEIGHT * Math.max(0.8, Math.min(1.3, speciesDef.scaleBase || 1.0));
+
+    // Holder = world position + heading. Inner "body" = normalized model + hop offset.
+    const holder = new THREE.Group();
+    const body = new THREE.Group();
+    holder.add(body);
+    holder.userData.pgIndex = idx;
+
+    const shadow = new THREE.Mesh(
+      new THREE.PlaneGeometry(1, 1),
+      new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false })
+    );
+    shadow.rotation.x = -Math.PI / 2;
+    shadow.position.y = 0.01;
+    holder.add(shadow);
+
+    const start = pgRandomGroundPoint();
+    holder.position.set(start.x, 0, start.z);
+    holder.rotation.y = pgRand(-Math.PI, Math.PI);
+    scene.add(holder);
+
+    const label = document.createElement('div');
+    label.className = 'absolute left-0 top-0 px-2.5 py-0.5 rounded-full bg-slate-900/85 text-white font-display font-black text-[10px] whitespace-nowrap shadow-md border border-white/20 select-none';
+    label.style.willChange = 'transform';
+    label.textContent = pet.nickname;
+    labelLayer.appendChild(label);
+
+    const entry = {
+      pet,
+      idx,
+      holder,
+      body,
+      shadow,
+      label,
+      height: heightTarget,
+      radius: 0.45 * heightTarget,
+      mixer: null,
+      actions: {},
+      activeName: null,
+      mode: 'idle',
+      modeUntil: performance.now() + pgRand(600, 2600) + idx * 400,
+      target: null,
+      speed: PG_WALK_SPEED,
+      heading: holder.rotation.y,
+      hopT: 0,
+      bobPhase: Math.random() * Math.PI * 2,
+      userRotating: false,
+      loaded: false
+    };
+    PlaygroundWorld.pets.push(entry);
+
+    pgLoadSpecies(loader, pet.species, (gltf) => {
+      if (PlaygroundWorld.signature !== sig) return; // world was rebuilt meanwhile
+      const model = gltf.scene.clone(true);
+      const box = new THREE.Box3().setFromObject(model);
+      const size = box.getSize(new THREE.Vector3());
+      const s = heightTarget / Math.max(size.y, 0.001);
+      model.scale.setScalar(s);
+      model.position.y = -box.min.y * s;
+      body.add(model);
+
+      const footprint = Math.max(size.x, size.z) * s;
+      shadow.scale.set(footprint * 1.35, footprint * 1.35, 1);
+      entry.radius = Math.max(0.35, footprint * 0.55);
+
+      entry.mixer = new THREE.AnimationMixer(model);
+      (gltf.animations || []).forEach((clip) => {
+        entry.actions[clip.name.toLowerCase()] = entry.mixer.clipAction(clip);
+      });
+      entry.loaded = true;
+      pgPlay(entry, 'idle');
+    }, () => {
+      // GLB failed: show the 2D preview as a billboard sprite instead
+      const tex = new THREE.TextureLoader().load(`assets/Animals/Previews/animal-${pet.species}.png`);
+      tex.colorSpace = THREE.SRGBColorSpace;
+      const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: tex, transparent: true }));
+      sprite.scale.set(heightTarget, heightTarget, 1);
+      sprite.position.y = heightTarget / 2;
+      body.add(sprite);
+      shadow.scale.set(heightTarget, heightTarget, 1);
+      entry.loaded = true;
+    });
+  });
+
+  pgBindPointer(host);
+
+  PlaygroundWorld.resizeObserver = new ResizeObserver(() => {
+    if (!PlaygroundWorld.renderer) return;
+    const size = pgFieldSize(field);
+    PlaygroundWorld.renderer.setSize(size.w, size.h);
+    PlaygroundWorld.renderer.domElement.style.width = '100%';
+    PlaygroundWorld.renderer.domElement.style.height = '100%';
+    PlaygroundWorld.camera.aspect = size.w / size.h;
+    PlaygroundWorld.camera.updateProjectionMatrix();
+    PlaygroundWorld.needsRescatter = true;
+  });
+  PlaygroundWorld.resizeObserver.observe(field);
+
+  playgroundAnimFrameId = requestAnimationFrame(pgLoop3D);
+}
+
+function pgLoadSpecies(loader, species, onLoad, onError) {
+  const cache = PlaygroundWorld.gltfCache;
+  if (cache[species] && cache[species].gltf) {
+    onLoad(cache[species].gltf);
+    return;
+  }
+  if (cache[species] && cache[species].waiting) {
+    cache[species].waiting.push({ onLoad, onError });
+    return;
+  }
+  cache[species] = { waiting: [{ onLoad, onError }] };
+  loader.load(
+    `assets/Animals/Models/GLB format/animal-${species}.glb`,
+    (gltf) => {
+      const waiting = cache[species].waiting || [];
+      cache[species] = { gltf };
+      waiting.forEach((w) => w.onLoad(gltf));
+    },
+    undefined,
+    (err) => {
+      console.warn('Playground GLB failed, using sprite:', species, err);
+      const waiting = cache[species].waiting || [];
+      delete cache[species];
+      waiting.forEach((w) => w.onError(err));
+    }
+  );
+}
+
+function pgPlay(entry, name, timeScale = 1) {
+  if (!entry.mixer) return;
+  const next = entry.actions[name] || entry.actions.idle;
+  if (!next) return;
+  next.timeScale = timeScale;
+  if (entry.activeName === name) return;
+  const prev = entry.activeName ? entry.actions[entry.activeName] : null;
+  next.reset().setEffectiveWeight(1).fadeIn(0.25).play();
+  if (prev && prev !== next) prev.fadeOut(0.25);
+  entry.activeName = name;
+}
+
+function pgChooseNextBehavior(entry, now) {
+  const r = Math.random();
+  if (r < 0.62) {
+    entry.mode = 'walk';
+    entry.speed = PG_WALK_SPEED * pgRand(0.85, 1.15);
+    entry.target = pgRandomGroundPoint();
+    pgPlay(entry, 'walk', entry.speed / PG_WALK_SPEED);
+  } else if (r < 0.77) {
+    entry.mode = 'walk';
+    entry.speed = PG_RUN_SPEED * pgRand(0.9, 1.1);
+    entry.target = pgRandomGroundPoint();
+    pgPlay(entry, 'run', 1);
+  } else if (r < 0.9) {
+    entry.mode = 'emote';
+    entry.modeUntil = now + pgRand(2200, 3600);
+    pgPlay(entry, 'eat');
+  } else {
+    entry.mode = 'emote';
+    entry.modeUntil = now + pgRand(1800, 2800);
+    pgPlay(entry, 'dance');
+  }
+}
+
+function pgLoop3D() {
+  playgroundAnimFrameId = requestAnimationFrame(pgLoop3D);
+  const W = PlaygroundWorld;
+  if (!W.renderer || !W.clock) return;
+  const delta = Math.min(0.05, W.clock.getDelta());
+  if (state.mainView !== 'pets' || document.hidden) return;
+
+  const now = performance.now();
+  const theme = getPlaygroundTheme();
+  const floating = !!theme.floating;
+
+  if (W.needsRescatter) {
+    W.needsRescatter = false;
+    W.pets.forEach((e) => {
+      if (!pgIsInsideBand(e.holder.position.x, e.holder.position.z)) {
+        const p = pgRandomGroundPoint();
+        e.holder.position.set(p.x, 0, p.z);
+        e.mode = 'idle';
+        e.modeUntil = now + pgRand(400, 1600);
+        e.target = null;
+        pgPlay(e, 'idle');
+      }
+    });
+  }
+
+  W.pets.forEach((e) => {
+    if (e.mixer) e.mixer.update(delta);
+    if (!e.loaded) return;
+
+    if (e.userRotating) {
+      // frozen while the user spins the pet
+    } else if (e.mode === 'idle' || e.mode === 'emote') {
+      if (now >= e.modeUntil) {
+        if (e.mode === 'emote') {
+          e.mode = 'idle';
+          e.modeUntil = now + pgRand(1500, 4000);
+          pgPlay(e, 'idle');
+        } else {
+          pgChooseNextBehavior(e, now);
+        }
+      }
+    } else if (e.mode === 'walk' && e.target) {
+      const dx = e.target.x - e.holder.position.x;
+      const dz = e.target.z - e.holder.position.z;
+      const dist = Math.hypot(dx, dz);
+      if (dist < 0.08) {
+        e.mode = 'idle';
+        e.modeUntil = now + pgRand(2500, 6500);
+        e.target = null;
+        pgPlay(e, 'idle');
+      } else {
+        const desired = Math.atan2(dx, dz);
+        e.heading = pgLerpAngle(e.heading, desired, 1 - Math.exp(-7 * delta));
+        // Slow down while still turning toward the target (no moonwalking)
+        let diff = Math.abs(((desired - e.heading + Math.PI * 3) % (Math.PI * 2)) - Math.PI);
+        const turnFactor = Math.max(0.15, Math.cos(Math.min(diff, Math.PI / 2)));
+        // Ease in/out near the destination
+        const arriveFactor = Math.min(1, dist / 0.5);
+        const step = Math.min(dist, e.speed * turnFactor * Math.max(0.35, arriveFactor) * delta);
+        e.holder.position.x += Math.sin(e.heading) * step;
+        e.holder.position.z += Math.cos(e.heading) * step;
+        e.holder.rotation.y = e.heading;
+      }
+    }
+
+    // Greeting hop (parabolic jump)
+    let hopY = 0;
+    if (e.hopT > 0) {
+      e.hopT = Math.max(0, e.hopT - delta);
+      const t = 1 - e.hopT / 0.55;
+      hopY = Math.sin(t * Math.PI) * 0.55;
+    }
+    // Cosmic theme: gentle zero-gravity floating
+    let floatY = 0;
+    if (floating) {
+      e.bobPhase += delta * 1.6;
+      floatY = 0.35 + Math.sin(e.bobPhase) * 0.18;
+    }
+    e.body.position.y = hopY + floatY;
+    e.shadow.material.opacity = floating ? 0.35 : Math.max(0.35, 1 - hopY * 0.9);
+  });
+
+  // Soft separation & direction change when pets run into each other
+  for (let i = 0; i < W.pets.length; i++) {
+    for (let j = i + 1; j < W.pets.length; j++) {
+      const a = W.pets[i];
+      const b = W.pets[j];
+      const dx = b.holder.position.x - a.holder.position.x;
+      const dz = b.holder.position.z - a.holder.position.z;
+      const d = Math.hypot(dx, dz) || 0.0001;
+      const minD = a.radius + b.radius;
+      if (d < minD) {
+        const push = (minD - d) * 0.5;
+        const nx = dx / d;
+        const nz = dz / d;
+        const ax = a.holder.position.x - nx * push;
+        const az = a.holder.position.z - nz * push;
+        const bx = b.holder.position.x + nx * push;
+        const bz = b.holder.position.z + nz * push;
+        if (!a.userRotating && pgIsInsideBand(ax, az)) a.holder.position.set(ax, 0, az);
+        if (!b.userRotating && pgIsInsideBand(bx, bz)) b.holder.position.set(bx, 0, bz);
+
+        // When pets collide, they actively change direction away from each other
+        const bumpCooldown = 700; // ms between collision turn triggers
+        if (now - (a.lastBump || 0) > bumpCooldown) {
+          a.lastBump = now;
+          if (!a.userRotating) {
+            const deflectAngleA = Math.atan2(-nx, -nz) + pgRand(-0.5, 0.5);
+            a.heading = deflectAngleA;
+            a.holder.rotation.y = a.heading;
+            const dist = pgRand(1.8, 3.2);
+            let tx = a.holder.position.x + Math.sin(deflectAngleA) * dist;
+            let tz = a.holder.position.z + Math.cos(deflectAngleA) * dist;
+            if (!pgIsInsideBand(tx, tz)) {
+              const randPt = pgRandomGroundPoint();
+              tx = randPt.x;
+              tz = randPt.z;
+              a.heading = Math.atan2(tx - a.holder.position.x, tz - a.holder.position.z);
+              a.holder.rotation.y = a.heading;
+            }
+            a.target = new window.THREE.Vector3(tx, 0, tz);
+            a.mode = 'walk';
+            a.speed = PG_WALK_SPEED * pgRand(0.95, 1.25);
+            a.modeUntil = now + pgRand(3000, 6000);
+            pgPlay(a, 'walk', a.speed / PG_WALK_SPEED);
+          }
+        }
+
+        if (now - (b.lastBump || 0) > bumpCooldown) {
+          b.lastBump = now;
+          if (!b.userRotating) {
+            const deflectAngleB = Math.atan2(nx, nz) + pgRand(-0.5, 0.5);
+            b.heading = deflectAngleB;
+            b.holder.rotation.y = b.heading;
+            const dist = pgRand(1.8, 3.2);
+            let tx = b.holder.position.x + Math.sin(deflectAngleB) * dist;
+            let tz = b.holder.position.z + Math.cos(deflectAngleB) * dist;
+            if (!pgIsInsideBand(tx, tz)) {
+              const randPt = pgRandomGroundPoint();
+              tx = randPt.x;
+              tz = randPt.z;
+              b.heading = Math.atan2(tx - b.holder.position.x, tz - b.holder.position.z);
+              b.holder.rotation.y = b.heading;
+            }
+            b.target = new window.THREE.Vector3(tx, 0, tz);
+            b.mode = 'walk';
+            b.speed = PG_WALK_SPEED * pgRand(0.95, 1.25);
+            b.modeUntil = now + pgRand(3000, 6000);
+            pgPlay(b, 'walk', b.speed / PG_WALK_SPEED);
+          }
+        }
+      }
+    }
+  }
+
+  W.renderer.render(W.scene, W.camera);
+  pgUpdateLabels();
+}
+
+function pgUpdateLabels() {
+  const W = PlaygroundWorld;
+  if (!W.labelLayer || !W.camera) return;
+  const THREE = window.THREE;
+  const w = W.labelLayer.clientWidth;
+  const h = W.labelLayer.clientHeight;
+  const v = new THREE.Vector3();
+  W.pets.forEach((e) => {
+    v.set(e.holder.position.x, e.body.position.y + e.height + 0.18, e.holder.position.z).project(W.camera);
+    const x = (v.x * 0.5 + 0.5) * w;
+    const y = (-v.y * 0.5 + 0.5) * h;
+    e.label.style.transform = `translate(${x.toFixed(1)}px, ${y.toFixed(1)}px) translate(-50%, -100%)`;
+    e.label.style.zIndex = String(Math.round(y));
+    e.label.style.opacity = e.loaded ? '1' : '0';
+  });
+}
+
+function pgPickPet(clientX, clientY) {
+  const W = PlaygroundWorld;
+  if (!W.renderer || !W.camera) return null;
+  const THREE = window.THREE;
+  const rect = W.renderer.domElement.getBoundingClientRect();
+  const ndc = new THREE.Vector2(
+    ((clientX - rect.left) / rect.width) * 2 - 1,
+    -((clientY - rect.top) / rect.height) * 2 + 1
+  );
+  const ray = new THREE.Raycaster();
+  ray.setFromCamera(ndc, W.camera);
+  const bodies = W.pets.filter((e) => e.loaded).map((e) => e.body);
+  const hits = ray.intersectObjects(bodies, true);
+  if (!hits.length) return null;
+  let obj = hits[0].object;
+  while (obj && !W.pets.some((e) => e.body === obj)) obj = obj.parent;
+  return W.pets.find((e) => e.body === obj) || null;
+}
+
+function pgBindPointer(host) {
+  host.addEventListener('pointermove', (ev) => {
+    if (ev.buttons) return;
+    host.style.cursor = pgPickPet(ev.clientX, ev.clientY) ? 'grab' : 'default';
+  });
+
+  host.addEventListener('pointerdown', (ev) => {
+    const entry = pgPickPet(ev.clientX, ev.clientY);
+    if (!entry) return;
+    ev.preventDefault();
+    try { host.setPointerCapture(ev.pointerId); } catch (e) {}
+    host.style.cursor = 'grabbing';
+
+    const startX = ev.clientX;
+    const startHeading = entry.heading;
+    let dragged = false;
+    entry.userRotating = true;
+    pgPlay(entry, 'idle');
+
+    const onMove = (mv) => {
+      const dx = mv.clientX - startX;
+      if (Math.abs(dx) > 4) dragged = true;
+      if (dragged) {
+        entry.heading = startHeading + dx * 0.02;
+        entry.holder.rotation.y = entry.heading;
+      }
+    };
+    const onUp = () => {
+      host.removeEventListener('pointermove', onMove);
+      host.removeEventListener('pointerup', onUp);
+      host.removeEventListener('pointercancel', onUp);
+      host.style.cursor = 'grab';
+      entry.userRotating = false;
+      entry.target = null;
+      if (dragged) {
+        entry.mode = 'idle';
+        entry.modeUntil = performance.now() + 2500;
+      } else {
+        interactPlaygroundPet(entry.idx);
+      }
+    };
+    host.addEventListener('pointermove', onMove);
+    host.addEventListener('pointerup', onUp);
+    host.addEventListener('pointercancel', onUp);
+  });
+}
+
+function pgSpawnHearts(xPx, yPx) {
+  const layer = document.getElementById('playgroundLabelLayer') || document.getElementById('playgroundRoamingCanvas');
+  if (!layer) return;
+  const glyphs = ['❤️', '💖', '✨', '💕'];
+  for (let i = 0; i < 8; i++) {
+    const s = document.createElement('span');
+    s.textContent = glyphs[i % glyphs.length];
+    s.className = 'absolute pointer-events-none select-none';
+    s.style.left = `${xPx}px`;
+    s.style.top = `${yPx}px`;
+    s.style.fontSize = `${14 + Math.random() * 10}px`;
+    s.style.zIndex = '9999';
+    layer.appendChild(s);
+    const angle = (Math.PI * 2 * i) / 8 + pgRand(-0.3, 0.3);
+    const dist = pgRand(35, 70);
+    const anim = s.animate(
+      [
+        { transform: 'translate(-50%, -50%) scale(0.4)', opacity: 0 },
+        { transform: `translate(calc(-50% + ${Math.cos(angle) * dist * 0.5}px), calc(-50% + ${Math.sin(angle) * dist * 0.5 - 20}px)) scale(1.15)`, opacity: 1, offset: 0.35 },
+        { transform: `translate(calc(-50% + ${Math.cos(angle) * dist}px), calc(-50% + ${Math.sin(angle) * dist - 55}px)) scale(0.8)`, opacity: 0 }
+      ],
+      { duration: 1100 + Math.random() * 300, easing: 'cubic-bezier(.2,.8,.3,1)' }
+    );
+    anim.onfinish = () => s.remove();
+  }
+}
+
+// -------------------------------------------------------------------------
+// 2D Fallback Playground (sprite animation)
+// -------------------------------------------------------------------------
+function ensurePlaygroundStyles() {
+  if (document.getElementById('playgroundAnimStyles')) return;
+  const st = document.createElement('style');
+  st.id = 'playgroundAnimStyles';
+  st.textContent = `
+    @keyframes pgWaddle {
+      0%   { transform: translateY(0) rotate(-6deg) scale(1.03, 0.97); }
+      25%  { transform: translateY(-7px) rotate(0deg) scale(0.97, 1.04); }
+      50%  { transform: translateY(0) rotate(6deg) scale(1.03, 0.97); }
+      75%  { transform: translateY(-7px) rotate(0deg) scale(0.97, 1.04); }
+      100% { transform: translateY(0) rotate(-6deg) scale(1.03, 0.97); }
+    }
+    @keyframes pgRun {
+      0%   { transform: translateY(0) rotate(-4deg) scale(1.05, 0.95); }
+      50%  { transform: translateY(-12px) rotate(4deg) scale(0.95, 1.06); }
+      100% { transform: translateY(0) rotate(-4deg) scale(1.05, 0.95); }
+    }
+    @keyframes pgBreathe {
+      0%, 100% { transform: scale(1, 1); }
+      50%      { transform: scale(1.02, 1.045); }
+    }
+    @keyframes pgHop {
+      0%   { transform: translateY(0) scale(1.1, 0.88); }
+      30%  { transform: translateY(-26px) scale(0.92, 1.1) rotate(-8deg); }
+      55%  { transform: translateY(-30px) scale(1, 1) rotate(8deg); }
+      80%  { transform: translateY(0) scale(1.12, 0.86); }
+      100% { transform: translateY(0) scale(1, 1); }
+    }
+    @keyframes pgFloat {
+      0%, 100% { transform: translateY(-6px) rotate(-3deg); }
+      50%      { transform: translateY(6px) rotate(3deg); }
+    }
+    .pg-anim-walk    { animation: pgWaddle 0.62s ease-in-out infinite; transform-origin: 50% 100%; }
+    .pg-anim-run     { animation: pgRun 0.34s ease-in-out infinite; transform-origin: 50% 100%; }
+    .pg-anim-idle    { animation: pgBreathe 2.4s ease-in-out infinite; transform-origin: 50% 100%; }
+    .pg-anim-hop     { animation: pgHop 0.7s cubic-bezier(.3,.7,.4,1) 2; transform-origin: 50% 100%; }
+    .pg-anim-float   { animation: pgFloat 3.2s ease-in-out infinite; transform-origin: 50% 50%; }
+  `;
+  document.head.appendChild(st);
+}
+
+function pg2DBandToPercent() {
+  const band = getPlaygroundBand();
+  // NDC (-1..1, y up) -> CSS percent (0..100, y down)
+  return {
+    xMin: (band.x[0] + 1) * 50,
+    xMax: (band.x[1] + 1) * 50,
+    yMin: (1 - band.y[1]) * 50,
+    yMax: (1 - band.y[0]) * 50
+  };
+}
+
+function pg2DRandomPoint() {
+  const b = pg2DBandToPercent();
+  return { x: pgRand(b.xMin, b.xMax), y: pgRand(b.yMin, b.yMax) };
+}
+
+function renderPlayground2D(field, graduatedPets) {
+  ensurePlaygroundStyles();
+
+  if (playgroundPetPositions.length !== graduatedPets.length) {
+    playgroundPetPositions = graduatedPets.map((p, idx) => {
+      const start = pg2DRandomPoint();
+      return {
+        x: start.x,
+        y: start.y,
+        target: null,
+        mode: 'idle',
+        modeUntil: performance.now() + 800 + idx * 500,
+        speed: 9,
+        facingRight: Math.random() > 0.5,
+        currentAngle: 0,
+        userRotating: false,
+        animClass: ''
+      };
+    });
+  }
+
+  field.innerHTML = `
+    <div id="playgroundRoamingCanvas" class="absolute inset-0 overflow-hidden select-none">
+      ${graduatedPets.map((p, idx) => {
+        const pos = playgroundPetPositions[idx];
+        return `
+          <div
+            id="playgroundPet_${idx}"
+            class="absolute cursor-grab active:cursor-grabbing flex flex-col items-center select-none"
+            style="left: ${pos.x}%; top: ${pos.y}%; transform: translate(-50%, -100%); will-change: left, top, transform;"
+            onpointerdown="startPlaygroundPetDrag(event, ${idx})"
+            title="Click to greet, hold & drag to rotate ${escapeHtml(p.nickname)}"
+          >
+            <div class="pet-name-pill mb-1 px-2.5 py-0.5 rounded-full bg-slate-900/85 text-white font-display font-black text-[10px] whitespace-nowrap shadow-md pointer-events-none border border-white/20 select-none">
+              ${escapeHtml(p.nickname)}
+            </div>
+            <div id="playgroundPetFlip_${idx}" class="relative" style="transform: scaleX(${pos.facingRight ? 1 : -1});">
+              <div id="playgroundPetImgWrap_${idx}" style="transform: rotateY(${pos.currentAngle}deg);">
+                <div id="playgroundPetAnim_${idx}" class="pg-anim-idle">
+                  <img src="assets/Animals/Previews/animal-${p.species}.png" alt="${escapeHtml(p.nickname)}" class="w-16 h-16 sm:w-20 sm:h-20 object-contain drop-shadow-xl pointer-events-none select-none" draggable="false" />
+                </div>
+              </div>
+              <div id="playgroundPetShadow_${idx}" class="absolute left-1/2 -bottom-1 w-12 h-3 rounded-full pointer-events-none" style="transform: translateX(-50%); background: radial-gradient(ellipse at center, rgba(0,0,0,0.35), rgba(0,0,0,0) 70%);"></div>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
+
+  startPlaygroundAutonomousRoaming(graduatedPets);
+}
+
+function pg2DSetAnim(idx, pos, cls) {
+  if (pos.animClass === cls) return;
+  pos.animClass = cls;
+  const el = document.getElementById(`playgroundPetAnim_${idx}`);
+  if (el) el.className = cls;
+}
+
+function startPlaygroundAutonomousRoaming(graduatedPets) {
+  if (playgroundAnimFrameId) cancelAnimationFrame(playgroundAnimFrameId);
+  playgroundLastTime = performance.now();
+
+  function loop(currentTime) {
+    playgroundAnimFrameId = requestAnimationFrame(loop);
+    const delta = Math.min(0.05, (currentTime - playgroundLastTime) / 1000);
+    playgroundLastTime = currentTime;
+    if (state.mainView !== 'pets' || !graduatedPets || graduatedPets.length === 0 || document.hidden) return;
+
+    const now = performance.now();
+    const floating = !!getPlaygroundTheme().floating;
+
+    graduatedPets.forEach((p, idx) => {
+      const pos = playgroundPetPositions[idx];
+      if (!pos) return;
+
+      if (PlaygroundWorld.needsRescatter) {
+        const b = pg2DBandToPercent();
+        if (pos.x < b.xMin || pos.x > b.xMax || pos.y < b.yMin || pos.y > b.yMax) {
+          const np = pg2DRandomPoint();
+          pos.x = np.x;
+          pos.y = np.y;
+          pos.mode = 'idle';
+          pos.target = null;
+        }
+      }
+
+      if (!pos.userRotating && pos.mode !== 'hop') {
+        if (pos.mode === 'idle' && now >= pos.modeUntil) {
+          const run = Math.random() < 0.2;
+          pos.mode = 'walk';
+          pos.speed = run ? pgRand(16, 20) : pgRand(7, 10);
+          pos.running = run;
+          pos.target = pg2DRandomPoint();
+        }
+        if (pos.mode === 'walk' && pos.target) {
+          const dx = pos.target.x - pos.x;
+          const dy = pos.target.y - pos.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 0.6) {
+            pos.mode = 'idle';
+            pos.target = null;
+            pos.modeUntil = now + pgRand(2500, 6500);
+          } else {
+            const step = Math.min(dist, pos.speed * Math.max(0.4, Math.min(1, dist / 4)) * delta);
+            pos.x += (dx / dist) * step;
+            pos.y += (dy / dist) * step;
+            if (Math.abs(dx) > 0.3) pos.facingRight = dx >= 0;
+          }
+        }
+      }
+
+      if (pos.mode === 'hop' && now >= pos.modeUntil) {
+        pos.mode = 'idle';
+        pos.modeUntil = now + pgRand(1500, 3500);
+      }
+
+      const animCls = pos.mode === 'hop'
+        ? 'pg-anim-hop'
+        : floating
+          ? 'pg-anim-float'
+          : pos.mode === 'walk'
+            ? (pos.running ? 'pg-anim-run' : 'pg-anim-walk')
+            : 'pg-anim-idle';
+      pg2DSetAnim(idx, pos, animCls);
+
+      const el = document.getElementById(`playgroundPet_${idx}`);
+      if (el) {
+        // Depth: pets lower on screen are closer -> bigger and drawn on top
+        const b = pg2DBandToPercent();
+        const depthT = Math.max(0, Math.min(1, (pos.y - b.yMin) / Math.max(1, b.yMax - b.yMin)));
+        const depthScale = 0.78 + depthT * 0.34;
+        el.style.left = `${pos.x}%`;
+        el.style.top = `${pos.y}%`;
+        el.style.transform = `translate(-50%, -100%) scale(${depthScale.toFixed(3)})`;
+        el.style.zIndex = String(10 + Math.round(pos.y * 10));
+        const flip = document.getElementById(`playgroundPetFlip_${idx}`);
+        if (flip) flip.style.transform = `scaleX(${pos.facingRight ? 1 : -1})`;
+        const shadow = document.getElementById(`playgroundPetShadow_${idx}`);
+        if (shadow) shadow.style.opacity = floating ? '0.45' : '1';
+      }
+    });
+
+    // 2D inter-pet collision deflection: change directions when running into each other
+    for (let i = 0; i < graduatedPets.length; i++) {
+      for (let j = i + 1; j < graduatedPets.length; j++) {
+        const posA = playgroundPetPositions[i];
+        const posB = playgroundPetPositions[j];
+        if (!posA || !posB) continue;
+
+        const dx = posB.x - posA.x;
+        const dy = posB.y - posA.y;
+        const dist = Math.hypot(dx, dy);
+        const minD = 8.5; // percent distance on canvas
+
+        if (dist < minD) {
+          const push = (minD - dist) * 0.5;
+          const nx = dx / (dist || 0.001);
+          const ny = dy / (dist || 0.001);
+
+          if (!posA.userRotating) {
+            posA.x -= nx * push;
+            posA.y -= ny * push;
+          }
+          if (!posB.userRotating) {
+            posB.x += nx * push;
+            posB.y += ny * push;
+          }
+
+          // Bumping into each other causes direction change
+          const bumpCooldown = 700;
+          if (now - (posA.lastBump || 0) > bumpCooldown) {
+            posA.lastBump = now;
+            if (!posA.userRotating) {
+              posA.target = pg2DRandomPoint();
+              posA.facingRight = posA.target.x >= posA.x;
+              posA.mode = 'walk';
+              posA.speed = pgRand(8, 12);
+              posA.modeUntil = now + pgRand(3000, 6000);
+            }
+          }
+          if (now - (posB.lastBump || 0) > bumpCooldown) {
+            posB.lastBump = now;
+            if (!posB.userRotating) {
+              posB.target = pg2DRandomPoint();
+              posB.facingRight = posB.target.x >= posB.x;
+              posB.mode = 'walk';
+              posB.speed = pgRand(8, 12);
+              posB.modeUntil = now + pgRand(3000, 6000);
+            }
+          }
+        }
+      }
+    }
+
+    PlaygroundWorld.needsRescatter = false;
+  }
+
+  playgroundAnimFrameId = requestAnimationFrame(loop);
+}
+
+// Hold-to-Rotate for 2D Playground Pets
+function startPlaygroundPetDrag(e, idx) {
+  e.preventDefault();
+  const wrap = document.getElementById(`playgroundPetImgWrap_${idx}`);
+  if (!wrap) return;
+
+  const pos = playgroundPetPositions[idx];
+  if (pos) pos.userRotating = true;
+
+  const startX = e.clientX;
+  let hasDragged = false;
+  const startAngle = (pos && pos.currentAngle) || 0;
+
+  function onPointerMove(moveEvent) {
+    const deltaX = moveEvent.clientX - startX;
+    if (Math.abs(deltaX) > 4) {
+      hasDragged = true;
+      const deg = (startAngle + deltaX * 1.5) % 360;
+      if (pos) pos.currentAngle = deg;
+      wrap.style.transform = `rotateY(${deg}deg)`;
+    }
+  }
+
+  function onPointerUp() {
+    window.removeEventListener('pointermove', onPointerMove);
+    window.removeEventListener('pointerup', onPointerUp);
+    if (pos) {
+      pos.userRotating = false;
+      pos.mode = 'idle';
+      pos.target = null;
+      pos.modeUntil = performance.now() + 2500;
+    }
+    if (!hasDragged) interactPlaygroundPet(idx);
+  }
+
+  window.addEventListener('pointermove', onPointerMove);
+  window.addEventListener('pointerup', onPointerUp);
+}
+
+// Click greeting: 3D = dance clip + hop, 2D = double hop. Both spawn hearts at the pet.
+function interactPlaygroundPet(idx) {
+  ensurePetsState();
+  const pet = state.pets.graduatedPets[idx];
+  if (!pet) return;
+
+  const entry = PlaygroundWorld.pets.find((e) => e.idx === idx);
+  if (entry && PlaygroundWorld.camera) {
+    entry.mode = 'emote';
+    entry.target = null;
+    entry.modeUntil = performance.now() + 2600;
+    entry.hopT = 0.55;
+    pgPlay(entry, entry.actions.dance ? 'dance' : 'gesture-positive');
+
+    const v = new window.THREE.Vector3(entry.holder.position.x, entry.height * 0.7, entry.holder.position.z).project(PlaygroundWorld.camera);
+    const layer = PlaygroundWorld.labelLayer;
+    if (layer) pgSpawnHearts((v.x * 0.5 + 0.5) * layer.clientWidth, (-v.y * 0.5 + 0.5) * layer.clientHeight);
+  } else {
+    const pos = playgroundPetPositions[idx];
+    const canvas = document.getElementById('playgroundRoamingCanvas');
+    if (pos) {
+      pos.mode = 'hop';
+      pos.target = null;
+      pos.modeUntil = performance.now() + 1400;
+      pos.animClass = '';
+    }
+    if (pos && canvas) {
+      pgSpawnHearts((pos.x / 100) * canvas.clientWidth, (pos.y / 100) * canvas.clientHeight - 40);
+    }
+  }
+
+  showToast(`👑 ${pet.nickname} does a joyful greeting dance for you!`);
+  playPetHappyChime();
+}
+
+// -------------------------------------------------------------------------
+// Sanctuary Renderer (Active Growth Chamber: Stages 1–4)
+// -------------------------------------------------------------------------
+function renderSanctuarySection() {
+  ensurePetsState();
+  checkSanctuaryVitalityDecay(false);
+  const pet = state.pets.sanctuaryPet;
+
+  // Sanctuary scenic background
+  const amb = document.getElementById('sanctuaryAmbienceContainer');
+  if (amb) amb.innerHTML = SANCTUARY_THEME_AMBIENCE;
+
+  const previewImg = document.getElementById('sanctuaryPetPreviewImg');
+  const nameLabel = document.getElementById('sanctuaryPetNameLabel');
+  const speciesLabel = document.getElementById('sanctuaryPetSpeciesLabel');
+  const stagePill = document.getElementById('sanctuaryStagePill');
+  const vitalityBar = document.getElementById('sanctuaryVitalityBar');
+  const vitalityPctLabel = document.getElementById('sanctuaryVitalityPctLabel');
+  const vitalityIcon = document.getElementById('vitalityStatusIcon');
+  const healthStateText = document.getElementById('sanctuaryHealthStateText');
+  const stageProgressBar = document.getElementById('sanctuaryStageProgressBar');
+  const focusHoursLabel = document.getElementById('sanctuaryFocusHoursLabel');
+  const stageTargetLabel = document.getElementById('sanctuaryStageTargetLabel');
+  const totalFocusAccLabel = document.getElementById('sanctuaryTotalFocusAccLabel');
+  const moodEmoji = document.getElementById('sanctuaryPetMoodEmoji');
+  const moodLabel = document.getElementById('sanctuaryPetMoodLabel');
+  const sickAlert = document.getElementById('petSickAlertBanner');
+  const deathAlert = document.getElementById('petDeathAlertBanner');
+  const feedBtn = document.getElementById('feedPetActionBtn');
+  const vitalityCard = document.getElementById('sanctuaryVitalityCard');
+  const feedText = document.getElementById('feedBtnText');
+  const feedIcon = document.getElementById('sanctuaryFavoriteFoodIcon');
+  const feedOwned = document.getElementById('feedFoodOwnedBadge');
+
+  if (!pet) {
+    if (previewImg) previewImg.src = 'assets/Icons/basket.gif';
+    if (nameLabel) nameLabel.textContent = 'No Companion Active';
+    if (speciesLabel) speciesLabel.textContent = 'Sanctuary is quiet. Adopt a pet to begin raising!';
+    if (stagePill) stagePill.textContent = 'Empty';
+    if (vitalityBar) vitalityBar.style.width = '0%';
+    if (vitalityPctLabel) vitalityPctLabel.textContent = '--';
+    if (vitalityCard) vitalityCard.className = 'space-y-2.5 bg-white dark:bg-slate-900 p-4 rounded-2xl border-2 border-slate-200/80 dark:border-slate-800 shadow-sm transition-all duration-300';
+    if (healthStateText) {
+      healthStateText.textContent = 'Awaiting Companion';
+      healthStateText.className = 'font-display font-black text-xs tracking-wide px-3.5 py-1 rounded-full text-center bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 border border-slate-200 dark:border-slate-700 shadow-xs transition-all';
+    }
+    if (stageProgressBar) stageProgressBar.style.width = '0%';
+    if (focusHoursLabel) focusHoursLabel.textContent = '0.0h / 10.0h';
+    if (stageTargetLabel) stageTargetLabel.textContent = 'Adopt a Pet';
+    if (sickAlert) sickAlert.classList.add('hidden');
+    if (deathAlert) deathAlert.classList.add('hidden');
+    if (feedBtn) feedBtn.disabled = true;
+    if (feedText) feedText.textContent = 'Adopt a Pet First';
+
+    const graphic = document.getElementById('sanctuaryPetGraphic');
+    if (graphic) {
+      graphic.innerHTML = `
+        <div class="text-center p-6 space-y-3">
+          <span class="text-5xl animate-bounce inline-block">🌿</span>
+          <h4 class="text-sm font-black text-slate-800 dark:text-slate-100">Your Sanctuary is Ready</h4>
+          <p class="text-xs text-slate-500 dark:text-slate-400 max-w-xs">Adopt any of the 24 Cube Pets to nurture them with your focus sessions!</p>
+          <button onclick="openAdoptPetModal()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs shadow-md transition">
+            🐾 Choose Your Companion
+          </button>
+        </div>
+      `;
+    }
+    return;
+  }
+
+  const speciesDef = PET_SPECIES_CATALOG[pet.species] || PET_SPECIES_CATALOG.bunny;
+  const currentStage = Math.max(1, Math.min(5, pet.stage || 1));
+  const stageDef = PET_STAGE_DEFINITIONS[currentStage - 1];
+  const favFoodKey = speciesDef.favoriteFood || '001-carrot';
+  const foodDef = PET_FOODS_CATALOG[favFoodKey] || PET_FOODS_CATALOG['001-carrot'];
+  const ownedCount = (state.pets.inventory && state.pets.inventory[favFoodKey]) || 0;
+
+  // Header Details
+  if (previewImg) previewImg.src = `assets/Animals/Previews/animal-${pet.species}.png`;
+  if (nameLabel) nameLabel.textContent = `${pet.nickname} the ${speciesDef.name}`;
+  if (speciesLabel) speciesLabel.textContent = `${stageDef.name} Stage • ${speciesDef.tagline}`;
+  if (stagePill) stagePill.textContent = `Stage ${currentStage} of 5 (${stageDef.name})`;
+
+  // Vitality Meter
+  const vit = Math.max(0, Math.min(100, pet.vitality || 0));
+  if (vitalityPctLabel) vitalityPctLabel.textContent = `${vit}%`;
+  if (vitalityBar) {
+    vitalityBar.style.width = `${vit}%`;
+    if (vit < 15) {
+      vitalityBar.className = 'h-full bg-rose-600 rounded-full transition-all duration-300';
+    } else if (vit < 40) {
+      vitalityBar.className = 'h-full bg-amber-500 rounded-full transition-all duration-300';
+    } else {
+      vitalityBar.className = 'h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-300';
+    }
+  }
+
+  // Sickness & Death States + Centered Health Status with Matching Card Outline
+  if (vit === 0) {
+    pet.isDead = true;
+    pet.isSick = false;
+    if (deathAlert) deathAlert.classList.remove('hidden');
+    if (sickAlert) sickAlert.classList.add('hidden');
+    if (vitalityIcon) vitalityIcon.textContent = '💀';
+    if (healthStateText) {
+      healthStateText.textContent = 'Collapsed from neglect (Needs Revival)';
+      healthStateText.className = 'font-display font-black text-xs tracking-wide px-3.5 py-1 rounded-full text-center bg-rose-100 dark:bg-rose-950/90 text-rose-700 dark:text-rose-300 border border-rose-400 shadow-xs transition-all';
+    }
+    if (vitalityCard) {
+      vitalityCard.className = 'space-y-2.5 bg-white dark:bg-slate-900 p-4 rounded-2xl border-2 border-rose-500 ring-2 ring-rose-400/40 shadow-md shadow-rose-500/10 transition-all duration-300';
+    }
+    if (moodEmoji) moodEmoji.textContent = '💀';
+    if (moodLabel) moodLabel.textContent = 'Collapsed / Needs Medicine';
+  } else if (vit < 15) {
+    pet.isSick = true;
+    pet.isDead = false;
+    if (sickAlert) sickAlert.classList.remove('hidden');
+    if (deathAlert) deathAlert.classList.add('hidden');
+    if (vitalityIcon) vitalityIcon.textContent = '🤒';
+    if (healthStateText) {
+      healthStateText.textContent = 'Sick & Weak (<15% Vitality)';
+      healthStateText.className = 'font-display font-black text-xs tracking-wide px-3.5 py-1 rounded-full text-center bg-amber-100 dark:bg-amber-900/90 text-amber-800 dark:text-amber-200 border border-amber-400 shadow-xs transition-all';
+    }
+    if (vitalityCard) {
+      vitalityCard.className = 'space-y-2.5 bg-white dark:bg-slate-900 p-4 rounded-2xl border-2 border-amber-500 ring-2 ring-amber-400/40 shadow-md shadow-amber-500/20 animate-pulse transition-all duration-300';
+    }
+    if (moodEmoji) moodEmoji.textContent = '🤒';
+    if (moodLabel) moodLabel.textContent = 'Feeling Ill (Feed preferred food!)';
+  } else if (vit < 40) {
+    pet.isSick = false;
+    pet.isDead = false;
+    if (sickAlert) sickAlert.classList.add('hidden');
+    if (deathAlert) deathAlert.classList.add('hidden');
+    if (vitalityIcon) vitalityIcon.textContent = '⚠️';
+    if (healthStateText) {
+      healthStateText.textContent = 'Hungry & Low Energy';
+      healthStateText.className = 'font-display font-black text-xs tracking-wide px-3.5 py-1 rounded-full text-center bg-amber-50 dark:bg-amber-950/70 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700/60 shadow-xs transition-all';
+    }
+    if (vitalityCard) {
+      vitalityCard.className = 'space-y-2.5 bg-white dark:bg-slate-900 p-4 rounded-2xl border-2 border-amber-400/90 dark:border-amber-500/80 shadow-sm shadow-amber-500/10 transition-all duration-300';
+    }
+    if (moodEmoji) moodEmoji.textContent = '🍎';
+    if (moodLabel) moodLabel.textContent = 'Hungry for a snack';
+  } else {
+    pet.isSick = false;
+    pet.isDead = false;
+    if (sickAlert) sickAlert.classList.add('hidden');
+    if (deathAlert) deathAlert.classList.add('hidden');
+    if (vitalityIcon) vitalityIcon.textContent = '❤️';
+    const stateStr = vit > 75 ? 'Thriving & Energetic' : 'Healthy & Content';
+    if (healthStateText) {
+      healthStateText.textContent = stateStr;
+      healthStateText.className = 'font-display font-black text-xs tracking-wide px-3.5 py-1 rounded-full text-center bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-700/60 shadow-xs transition-all';
+    }
+    if (vitalityCard) {
+      vitalityCard.className = 'space-y-2.5 bg-white dark:bg-slate-900 p-4 rounded-2xl border-2 border-emerald-500/80 dark:border-emerald-500/70 shadow-sm shadow-emerald-500/10 transition-all duration-300';
+    }
+    if (moodEmoji) moodEmoji.textContent = vit > 75 ? '✨' : '❤️';
+    if (moodLabel) moodLabel.textContent = vit > 75 ? 'Joyful & Playful' : 'Content & Loved';
+  }
+
+  // Stage Growth (10h Focus = 600m)
+  const currentFocusMins = pet.stageFocusMinutes || 0;
+  const focusHours = (currentFocusMins / 60).toFixed(1);
+  const stagePct = Math.min(100, Math.round((currentFocusMins / 600) * 100));
+  if (focusHoursLabel) focusHoursLabel.textContent = `${focusHours}h / 10.0h`;
+  if (stageProgressBar) stageProgressBar.style.width = `${stagePct}%`;
+  if (stageTargetLabel) {
+    stageTargetLabel.textContent = currentStage < 4
+      ? `Next: Stage ${currentStage + 1} (${PET_STAGE_DEFINITIONS[currentStage].name})`
+      : 'Next: Stage 5 (Graduation to Playground!)';
+  }
+  const totalAccHours = (((currentStage - 1) * 600 + currentFocusMins) / 60).toFixed(1);
+  if (totalFocusAccLabel) totalFocusAccLabel.textContent = `Total: ${totalAccHours}h / 40.0h`;
+
+  // Feed Button
+  if (feedBtn) feedBtn.disabled = pet.isDead;
+  if (feedIcon) feedIcon.src = foodDef.icon;
+  if (feedText) feedText.textContent = `Feed ${foodDef.name} (+50%)`;
+  if (feedOwned) {
+    feedOwned.textContent = `Owned: ${ownedCount}`;
+    if (ownedCount === 0) {
+      feedOwned.className = 'px-2 py-0.5 rounded-full bg-rose-600 text-white font-mono text-[10px]';
+    } else {
+      feedOwned.className = 'px-2 py-0.5 rounded-full bg-slate-950 text-white font-mono text-[10px]';
+    }
+  }
+
+  // Render 3D Model or 2D with Hold-to-Rotate support
+  renderSanctuaryPet3D(pet);
+  setupSanctuaryHoldToRotate();
+}
+
+// -------------------------------------------------------------------------
+// 3D Engine: Sanctuary Pet Rendering with Three.js & Skeletal Animations
+// -------------------------------------------------------------------------
+let currentSanctuarySpecies = null;
+let sanctuaryHoldRotateBound = false;
+
+function renderSanctuaryPet3D(pet) {
+  const container = document.getElementById('sanctuaryPetGraphic');
+  if (!container) return;
+
+  if (!window.isThreeAvailable || !window.THREE || !window.GLTFLoader) {
+    renderSanctuary2DFallback(pet, container);
+    return;
+  }
+
+  if (currentSanctuarySpecies === pet.species && FlowPlanPet3D.sanctuary.model) {
+    updateSanctuary3DModelScale(pet);
+    return;
+  }
+
+  currentSanctuarySpecies = pet.species;
+  container.innerHTML = '';
+
+  const width = container.clientWidth || 320;
+  const height = container.clientHeight || 280;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(40, width / height, 0.1, 100);
+  camera.position.set(0, 1.8, 4.2);
+  camera.lookAt(0, 0.4, 0);
+
+  const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+  renderer.setSize(width, height);
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  container.appendChild(renderer.domElement);
+
+  // Lighting
+  const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+  scene.add(ambientLight);
+
+  const sunLight = new THREE.DirectionalLight(0xfff8e7, 1.8);
+  sunLight.position.set(3, 6, 4);
+  scene.add(sunLight);
+
+  const rimLight = new THREE.DirectionalLight(0x88ccff, 0.8);
+  rimLight.position.set(-3, 3, -3);
+  scene.add(rimLight);
+
+  // Soft shadow disc
+  const shadowGeo = new THREE.CircleGeometry(0.8, 32);
+  const shadowMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.18 });
+  const shadowMesh = new THREE.Mesh(shadowGeo, shadowMat);
+  shadowMesh.rotation.x = -Math.PI / 2;
+  shadowMesh.position.y = 0.02;
+  scene.add(shadowMesh);
+
+  // Load GLTF Model
+  const glbPath = `assets/Animals/Models/GLB format/animal-${pet.species}.glb`;
+  const loader = new GLTFLoader();
+
+  loader.load(
+    glbPath,
+    (gltf) => {
+      const model = gltf.scene;
+      FlowPlanPet3D.sanctuary.model = model;
+
+      const stageDef = PET_STAGE_DEFINITIONS[Math.max(0, Math.min(4, (pet.stage || 1) - 1))];
+      const speciesDef = PET_SPECIES_CATALOG[pet.species] || { scaleBase: 1.0 };
+      const scale = (speciesDef.scaleBase || 1.0) * (stageDef.scaleFactor || 1.0);
+      model.scale.set(scale, scale, scale);
+      model.position.set(0, 0, 0);
+      scene.add(model);
+
+      const mixer = new THREE.AnimationMixer(model);
+      FlowPlanPet3D.sanctuary.mixer = mixer;
+      FlowPlanPet3D.sanctuary.actions = {};
+
+      if (gltf.animations && gltf.animations.length > 0) {
+        gltf.animations.forEach((clip) => {
+          const action = mixer.clipAction(clip);
+          FlowPlanPet3D.sanctuary.actions[clip.name.toLowerCase()] = action;
+        });
+
+        const initialClip = pet.isDead ? 'gesture-negative' : pet.isSick ? 'gesture-negative' : 'idle';
+        playSanctuaryAction(initialClip);
+      }
+
+      FlowPlanPet3D.sanctuary.renderer = renderer;
+      FlowPlanPet3D.sanctuary.scene = scene;
+      FlowPlanPet3D.sanctuary.camera = camera;
+      FlowPlanPet3D.sanctuary.clock = new THREE.Clock();
+
+      startSanctuaryAnimationLoop();
+    },
+    undefined,
+    (err) => {
+      console.warn('Failed to load 3D GLB model, falling back to 2D:', err);
+      renderSanctuary2DFallback(pet, container);
+    }
+  );
+}
+
+function updateSanctuary3DModelScale(pet) {
+  const model = FlowPlanPet3D.sanctuary.model;
+  if (!model) return;
+  const stageDef = PET_STAGE_DEFINITIONS[Math.max(0, Math.min(4, (pet.stage || 1) - 1))];
+  const speciesDef = PET_SPECIES_CATALOG[pet.species] || { scaleBase: 1.0 };
+  const scale = (speciesDef.scaleBase || 1.0) * (stageDef.scaleFactor || 1.0);
+  model.scale.set(scale, scale, scale);
+
+  if (pet.isDead) {
+    model.rotation.z = Math.PI / 2;
+    model.position.y = 0.2;
+  } else {
+    model.rotation.z = 0;
+    model.position.y = 0;
+  }
+}
+
+function playSanctuaryAction(clipName, duration = null) {
+  const sanctuary = FlowPlanPet3D.sanctuary;
+  if (!sanctuary.mixer || !sanctuary.actions) return;
+
+  const nextAction = sanctuary.actions[clipName.toLowerCase()] || sanctuary.actions['idle'];
+  if (!nextAction) return;
+
+  if (sanctuary.activeAction && sanctuary.activeAction !== nextAction) {
+    sanctuary.activeAction.fadeOut(0.25);
+  }
+
+  nextAction.reset().fadeIn(0.25).play();
+  sanctuary.activeAction = nextAction;
+
+  if (duration && duration > 0) {
+    setTimeout(() => {
+      if (sanctuary.activeAction === nextAction) {
+        playSanctuaryAction('idle');
+      }
+    }, duration);
+  }
+}
+
+function startSanctuaryAnimationLoop() {
+  const sanctuary = FlowPlanPet3D.sanctuary;
+  if (sanctuary.animFrameId) cancelAnimationFrame(sanctuary.animFrameId);
+
+  let nextWaypointTime = Date.now() + 3000;
+  let targetX = 0;
+  let targetZ = 0;
+  let isMoving = false;
+
+  function loop() {
+    sanctuary.animFrameId = requestAnimationFrame(loop);
+    if (!sanctuary.clock || !sanctuary.renderer || !sanctuary.scene || !sanctuary.camera) return;
+
+    const delta = sanctuary.clock.getDelta();
+    if (sanctuary.mixer) sanctuary.mixer.update(delta);
+
+    // Autonomous wandering between waypoints (paused during user manual rotation)
+    const model = sanctuary.model;
+    const pet = state.pets && state.pets.sanctuaryPet;
+    if (model && pet && !pet.isDead && !sanctuary.userRotating) {
+      const now = Date.now();
+      if (!isMoving && now >= nextWaypointTime) {
+        targetX = (Math.random() - 0.5) * 1.6;
+        targetZ = (Math.random() - 0.5) * 1.2;
+        isMoving = true;
+        playSanctuaryAction('walk');
+      }
+
+      if (isMoving) {
+        const dx = targetX - model.position.x;
+        const dz = targetZ - model.position.z;
+        const dist = Math.sqrt(dx * dx + dz * dz);
+
+        if (dist > 0.05) {
+          const targetAngle = Math.atan2(dx, dz);
+          model.rotation.y = THREE.MathUtils.lerp(model.rotation.y, targetAngle, 0.1);
+          model.position.x += (dx / dist) * delta * 0.8;
+          model.position.z += (dz / dist) * delta * 0.8;
+        } else {
+          isMoving = false;
+          nextWaypointTime = now + 3500 + Math.random() * 4000;
+          playSanctuaryAction(pet.isSick ? 'gesture-negative' : 'idle');
+        }
+      }
+    }
+
+    sanctuary.renderer.render(sanctuary.scene, sanctuary.camera);
+  }
+
+  loop();
+}
+
+// Hold-to-Rotate Interaction for Sanctuary Pet
+let sanctuary2DAngle = 0;
+
+function setupSanctuaryHoldToRotate() {
+  if (sanctuaryHoldRotateBound) return;
+  sanctuaryHoldRotateBound = true;
+
+  const viewport = document.getElementById('sanctuary3DViewport');
+  if (!viewport) return;
+
+  viewport.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    const startX = e.clientX;
+    let hasDragged = false;
+    const initialRot = FlowPlanPet3D.sanctuary.model
+      ? FlowPlanPet3D.sanctuary.model.rotation.y
+      : sanctuary2DAngle;
+
+    FlowPlanPet3D.sanctuary.userRotating = true;
+    viewport.classList.add('cursor-grabbing');
+
+    function onPointerMove(moveEvent) {
+      const deltaX = moveEvent.clientX - startX;
+      if (Math.abs(deltaX) > 4) {
+        hasDragged = true;
+        if (FlowPlanPet3D.sanctuary.model) {
+          FlowPlanPet3D.sanctuary.model.rotation.y = initialRot + deltaX * 0.02;
+        } else {
+          sanctuary2DAngle = initialRot + deltaX * 1.5;
+          const img = document.getElementById('pet2DGraphicImg');
+          if (img) img.style.transform = `scale(var(--pet-scale, 1)) rotateY(${sanctuary2DAngle}deg)`;
+        }
+      }
+    }
+
+    function onPointerUp() {
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+      FlowPlanPet3D.sanctuary.userRotating = false;
+      viewport.classList.remove('cursor-grabbing');
+
+      if (!hasDragged) {
+        petActiveSanctuaryAnimal();
+      }
+    }
+
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+  });
+}
+
+// 2D High-Res Fallback for Sanctuary Pet
+function renderSanctuary2DFallback(pet, container) {
+  const speciesDef = PET_SPECIES_CATALOG[pet.species] || PET_SPECIES_CATALOG.bunny;
+  const stageDef = PET_STAGE_DEFINITIONS[Math.max(0, Math.min(4, (pet.stage || 1) - 1))];
+  const scale = (speciesDef.scaleBase || 1.0) * (stageDef.scaleFactor || 1.0);
+
+  container.innerHTML = `
+    <div class="relative flex flex-col items-center justify-center p-4">
+      <img
+        id="pet2DGraphicImg"
+        src="assets/Animals/Previews/animal-${pet.species}.png"
+        alt="${pet.nickname}"
+        class="w-36 h-36 object-contain filter drop-shadow-xl transition-transform duration-200 ${pet.isDead ? 'rotate-90 opacity-60' : pet.isSick ? 'hue-rotate-90 animate-pulse' : 'hover:scale-105'}"
+        style="--pet-scale: ${scale}; transform: scale(${scale}) rotateY(${sanctuary2DAngle}deg);"
+      />
+      <div class="w-32 h-4 rounded-full bg-slate-900/10 dark:bg-black/40 blur-sm mt-1"></div>
+    </div>
+  `;
+}
+
+// -------------------------------------------------------------------------
+// Reworked Petting Animation & Care Actions
+// -------------------------------------------------------------------------
+function petActiveSanctuaryAnimal() {
+  ensurePetsState();
+  const pet = state.pets.sanctuaryPet;
+  if (!pet) {
+    openAdoptPetModal();
+    return;
+  }
+
+  if (pet.isDead) {
+    showToast('Your pet has collapsed from neglect! Revive with medicine first.');
+    return;
+  }
+
+  // +1% Vitality
+  pet.vitality = Math.min(100, (pet.vitality || 0) + 1);
+  if (pet.vitality >= 15 && pet.isSick) {
+    pet.isSick = false;
+    showToast(`❤️ ${pet.nickname} recovered from sickness with your affection!`);
+  } else {
+    showToast(`🐾 Petted ${pet.nickname}! (+1% Vitality)`);
+  }
+
+  pet.totalPets = (pet.totalPets || 0) + 1;
+
+  // 1. 3D Model: Playful celebratory dance & spin
+  if (FlowPlanPet3D.sanctuary.model) {
+    playSanctuaryAction('dance', 2400);
+    // Smooth 360 celebratory spin
+    const targetRot = FlowPlanPet3D.sanctuary.model.rotation.y + Math.PI * 2;
+    let spinStart = performance.now();
+    function spinStep(now) {
+      const elapsed = (now - spinStart) / 600;
+      if (elapsed < 1 && FlowPlanPet3D.sanctuary.model) {
+        FlowPlanPet3D.sanctuary.model.rotation.y = THREE.MathUtils.lerp(FlowPlanPet3D.sanctuary.model.rotation.y, targetRot, 0.18);
+        requestAnimationFrame(spinStep);
+      }
+    }
+    requestAnimationFrame(spinStep);
+  }
+
+  // 2. 2D Avatar: Elastic bounce pop
+  const img2D = document.getElementById('pet2DGraphicImg');
+  if (img2D) {
+    img2D.style.transition = 'transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1)';
+    img2D.style.transform = 'scale(1.3) translateY(-20px)';
+    setTimeout(() => {
+      img2D.style.transform = 'scale(0.95) translateY(4px)';
+      setTimeout(() => {
+        img2D.style.transform = 'scale(1) translateY(0)';
+      }, 150);
+    }, 180);
+  }
+
+  // 3. Radial Heart Burst Fountain
+  spawnPettingHeartFountain();
+
+  // 4. Dual-tone Joyful Sound
+  playPetHappyChime();
+
+  saveState();
+  renderSanctuarySection();
+}
+
+function feedActiveSanctuaryAnimal() {
+  ensurePetsState();
+  const pet = state.pets.sanctuaryPet;
+  if (!pet) {
+    openAdoptPetModal();
+    return;
+  }
+
+  if (pet.isDead) {
+    showToast('Your pet has collapsed! Revive with medicine first.');
+    return;
+  }
+
+  const speciesDef = PET_SPECIES_CATALOG[pet.species] || PET_SPECIES_CATALOG.bunny;
+  const preferredFoodKey = speciesDef.favoriteFood || '001-carrot';
+  const foodDef = PET_FOODS_CATALOG[preferredFoodKey] || PET_FOODS_CATALOG['001-carrot'];
+
+  let foodUsed = preferredFoodKey;
+  if (!state.pets.inventory[preferredFoodKey] || state.pets.inventory[preferredFoodKey] <= 0) {
+    if (state.pets.inventory['015-berries'] && state.pets.inventory['015-berries'] > 0) {
+      foodUsed = '015-berries';
+    } else {
+      showToast(`Out of ${foodDef.name}! Opening Pet Shop...`);
+      openPetShopModal();
+      return;
+    }
+  }
+
+  state.pets.inventory[foodUsed] -= 1;
+  pet.vitality = Math.min(100, (pet.vitality || 0) + 50);
+  pet.totalFeeds = (pet.totalFeeds || 0) + 1;
+
+  if (pet.vitality >= 15 && pet.isSick) {
+    pet.isSick = false;
+    showToast(`🎉 Cured! ${pet.nickname} is well-fed and healthy again! (+50% Vitality)`);
+  } else {
+    showToast(`Delicious! Fed ${foodDef.name} to ${pet.nickname} (+50% Vitality)`);
+  }
+
+  playSanctuaryAction('eat', 2500);
+  spawnSanctuaryBurstParticles('✨');
+  playPetHappyChime();
+
+  saveState();
+  renderSanctuarySection();
+}
+
+function revivePetWithMedicine() {
+  ensurePetsState();
+  const pet = state.pets.sanctuaryPet;
+  if (!pet || !pet.isDead) return;
+
+  const cost = 3;
+  if (state.pets.coins >= cost) {
+    state.pets.coins -= cost;
+  } else {
+    state.pets.coins = 0;
+  }
+
+  pet.isDead = false;
+  pet.isSick = false;
+  pet.vitality = 30;
+  state.pets.lastVitalityDecayTime = Date.now();
+
+  playSanctuaryAction('dance', 2500);
+  spawnSanctuaryBurstParticles('❤️');
+  showToast(`❤️ Revived! ${pet.nickname} is back on their feet. Remember to feed them!`);
+
+  saveState();
+  renderSanctuarySection();
+}
+
+// -------------------------------------------------------------------------
+// Pet Food Shop Modal & Buying
+// -------------------------------------------------------------------------
+function openPetShopModal() {
+  ensurePetsState();
+  const modal = document.getElementById('petShopModal');
+  if (modal) modal.classList.remove('hidden');
+  renderPetShopCards();
+}
+
+function closePetShopModal() {
+  const modal = document.getElementById('petShopModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function renderPetShopCards() {
+  ensurePetsState();
+  const grid = document.getElementById('petShopFoodGrid');
+  if (!grid) return;
+
+  const coins = state.pets.coins || 0;
+  const modalBal = document.getElementById('petShopModalBalance');
+  if (modalBal) modalBal.textContent = coins;
+
+  grid.innerHTML = Object.keys(PET_FOODS_CATALOG).map((fKey) => {
+    const food = PET_FOODS_CATALOG[fKey];
+    const owned = (state.pets.inventory && state.pets.inventory[fKey]) || 0;
+    const canAfford = coins >= food.price;
+    const petList = food.pets || [];
+
+    // Minimized preview icons of animals that love this food (enlarged for easy visibility)
+    const petsHtml = petList.map(spId => {
+      if (spId === 'all') {
+        return `<span class="px-2.5 py-1 rounded-full bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-200 text-xs font-black tracking-wide border border-amber-300 dark:border-amber-700 shadow-xs">⭐ All Animals</span>`;
+      }
+      const pDef = PET_SPECIES_CATALOG[spId];
+      if (!pDef) return '';
+      return `<img src="assets/Animals/Previews/animal-${spId}.png" alt="${pDef.name}" class="w-9 h-9 rounded-full bg-slate-100 dark:bg-slate-800 p-1 border-2 border-slate-300 dark:border-slate-600 object-contain shadow-sm hover:scale-115 transition-transform" title="${pDef.name}" />`;
+    }).join('');
+
+    return `
+      <div class="p-4 rounded-3xl bg-white dark:bg-slate-900 border-2 border-slate-200/90 dark:border-slate-800 flex flex-col justify-between space-y-3 hover:border-amber-400 dark:hover:border-amber-500 hover:shadow-lg transition-all group">
+        <div class="flex items-start gap-3.5">
+          <div class="w-16 h-16 rounded-2xl bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 p-2 flex items-center justify-center shrink-0 drop-shadow group-hover:scale-105 transition-transform">
+            <img src="${food.icon}" alt="${food.name}" class="w-12 h-12 object-contain" />
+          </div>
+          <div class="space-y-1 min-w-0 flex-1">
+            <h4 class="text-sm font-black text-slate-900 dark:text-white truncate">${food.name}</h4>
+            <div class="flex items-center gap-1.5 flex-wrap pt-0.5">
+              ${petsHtml}
+            </div>
+            <p class="text-[11px] text-slate-400 dark:text-slate-500 leading-snug pt-0.5 line-clamp-2">${food.description}</p>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between pt-2.5 border-t border-slate-100 dark:border-slate-800">
+          <div class="flex items-center gap-1.5">
+            <span class="text-sm font-black text-slate-900 dark:text-white flex items-center gap-1">
+              <img src="assets/Icons/money.png" alt="Coin" class="w-4 h-4 object-contain inline-block" />
+              <span>${food.price}</span>
+            </span>
+            <span class="text-[11px] font-bold text-slate-400 dark:text-slate-500">(${owned} owned)</span>
+          </div>
+
+          <button
+            type="button"
+            onclick="buyPetFood('${food.id}')"
+            ${!canAfford ? 'disabled' : ''}
+            class="px-4 py-2 rounded-xl text-xs font-black transition flex items-center gap-1.5 ${canAfford ? 'bg-amber-500 hover:bg-amber-400 active:scale-95 text-slate-950 shadow-sm' : 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-600 cursor-not-allowed opacity-60'}"
+          >
+            <span>Buy</span>
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function buyPetFood(foodId) {
+  ensurePetsState();
+  const food = PET_FOODS_CATALOG[foodId];
+  if (!food) return;
+
+  if (state.pets.coins < food.price) {
+    showToast(`Need ${food.price} coins! Focus 30 minutes to earn coins.`);
+    return;
+  }
+
+  state.pets.coins -= food.price;
+  if (!state.pets.inventory) state.pets.inventory = {};
+  state.pets.inventory[foodId] = (Number(state.pets.inventory[foodId]) || 0) + 1;
+
+  playPetCoinChime();
+  showToast(`Purchased ${food.name}! (Owned: ${state.pets.inventory[foodId]})`);
+
+  saveState();
+  renderPetShopCards();
+  renderPetsView();
+}
+
+// -------------------------------------------------------------------------
+// Adoption Modal (24 Cube Pets Menagerie)
+// -------------------------------------------------------------------------
+function openAdoptPetModal() {
+  ensurePetsState();
+  const modal = document.getElementById('adoptPetModal');
+  if (modal) modal.classList.remove('hidden');
+  renderAdoptPetCards();
+}
+
+function closeAdoptPetModal() {
+  const modal = document.getElementById('adoptPetModal');
+  if (modal) modal.classList.add('hidden');
+}
+
+function renderAdoptPetCards() {
+  ensurePetsState();
+  const grid = document.getElementById('adoptPetModalGrid');
+  if (!grid) return;
+
+  const currentPet = state.pets.sanctuaryPet;
+  const activeSpecies = currentPet ? currentPet.species : null;
+
+  grid.innerHTML = Object.keys(PET_SPECIES_CATALOG).map((sKey) => {
+    const sp = PET_SPECIES_CATALOG[sKey];
+    const isCurrent = activeSpecies === sKey;
+    const favFood = PET_FOODS_CATALOG[sp.favoriteFood] || PET_FOODS_CATALOG['001-carrot'];
+
+    return `
+      <div class="p-4 rounded-3xl ${isCurrent ? 'bg-emerald-50/90 dark:bg-emerald-950/40 border-2 border-emerald-500 shadow-md' : 'bg-white dark:bg-slate-900 border-2 border-slate-200/90 dark:border-slate-800'} flex flex-col justify-between space-y-3 transition shadow-sm hover:border-emerald-400 dark:hover:border-emerald-600 group">
+        <div class="flex items-center gap-3">
+          <div class="relative shrink-0">
+            <img src="assets/Animals/Previews/animal-${sp.id}.png" alt="${sp.name}" class="w-14 h-14 object-contain rounded-2xl bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-1.5 drop-shadow group-hover:scale-105 transition-transform" />
+            <!-- Minimized food icon badge without text -->
+            <div class="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-white dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-600 p-0.5 shadow-sm flex items-center justify-center" title="Favorite: ${favFood.name}">
+              <img src="${favFood.icon}" alt="Food" class="w-5 h-5 object-contain" />
+            </div>
+          </div>
+          <div class="min-w-0 flex-1">
+            <h4 class="text-sm font-black text-slate-900 dark:text-white truncate">${sp.name}</h4>
+            <p class="text-[10px] text-slate-400 dark:text-slate-500 leading-tight mt-0.5 line-clamp-2">${sp.tagline}</p>
+          </div>
+        </div>
+
+        <div class="space-y-1 pt-1">
+          <input
+            type="text"
+            id="adoptNickname_${sp.id}"
+            value="${isCurrent && currentPet ? escapeHtml(currentPet.nickname) : sp.defaultNickname}"
+            placeholder="Nickname..."
+            class="w-full px-2.5 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          />
+        </div>
+
+        <button
+          type="button"
+          onclick="selectCompanionSpecies('${sp.id}')"
+          class="w-full py-2 rounded-xl text-xs font-black transition flex items-center justify-center gap-1.5 ${isCurrent ? 'bg-emerald-700 text-white shadow' : 'bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white shadow-sm'}"
+        >
+          <span>${isCurrent ? '✓ Active in Sanctuary' : 'Adopt Companion'}</span>
+        </button>
+      </div>
+    `;
+  }).join('');
+}
+
+function selectCompanionSpecies(speciesId) {
+  ensurePetsState();
+  const sp = PET_SPECIES_CATALOG[speciesId];
+  if (!sp) return;
+
+  const nickInput = document.getElementById(`adoptNickname_${speciesId}`);
+  const nickname = (nickInput && nickInput.value.trim()) || sp.defaultNickname;
+
+  state.pets.sanctuaryPet = {
+    species: speciesId,
+    nickname: nickname,
+    stage: 1,
+    stageFocusMinutes: 0,
+    vitality: 100,
+    isSick: false,
+    isDead: false,
+    adoptedAt: getTodayISO(),
+    totalPets: 0,
+    totalFeeds: 0
+  };
+  state.pets.lastVitalityDecayTime = Date.now();
+
+  currentSanctuarySpecies = null;
+  saveState();
+  closeAdoptPetModal();
+  renderPetsView();
+  showToast(`Adopted ${nickname} the ${sp.name}! Care for them as you focus.`);
+  playPetHappyChime();
+}
+
+// -------------------------------------------------------------------------
+// Visual Particle Bursts & Floating Emojis
+// -------------------------------------------------------------------------
+function spawnPettingHeartFountain() {
+  const layer = document.getElementById('sanctuaryEffectLayer');
+  if (!layer) return;
+
+  const emojis = ['❤️', '💖', '✨', '💕', '⭐', '🌸', '🥰'];
+
+  for (let i = 0; i < 9; i++) {
+    const el = document.createElement('div');
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.className = 'absolute pointer-events-none select-none';
+    const startX = 45 + (Math.random() - 0.5) * 15;
+    const startY = 48 + (Math.random() - 0.5) * 15;
+    el.style.left = `${startX}%`;
+    el.style.top = `${startY}%`;
+    el.style.fontSize = `${16 + Math.random() * 14}px`;
+    el.style.opacity = '1';
+    el.style.transition = 'transform 1s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 1s ease-out';
+    el.style.transform = 'translate(0, 0) scale(0.6)';
+    layer.appendChild(el);
+
+    const targetX = (Math.random() - 0.5) * 110;
+    const targetY = -70 - Math.random() * 60;
+
+    setTimeout(() => {
+      el.style.transform = `translate(${targetX}px, ${targetY}px) scale(1.3)`;
+      el.style.opacity = '0';
+    }, 25);
+
+    setTimeout(() => {
+      el.remove();
+    }, 1100);
+  }
+}
+
+function spawnSanctuaryBurstParticles(emoji = '✨') {
+  const layer = document.getElementById('sanctuaryEffectLayer');
+  if (!layer) return;
+
+  for (let i = 0; i < 6; i++) {
+    const el = document.createElement('div');
+    el.textContent = emoji;
+    el.className = 'absolute pointer-events-none text-xl sm:text-2xl transition-all select-none';
+    el.style.left = `${30 + Math.random() * 40}%`;
+    el.style.top = `${40 + Math.random() * 30}%`;
+    el.style.opacity = '1';
+    el.style.transform = 'translateY(0) scale(0.8)';
+    layer.appendChild(el);
+
+    setTimeout(() => {
+      el.style.transform = `translateY(-${60 + Math.random() * 40}px) scale(1.3)`;
+      el.style.opacity = '0';
+    }, 30);
+
+    setTimeout(() => {
+      el.remove();
+    }, 1100);
+  }
+}
+
+// -------------------------------------------------------------------------
+// Sound Chimes for Pet Interactions
+// -------------------------------------------------------------------------
+function playPetHappyChime() {
+  if (state.soundMuted) return;
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+    osc.frequency.exponentialRampToValueAtTime(880.00, ctx.currentTime + 0.15); // A5
+    osc.frequency.exponentialRampToValueAtTime(1046.50, ctx.currentTime + 0.28); // C6
+    gain.gain.setValueAtTime(0.09, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.41);
+  } catch (e) {}
+}
+
+function playPetCoinChime() {
+  if (state.soundMuted) return;
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    if (!AudioCtx) return;
+    const ctx = new AudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(987.77, ctx.currentTime); // B5
+    osc.frequency.setValueAtTime(1318.51, ctx.currentTime + 0.08); // E6
+    gain.gain.setValueAtTime(0.1, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.41);
+  } catch (e) {}
+}
+
+window.onThreeReady = function() {
+  if (state.mainView === 'pets') {
+    renderPetsView();
+  }
+};
 
     // =========================================================================
     // MASTER RENDER & INITIALIZATION
@@ -6388,6 +9807,7 @@
       renderWeeklyView();
       renderMonthlyView();
       renderPrayerTimesCard();
+      renderPetsView();
     }
 
     function applyFullStateToUI() {
@@ -6419,6 +9839,7 @@
       switchMainView(state.mainView || 'daily');
       updateClockUI();
       renderPrayerTimesCard();
+      setupDevModeUI();
     }
 
     window.addEventListener('beforeunload', () => {

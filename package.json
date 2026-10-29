@@ -1,10 +1,15 @@
 {
   "name": "flowplan-desktop",
   "productName": "FlowPlan",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "FlowPlan — Daily, Weekly & Monthly Planner with Focus & Pomodoro Timer",
   "main": "main.js",
   "scripts": {
+    "clean": "node -e \"try { require('fs').rmSync('dist', { recursive: true, force: true }); } catch (e) {}\"",
+    "predist": "npm run clean",
+    "predist:win": "npm run clean",
+    "dev": "electron . --dev",
+    "start:dev": "electron . --dev",
     "start": "electron .",
     "dist": "electron-builder",
     "dist:win": "electron-builder --win",
@@ -17,7 +22,9 @@
     "files": [
       "daily_weekly_planner.html",
       "main.js",
-      "package.json"
+      "package.json",
+      "assets/**/*",
+      "node_modules/three/**/*"
     ],
     "win": {
       "target": [
@@ -50,6 +57,7 @@
     "electron-builder": "^25.1.8"
   },
   "dependencies": {
-    "electron-updater": "^6.8.11"
+    "electron-updater": "^6.8.11",
+    "three": "^0.186.1"
   }
 }

@@ -93,13 +93,28 @@ const initAutoUpdater = () => {
 app.commandLine.appendSwitch('disable-background-timer-throttling');
 app.commandLine.appendSwitch('disable-renderer-backgrounding');
 
-const getStateFilePath = () => path.join(app.getPath('userData'), 'flowplan-desktop-data.json');
+// Explicit Dev Mode detection: true when running via 'npm run dev', --dev argument, or unpacked during development
+const isDevMode = !app.isPackaged || process.argv.includes('--dev') || process.env.FLOWPLAN_DEV === '1';
+
+// Isolate dev data from production: dev tests write to flowplan-desktop-data-dev.json
+const getStateFilePath = () => {
+  const fileName = isDevMode ? 'flowplan-desktop-data-dev.json' : 'flowplan-desktop-data.json';
+  return path.join(app.getPath('userData'), fileName);
+};
 
 const loadStateSync = () => {
   try {
     const filePath = getStateFilePath();
     if (fs.existsSync(filePath)) {
       return fs.readFileSync(filePath, 'utf-8');
+    } else if (isDevMode) {
+      // In dev mode, initialize first run from production data if available so testing starts with realistic content
+      const prodPath = path.join(app.getPath('userData'), 'flowplan-desktop-data.json');
+      if (fs.existsSync(prodPath)) {
+        const prodData = fs.readFileSync(prodPath, 'utf-8');
+        fs.writeFileSync(filePath, prodData, 'utf-8');
+        return prodData;
+      }
     }
   } catch (err) {
     console.error('Failed to read desktop state file:', err);
@@ -248,6 +263,8 @@ const ensurePreloadFile = (initialStateJson) => {
     const { contextBridge, ipcRenderer } = require('electron');
     const cachedInitialState = ${JSON.stringify(initialStateJson)};
     contextBridge.exposeInMainWorld('electronDesktopAPI', {
+      isPackaged: ${Boolean(app.isPackaged)},
+      isDev: ${Boolean(isDevMode)},
       loadStateSync: () => {
         try {
           const latest = ipcRenderer.sendSync('flowplan:load-state-sync');
@@ -326,7 +343,9 @@ function createMainWindow() {
     height: 880,
     minWidth: 940,
     minHeight: 640,
-    title: 'FlowPlan — Daily, Weekly & Monthly Focus Planner',
+    title: isDevMode
+      ? 'FlowPlan [DEV BUILD] — Isolated Test Sandbox'
+      : 'FlowPlan — Daily, Weekly & Monthly Focus Planner',
     backgroundColor: '#090d16',
     show: false,
     autoHideMenuBar: false,

@@ -2663,7 +2663,7 @@
   </div>
 
   <!-- Floating Dev Mode Badge & Dev Superpowers Panel (Strictly removed in production builds) -->
-  <div id="devModeBadgeBtn" class="fixed bottom-4 left-4 z-40">
+  <div id="devModeBadgeBtn" class="fixed bottom-4 left-4 z-40 hidden">
     <button
       type="button"
       onclick="toggleDevToolbar()"
@@ -3036,6 +3036,16 @@
       window.location.search.includes('dev=1') ||
       window.location.search.includes('dev=true')
     );
+
+    // Immediate removal of developer tools in production builds
+    if (!IS_DEV_MODE) {
+      try {
+        const b = document.getElementById('devModeBadgeBtn');
+        if (b) b.remove();
+        const p = document.getElementById('devSuperpowersPanel');
+        if (p) p.remove();
+      } catch (e) {}
+    }
 
     // Seamless unified storage so dev mode and production are ALWAYS 100% in sync
     const STORAGE_KEY = 'flowplan_clean_v4_state';
@@ -7583,7 +7593,7 @@ function ensurePetsState() {
 }
 
 // -------------------------------------------------------------------------
-// Sanctuary Vitality Health Decay: -2% Every 5 Minutes
+// Sanctuary Vitality Health Decay: -1% Every 20 Minutes
 // -------------------------------------------------------------------------
 function checkSanctuaryVitalityDecay(save = true) {
   if (!state || !state.pets) return false;
@@ -7597,12 +7607,12 @@ function checkSanctuaryVitalityDecay(save = true) {
     return false;
   }
 
-  const INTERVAL_MS = 5 * 60 * 1000; // 5 minutes in milliseconds
+  const INTERVAL_MS = 20 * 60 * 1000; // 20 minutes in milliseconds
   const elapsed = now - state.pets.lastVitalityDecayTime;
 
   if (elapsed >= INTERVAL_MS) {
     const ticks = Math.floor(elapsed / INTERVAL_MS);
-    const decayAmount = ticks * 2; // 2% per 5 minutes
+    const decayAmount = ticks * 1; // 1% per 20 minutes
     state.pets.lastVitalityDecayTime += ticks * INTERVAL_MS;
 
     pet.vitality = Math.max(0, Math.min(100, (Number(pet.vitality) || 0) - decayAmount));
@@ -7683,7 +7693,7 @@ function addPetFocusMinutesInternal(mins) {
   if (pet && !pet.isDead) {
     pet.stageFocusMinutes = (Number(pet.stageFocusMinutes) || 0) + mins;
 
-    // Check real-time vitality health decay (-2% every 5 minutes)
+    // Check real-time vitality health decay (-1% every 20 minutes)
     checkSanctuaryVitalityDecay(false);
 
     // Check Stage Up (600 minutes = 10 hours)
@@ -10013,6 +10023,15 @@ window.onThreeReady = function() {
           window.electronDesktopAPI.onAlwaysOnTopChanged((flag) => {
             timer.isAlwaysOnTop = Boolean(flag);
             updateFullscreenToolbarUI();
+          });
+        }
+        if (typeof window.electronDesktopAPI.onUpdaterStatus === 'function') {
+          window.electronDesktopAPI.onUpdaterStatus((data) => {
+            if (data && data.status === 'available') {
+              showToast(`🚀 FlowPlan v${data.version} is downloading in background...`);
+            } else if (data && data.status === 'downloaded') {
+              showToast(`🎉 FlowPlan v${data.version} downloaded! Restart to apply.`);
+            }
           });
         }
       }

@@ -74,27 +74,139 @@ function applyAlwaysOnTopState(win, enable, notifyRenderer = true) {
   return isAlwaysOnTopActive;
 }
 
-const initAutoUpdater = () => {
-  if (!app.isPackaged) return;
+const logUpdater = (msg) => {
+  const timestamp = new Date().toISOString();
+  const line = `[${timestamp}] ${msg}\n`;
   try {
-    const { autoUpdater } = require('electron-updater');
-    autoUpdater.autoDownload = true;
-    autoUpdater.autoInstallOnAppQuit = true;
-    autoUpdater.checkForUpdatesAndNotify().catch((err) => {
-      console.log('Auto-update check:', err && err.message);
-    });
-  } catch (e) {
-    console.log('Failed to initialize auto-updater:', e && e.message);
-  }
+    const logPath = path.join(app.getPath('userData'), 'flowplan-updater.log');
+    fs.appendFileSync(logPath, line, 'utf-8');
+  } catch (e) {}
+  console.log('[AutoUpdater]', msg);
 };
 
+let autoUpdaterInstance = null;
+
+const initAutoUpdater = (mainWindow) => {
+  if (!app.isPackaged) {
+    logUpdater('Skipping auto-updater in unpackaged development mode');
+    return;
+  }
+  try {
+    const { autoUpdater } = require('electron-updater');
+    autoUpdaterInstance = autoUpdater;
+    autoUpdater.autoDownload = true;
+    autoUpdater.autoInstallOnAppQuit = true;
+    autoUpdater.disableDifferentialDownload = true; // Use full installer download for maximum reliability across devices
+
+    autoUpdater.logger = {
+      info: (msg) => logUpdater(typeof msg === 'object' ? JSON.stringify(msg) : String(msg)),
+      warn: (msg) => logUpdater('[WARN] ' + (typeof msg === 'object' ? JSON.stringify(msg) : String(msg))),
+      error: (msg) => logUpdater('[ERROR] ' + (typeof msg === 'object' ? JSON.stringify(msg) : String(msg))),
+      debug: () => {}
+    };
+
+    autoUpdater.on('checking-for-update', () => {
+      logUpdater('Checking for updates on GitHub (DrHamdii/FlowPlan)...');
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('flowplan:updater-status', { status: 'checking', text: 'Checking for updates...' });
+      }
+    });
+
+    autoUpdater.on('update-available', (info) => {
+      logUpdater(`Update available: v${info.version}`);
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('flowplan:updater-status', {
+          status: 'available',
+          version: info.version,
+          text: `Update v${info.version} is available and downloading...`
+        });
+      }
+    });
+
+    autoUpdater.on('update-not-available', (info) => {
+      logUpdater(`Application is up to date (current: v${app.getVersion()})`);
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('flowplan:updater-status', {
+          status: 'up-to-date',
+          version: app.getVersion(),
+          text: `FlowPlan is up to date (v${app.getVersion()}).`
+        });
+      }
+    });
+
+    autoUpdater.on('error', (err) => {
+      const errMsg = (err && err.message) || String(err);
+      logUpdater(`Auto-updater error: ${errMsg}`);
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('flowplan:updater-status', {
+          status: 'error',
+          error: errMsg,
+          text: `Update check error: ${errMsg}`
+        });
+      }
+    });
+
+    autoUpdater.on('download-progress', (progress) => {
+      const pct = Math.round(progress.percent || 0);
+      logUpdater(`Download progress: ${pct}%`);
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('flowplan:updater-status', {
+          status: 'downloading',
+          percent: pct,
+          text: `Downloading update: ${pct}%`
+        });
+      }
+    });
+
+    autoUpdater.on('update-downloaded', (info) => {
+      logUpdater(`Update v${info.version} successfully downloaded`);
+      if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.webContents.send('flowplan:updater-status', {
+          status: 'downloaded',
+          version: info.version,
+          text: `Update v${info.version} ready to install.`
+        });
+
+        dialog.showMessageBox(mainWindow, {
+          type: 'info',
+          buttons: ['Restart & Install Now', 'Later'],
+          defaultId: 0,
+          cancelId: 1,
+          title: 'Update Ready to Install',
+          message: `FlowPlan v${info.version} has been downloaded.`,
+          detail: 'Would you like to restart the application now to apply the update?'
+        }).then((res) => {
+          if (res.response === 0) {
+            autoUpdater.quitAndInstall(false, true);
+          }
+        });
+      }
+    });
+
+    // Check for updates on startup
+    autoUpdater.checkForUpdates().catch((err) => {
+      logUpdater(`Startup update check error: ${err && err.message}`);
+    });
+
+    // Periodic check every 4 hours while app remains running
+    setInterval(() => {
+      if (autoUpdaterInstance) {
+        autoUpdaterInstance.checkForUpdates().catch((err) => {
+          logUpdater(`Periodic update check error: ${err && err.message}`);
+        });
+      }
+    }, 4 * 60 * 60 * 1000);
+  } catch (e) {
+    logUpdater(`Failed to initialize auto-updater: ${e && e.message}`);
+  }
+};
 
 // Disable background throttling for instant response
 app.commandLine.appendSwitch('disable-background-timer-throttling');
 app.commandLine.appendSwitch('disable-renderer-backgrounding');
 
-// Explicit Dev Mode detection: true ONLY when running via 'npm run dev' (--dev argument) or FLOWPLAN_DEV=1
-const isDevMode = process.argv.includes('--dev') || process.env.FLOWPLAN_DEV === '1';
+// Explicit Dev Mode detection: true ONLY when running unpackaged via 'npm run dev' (--dev argument) or FLOWPLAN_DEV=1
+const isDevMode = !app.isPackaged && (process.argv.includes('--dev') || process.env.FLOWPLAN_DEV === '1');
 
 // Synchronized data engine: ensures dev and production files remain 100% in sync
 const getStateFilePath = () => {
@@ -204,6 +316,44 @@ ipcMain.on('flowplan:read-binary-file', (event, relativePath) => {
     console.warn('IPC read-binary-file error:', e);
   }
   event.returnValue = null;
+});
+
+ipcMain.on('flowplan:manual-check-updates', () => {
+  if (!app.isPackaged) {
+    if (mainWindowRef && !mainWindowRef.isDestroyed()) {
+      dialog.showMessageBox(mainWindowRef, {
+        type: 'info',
+        title: 'Check for Updates',
+        message: 'Auto-update is disabled in development mode.'
+      });
+    }
+    return;
+  }
+  if (autoUpdaterInstance) {
+    logUpdater('Manual update check requested by renderer');
+    autoUpdaterInstance.checkForUpdates().then((result) => {
+      if (!result || !result.updateInfo || result.updateInfo.version === app.getVersion()) {
+        if (mainWindowRef && !mainWindowRef.isDestroyed()) {
+          dialog.showMessageBox(mainWindowRef, {
+            type: 'info',
+            title: 'Check for Updates',
+            message: 'You have the latest version of FlowPlan!',
+            detail: `Current version: v${app.getVersion()}`
+          });
+        }
+      }
+    }).catch((err) => {
+      logUpdater(`Manual update error: ${err && err.message}`);
+      if (mainWindowRef && !mainWindowRef.isDestroyed()) {
+        dialog.showMessageBox(mainWindowRef, {
+          type: 'error',
+          title: 'Update Error',
+          message: 'Unable to check for updates.',
+          detail: ((err && err.message) || String(err)) + '\n\nMake sure your device has internet access and release artifacts are published on GitHub.'
+        });
+      }
+    });
+  }
 });
 
 ipcMain.handle('flowplan:export-data-dialog', async (event, serializedJson, suggestedFileName) => {
@@ -356,7 +506,12 @@ const ensurePreloadFile = (initialStateJson) => {
       onMenuImport: (callback) => {
         ipcRenderer.removeAllListeners('flowplan:menu-import');
         ipcRenderer.on('flowplan:menu-import', () => callback());
-      }
+      },
+      onUpdaterStatus: (callback) => {
+        ipcRenderer.removeAllListeners('flowplan:updater-status');
+        ipcRenderer.on('flowplan:updater-status', (_event, data) => callback(data));
+      },
+      checkForUpdates: () => ipcRenderer.send('flowplan:manual-check-updates')
     });
   `;
   fs.writeFileSync(preloadPath, preloadCode, 'utf-8');
@@ -393,8 +548,83 @@ function setupApplicationMenu(mainWindow) {
       ]
     },
     { role: 'editMenu' },
-    { role: 'viewMenu' },
-    { role: 'windowMenu' }
+    {
+      label: 'View',
+      submenu: isDevMode
+        ? [
+            { role: 'reload' },
+            { role: 'forceReload' },
+            { role: 'toggleDevTools' },
+            { type: 'separator' },
+            { role: 'resetZoom' },
+            { role: 'zoomIn' },
+            { role: 'zoomOut' },
+            { type: 'separator' },
+            { role: 'togglefullscreen' }
+          ]
+        : [
+            { role: 'resetZoom' },
+            { role: 'zoomIn' },
+            { role: 'zoomOut' },
+            { type: 'separator' },
+            { role: 'togglefullscreen' }
+          ]
+    },
+    { role: 'windowMenu' },
+    {
+      label: 'Help',
+      submenu: [
+        {
+          label: 'Check for Updates...',
+          click: () => {
+            if (!app.isPackaged) {
+              dialog.showMessageBox(mainWindow, {
+                type: 'info',
+                title: 'Check for Updates',
+                message: 'Auto-update is disabled in development mode.'
+              });
+              return;
+            }
+            if (autoUpdaterInstance) {
+              logUpdater('Manual check for updates triggered from Help menu');
+              dialog.showMessageBox(mainWindow, {
+                type: 'info',
+                title: 'Checking for Updates',
+                message: 'Checking GitHub for FlowPlan updates...'
+              });
+              autoUpdaterInstance.checkForUpdates().then((res) => {
+                if (!res || !res.updateInfo || res.updateInfo.version === app.getVersion()) {
+                  dialog.showMessageBox(mainWindow, {
+                    type: 'info',
+                    title: 'FlowPlan is Up to Date',
+                    message: `You are on the latest version of FlowPlan (v${app.getVersion()}).`
+                  });
+                }
+              }).catch((err) => {
+                dialog.showMessageBox(mainWindow, {
+                  type: 'error',
+                  title: 'Update Check Failed',
+                  message: 'Could not connect to update server.',
+                  detail: (err && err.message) || String(err)
+                });
+              });
+            }
+          }
+        },
+        { type: 'separator' },
+        {
+          label: `About FlowPlan (v${app.getVersion()})`,
+          click: () => {
+            dialog.showMessageBox(mainWindow, {
+              type: 'info',
+              title: 'About FlowPlan',
+              message: `FlowPlan v${app.getVersion()}`,
+              detail: 'Daily, Weekly & Monthly Focus Planner with Pet Sanctuary & Pomodoro Timer'
+            });
+          }
+        }
+      ]
+    }
   ];
 
   const menu = Menu.buildFromTemplate(template);
@@ -422,9 +652,23 @@ function createMainWindow() {
       nodeIntegration: false,
       sandbox: false,
       webSecurity: false,
-      backgroundThrottling: false
+      backgroundThrottling: false,
+      devTools: Boolean(isDevMode)
     }
   });
+
+  // Block developer tools shortcuts in production/installer builds
+  if (!isDevMode) {
+    mainWindow.webContents.on('before-input-event', (event, input) => {
+      const key = (input.key || '').toLowerCase();
+      if (
+        (input.control && input.shift && ['i', 'j', 'c'].includes(key)) ||
+        key === 'f12'
+      ) {
+        event.preventDefault();
+      }
+    });
+  }
 
   mainWindowRef = mainWindow;
   setupApplicationMenu(mainWindow);
@@ -514,7 +758,7 @@ function createMainWindow() {
 
 app.whenReady().then(() => {
   createMainWindow();
-  initAutoUpdater();
+  initAutoUpdater(mainWindowRef);
 
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {

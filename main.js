@@ -634,12 +634,18 @@ function setupApplicationMenu(mainWindow) {
 function createMainWindow() {
   const initialState = loadStateSync();
   const preloadPath = ensurePreloadFile(initialState);
+  const appIconPath = path.join(
+    __dirname,
+    'assets',
+    process.platform === 'win32' ? 'icon.ico' : 'icon.png'
+  );
 
   const mainWindow = new BrowserWindow({
     width: 1380,
     height: 880,
     minWidth: 940,
     minHeight: 640,
+    icon: appIconPath,
     title: isDevMode
       ? 'FlowPlan [DEV BUILD] — Isolated Test Sandbox'
       : 'FlowPlan — Daily, Weekly & Monthly Focus Planner',

@@ -2,8 +2,16 @@
 <html lang="en" class="h-full">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FlowPlan — Daily, Weekly & Monthly Planner with Focus Timer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>FlowPlan — Daily, Weekly & Monthly Focus Planner</title>
+  <link rel="icon" type="image/png" href="assets/speech-bubble.png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="FlowPlan" />
+  <meta name="theme-color" content="#4f46e5" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
@@ -1130,105 +1138,154 @@
     body.clock-mini-mode #fullscreenClockToolbar .fs-btn-label {
       display: none !important;
     }
+    /* Mobile & iOS PWA Safe Area Optimizations */
+    @supports (padding-top: env(safe-area-inset-top)) {
+      body {
+        padding-top: env(safe-area-inset-top);
+        padding-bottom: env(safe-area-inset-bottom);
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+      }
+    }
+    html, body {
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
+    }
+    /* Hide scrollbar for smooth horizontal nav tabs */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @media (max-width: 640px) {
+      .monthly-day-cell {
+        padding: 0.25rem !important;
+        font-size: 0.75rem !important;
+      }
+    }
   </style>
 </head>
 <body class="h-full bg-slate-50 text-slate-900 dark:bg-slate-950 dark:text-slate-100 antialiased selection:bg-indigo-500 selection:text-white transition-colors duration-200">
 
   <div class="min-h-screen flex flex-col">
     <!-- Top Header -->
-    <header class="sticky top-0 z-30 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
-        <!-- Brand + File Menu -->
-        <div class="flex items-center gap-3 select-none">
-          <div id="brandBadge" class="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 via-indigo-600 to-violet-600 flex items-center justify-center text-white font-bold shadow-md ring-1 ring-indigo-500/20">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z" />
-            </svg>
-          </div>
-          <h1 class="text-xl font-extrabold tracking-tight leading-none flex items-center">
-            <span class="text-slate-900 dark:text-white">Flow</span><span class="text-indigo-600 dark:text-indigo-400">Plan</span><span class="w-1.5 h-1.5 rounded-full bg-indigo-500 ml-1 mt-1"></span>
-          </h1>
+    <header class="sticky top-0 z-30 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-colors">
+      <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-2 md:py-0 md:h-16 flex flex-col md:flex-row md:items-center justify-between gap-2.5 md:gap-3">
+        <!-- Top Row on Mobile / Left Group on Desktop -->
+        <div class="flex items-center justify-between w-full md:w-auto gap-2">
+          <!-- Brand + File Menu -->
+          <div class="flex items-center gap-2.5 sm:gap-3 select-none shrink-0">
+            <div id="brandBadge" class="w-9 h-9 rounded-xl flex items-center justify-center p-1 select-none ring-1 ring-indigo-500/30 shadow-md bg-white dark:bg-slate-800/80 backdrop-blur-sm overflow-hidden shrink-0">
+              <img src="assets/speech-bubble.png" alt="FlowPlan" class="w-full h-full object-contain drop-shadow-sm hover:scale-105 transition-transform duration-200" />
+            </div>
+            <h1 class="text-xl font-extrabold tracking-tight leading-none flex items-center">
+              <span class="text-slate-900 dark:text-white">Flow</span><span class="text-indigo-600 dark:text-indigo-400">Plan</span><span class="w-1.5 h-1.5 rounded-full bg-indigo-500 ml-1 mt-1"></span>
+            </h1>
 
-          <!-- File Menu Dropdown (Export / Import Data) -->
-          <div class="relative ml-1" id="fileMenuContainer">
-            <button
-              type="button"
-              id="fileMenuTriggerBtn"
-              onclick="toggleFileMenuDropdown(event)"
-              class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 text-xs font-semibold transition"
-              title="File Menu — Import or Export your FlowPlan data"
-            >
-              <svg class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+            <!-- File Menu Dropdown (Export / Import Data) -->
+            <div class="relative ml-1" id="fileMenuContainer">
+              <button
+                type="button"
+                id="fileMenuTriggerBtn"
+                onclick="toggleFileMenuDropdown(event)"
+                class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200/80 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 text-xs font-semibold transition"
+                title="File Menu — Import or Export your FlowPlan data"
+              >
+                <svg class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/>
+                </svg>
+                <span>File</span>
+                <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </button>
+
+              <div
+                id="fileMenuDropdown"
+                class="hidden absolute left-0 mt-2 w-60 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl p-1.5 z-50 space-y-1"
+              >
+                <button
+                  type="button"
+                  onclick="exportFlowPlanDataFile()"
+                  class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-left text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
+                >
+                  <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/>
+                    </svg>
+                    Export / Save Data (.json)
+                  </span>
+                  <span class="text-[10px] font-mono text-slate-400">Ctrl+S</span>
+                </button>
+
+                <button
+                  type="button"
+                  onclick="triggerImportFlowPlanDataFile()"
+                  class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-left text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
+                >
+                  <span class="flex items-center gap-2">
+                    <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M16 8l-4-4m0 0L8 8m4-4v12"/>
+                    </svg>
+                    Import / Upload Data (.json)
+                  </span>
+                  <span class="text-[10px] font-mono text-slate-400">Ctrl+O</span>
+                </button>
+              </div>
+              <input
+                type="file"
+                id="importFlowPlanFileInput"
+                accept=".json,application/json"
+                class="hidden"
+                onchange="handleImportFlowPlanFileSelect(event)"
+              />
+            </div>
+          </div>
+
+          <!-- Mobile-Only Quick Date & Night Mode Bar (hidden on md/desktop) -->
+          <div class="flex md:hidden items-center gap-1.5">
+            <button onclick="goToToday()" class="px-2.5 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 text-xs font-bold border border-slate-200/70 dark:border-slate-700">
+              Today
+            </button>
+            <label class="flowplan-date-pill" title="Pick a date" onclick="if(this.querySelector('input') && this.querySelector('input').showPicker) { try { this.querySelector('input').showPicker(); } catch(e){} }">
+              <svg class="w-3.5 h-3.5 text-indigo-600 dark:text-indigo-400 shrink-0" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
               </svg>
-              <span>File</span>
-              <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+              <input type="date" id="datePickerInputMobile" onchange="handleDatePickerChange(this.value)" class="flowplan-date-input" />
+            </label>
+            <button onclick="toggleDarkMode()" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200/70 dark:border-slate-700 transition" title="Toggle Night Mode">
+              <svg id="sunIconMobile" class="w-4 h-4 hidden text-amber-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+              </svg>
+              <svg id="moonIconMobile" class="w-4 h-4 text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
               </svg>
             </button>
-
-            <div
-              id="fileMenuDropdown"
-              class="hidden absolute left-0 mt-2 w-60 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-xl p-1.5 z-50 space-y-1"
-            >
-              <button
-                type="button"
-                onclick="exportFlowPlanDataFile()"
-                class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-left text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
-              >
-                <span class="flex items-center gap-2">
-                  <svg class="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/>
-                  </svg>
-                  Export / Save Data (.json)
-                </span>
-                <span class="text-[10px] font-mono text-slate-400">Ctrl+S</span>
-              </button>
-
-              <button
-                type="button"
-                onclick="triggerImportFlowPlanDataFile()"
-                class="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl text-left text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-indigo-50 dark:hover:bg-slate-800 hover:text-indigo-600 dark:hover:text-indigo-400 transition"
-              >
-                <span class="flex items-center gap-2">
-                  <svg class="w-4 h-4 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M16 8l-4-4m0 0L8 8m4-4v12"/>
-                  </svg>
-                  Import / Upload Data (.json)
-                </span>
-                <span class="text-[10px] font-mono text-slate-400">Ctrl+O</span>
-              </button>
-            </div>
-            <input
-              type="file"
-              id="importFlowPlanFileInput"
-              accept=".json,application/json"
-              class="hidden"
-              onchange="handleImportFlowPlanFileSelect(event)"
-            />
           </div>
         </div>
 
-        <!-- Main View Switcher -->
-        <nav class="flex items-center bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200/70 dark:border-slate-700/70" aria-label="Main views">
-          <button id="tabDailyBtn" onclick="switchMainView('daily')" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm">
+        <!-- Main View Switcher (Segmented Control on Mobile, Inline on Desktop) -->
+        <nav class="w-full md:w-auto flex items-center justify-between md:justify-start bg-slate-100 dark:bg-slate-800 p-1 rounded-xl border border-slate-200/70 dark:border-slate-700/70 overflow-x-auto no-scrollbar" aria-label="Main views">
+          <button id="tabDailyBtn" onclick="switchMainView('daily')" class="flex-1 md:flex-initial px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all bg-white dark:bg-slate-900 text-slate-900 dark:text-white shadow-sm text-center">
             Daily
           </button>
-          <button id="tabWeeklyBtn" onclick="switchMainView('weekly')" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+          <button id="tabWeeklyBtn" onclick="switchMainView('weekly')" class="flex-1 md:flex-initial px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-center">
             Weekly
           </button>
-          <button id="tabMonthlyBtn" onclick="switchMainView('monthly')" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white">
+          <button id="tabMonthlyBtn" onclick="switchMainView('monthly')" class="flex-1 md:flex-initial px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white text-center whitespace-nowrap">
             Month Glance
           </button>
-          <button id="tabPetsBtn" onclick="switchMainView('pets')" class="px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center gap-1.5">
+          <button id="tabPetsBtn" onclick="switchMainView('pets')" class="flex-1 md:flex-initial px-3 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition-all text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white flex items-center justify-center gap-1.5 text-center">
             <span>🐾</span>
             <span>Pets</span>
           </button>
         </nav>
 
-        <!-- Date Navigation & Night Mode -->
-        <div class="flex items-center gap-2">
-          <div class="hidden md:flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl p-1 border border-slate-200/70 dark:border-slate-700/70">
+        <!-- Desktop Date Navigation & Night Mode (Hidden on mobile <768px, Visible on md/desktop) -->
+        <div class="hidden md:flex items-center gap-2">
+          <div class="flex items-center bg-slate-100 dark:bg-slate-800 rounded-xl p-1 border border-slate-200/70 dark:border-slate-700/70">
             <button onclick="shiftSelectedDate(-1)" class="p-1.5 rounded-lg hover:bg-white dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition" title="Previous Day">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
             </button>
@@ -1248,7 +1305,7 @@
           </label>
 
           <!-- Install Desktop App (PWA) Button -->
-          <button onclick="triggerDesktopInstall()" id="installPwaBtn" class="hidden items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/80 dark:border-indigo-800/70 text-[11px] font-semibold text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition" title="Install FlowPlan as a Desktop App">
+          <button onclick="triggerDesktopInstall()" id="installPwaBtn" class="hidden items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/80 dark:border-indigo-800/70 text-[11px] font-semibold text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/60 transition" title="Install FlowPlan as an App">
             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4"/>
             </svg>
@@ -1263,6 +1320,11 @@
             <svg id="moonIcon" class="w-4 h-4 text-slate-700" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
             </svg>
+            <span id="themeBtnLabel" class="hidden sm:inline">Night</span>
+          </button>
+        </div>
+      </div>
+    </header>
             <span id="themeBtnLabel" class="hidden sm:inline">Night</span>
           </button>
         </div>
@@ -3892,17 +3954,23 @@
       const root = document.documentElement;
       const sunIcon = document.getElementById('sunIcon');
       const moonIcon = document.getElementById('moonIcon');
+      const sunIconMobile = document.getElementById('sunIconMobile');
+      const moonIconMobile = document.getElementById('moonIconMobile');
       const label = document.getElementById('themeBtnLabel');
 
       if (state.darkMode) {
         root.classList.add('dark');
-        sunIcon.classList.remove('hidden');
-        moonIcon.classList.add('hidden');
+        if (sunIcon) sunIcon.classList.remove('hidden');
+        if (moonIcon) moonIcon.classList.add('hidden');
+        if (sunIconMobile) sunIconMobile.classList.remove('hidden');
+        if (moonIconMobile) moonIconMobile.classList.add('hidden');
         if (label) label.textContent = 'Light';
       } else {
         root.classList.remove('dark');
-        sunIcon.classList.add('hidden');
-        moonIcon.classList.remove('hidden');
+        if (sunIcon) sunIcon.classList.add('hidden');
+        if (moonIcon) moonIcon.classList.remove('hidden');
+        if (sunIconMobile) sunIconMobile.classList.add('hidden');
+        if (moonIconMobile) moonIconMobile.classList.remove('hidden');
         if (label) label.textContent = 'Night';
       }
 
@@ -9883,8 +9951,13 @@ window.onThreeReady = function() {
       const todayISO = getTodayISO();
       const isToday = state.selectedDate === todayISO;
 
-      document.getElementById('datePickerInput').value = state.selectedDate;
-      document.getElementById('currentDateLabel').textContent = isToday ? 'Today' : state.selectedDate;
+      const dp = document.getElementById('datePickerInput');
+      if (dp) dp.value = state.selectedDate;
+      const dpm = document.getElementById('datePickerInputMobile');
+      if (dpm) dpm.value = state.selectedDate;
+
+      const curLabel = document.getElementById('currentDateLabel');
+      if (curLabel) curLabel.textContent = isToday ? 'Today' : state.selectedDate;
       document.getElementById('dailyBadgeDayName').textContent = isToday ? 'Today' : parseISO(state.selectedDate).toLocaleDateString('en-US', { weekday: 'short' });
       document.getElementById('dailyHeadingDate').textContent = formatReadableDate(state.selectedDate);
 
@@ -9946,34 +10019,12 @@ window.onThreeReady = function() {
     let deferredInstallPrompt = null;
 
     function setupDesktopPWA() {
-      try {
-        const iconSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256"><rect width="256" height="256" rx="56" fill="#4f46e5"/><circle cx="128" cy="128" r="76" fill="none" stroke="#ffffff" stroke-width="18"/><path d="M128 84v44l30 18" fill="none" stroke="#ffffff" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-        const iconUrl = 'data:image/svg+xml;utf8,' + encodeURIComponent(iconSvg);
-
-        const manifest = {
-          name: 'FlowPlan — Daily, Weekly & Monthly Focus Planner',
-          short_name: 'FlowPlan',
-          description: 'Daily, Weekly & Monthly Planner with Focus & Pomodoro Timer',
-          start_url: '.',
-          display: 'standalone',
-          background_color: '#090d16',
-          theme_color: '#4f46e5',
-          icons: [
-            {
-              src: iconUrl,
-              sizes: '256x256',
-              type: 'image/svg+xml',
-              purpose: 'any maskable'
-            }
-          ]
-        };
-
-        const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
-        const manifestLink = document.createElement('link');
-        manifestLink.rel = 'manifest';
-        manifestLink.href = URL.createObjectURL(manifestBlob);
-        document.head.appendChild(manifestLink);
-      } catch (e) {}
+      // Register Service Worker for offline mobile / PWA capabilities when running on web (HTTPS / localhost)
+      if ('serviceWorker' in navigator && !window.electronDesktopAPI && location.protocol.startsWith('http')) {
+        navigator.serviceWorker.register('./sw.js').catch((err) => {
+          console.log('SW registration note:', err);
+        });
+      }
     }
 
     window.addEventListener('beforeinstallprompt', (e) => {

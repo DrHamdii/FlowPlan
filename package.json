@@ -1,7 +1,7 @@
 {
   "name": "flowplan-desktop",
   "productName": "FlowPlan",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "FlowPlan — Daily, Weekly & Monthly Planner with Focus & Pomodoro Timer",
   "main": "main.js",
   "scripts": {
@@ -20,6 +20,7 @@
     "appId": "com.flowplan.desktop",
     "productName": "FlowPlan",
     "asar": false,
+    "icon": "assets/icon.png",
     "files": [
       "daily_weekly_planner.html",
       "main.js",
@@ -28,6 +29,7 @@
       "node_modules/three/**/*"
     ],
     "win": {
+      "icon": "assets/icon.ico",
       "target": [
         "nsis",
         "portable"

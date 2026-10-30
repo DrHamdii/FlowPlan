@@ -1,0 +1,31 @@
+{
+  "name": "FlowPlan — Focus & Pets Planner",
+  "short_name": "FlowPlan",
+  "description": "Daily, weekly and monthly focus planner with 3D pet sanctuary.",
+  "start_url": "./daily_weekly_planner.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#090d16",
+  "theme_color": "#4f46e5",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/speech-bubble.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

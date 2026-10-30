@@ -12,6 +12,16 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="FlowPlan" />
   <meta name="theme-color" content="#4f46e5" />
+  <script>
+    (function() {
+      // Auto-redirect mobile & iPad web visitors to the optimized mobile.html
+      const isMobileDevice = /Mobi|Android|iPhone|iPod/i.test(navigator.userAgent) || 
+        (/iPad|Macintosh/i.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+      if (!window.electronDesktopAPI && isMobileDevice) {
+        window.location.replace("mobile.html" + window.location.search + window.location.hash);
+      }
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />

@@ -1,8 +1,9 @@
-const CACHE_NAME = 'flowplan-pwa-v1';
+const CACHE_NAME = 'flowplan-pwa-v2';
 
 const PRECACHE_ASSETS = [
   './',
   './index.html',
+  './mobile.html',
   './daily_weekly_planner.html',
   './manifest.webmanifest',
   './assets/speech-bubble.png',
@@ -11,11 +12,13 @@ const PRECACHE_ASSETS = [
   './assets/apple-touch-icon.png',
   './assets/Icons/basket.gif',
   './assets/Icons/money.png',
-  './assets/Background/Sunny Meadow.png',
-  './assets/Background/Fun Carnival.png',
-  './assets/Background/Sunny Beach Resort.png',
-  './assets/Background/Mystic Forest.png',
-  './assets/Background/Cosmic Starlight.png'
+  './assets/Background/Playground_Beach.jpg',
+  './assets/Background/Playground_Carnival_HD.jpg',
+  './assets/Background/Playground_cosmic.jpg',
+  './assets/Background/Playground_Flowery_HD.jpg',
+  './assets/Background/Playground_Forest.jpg',
+  './assets/Background/Playground_irritate Shafeeq.jpg',
+  './assets/Background/sanctuary.jpg'
 ];
 
 self.addEventListener('install', (event) => {
@@ -59,7 +62,7 @@ self.addEventListener('fetch', (event) => {
       }).catch(() => {
         // Fallback for navigation requests
         if (event.request.mode === 'navigate') {
-          return caches.match('./daily_weekly_planner.html');
+          return caches.match('./mobile.html');
         }
       });
 

@@ -2,7 +2,7 @@
   "name": "FlowPlan — Focus & Pets Planner",
   "short_name": "FlowPlan",
   "description": "Daily, weekly and monthly focus planner with 3D pet sanctuary.",
-  "start_url": "./daily_weekly_planner.html",
+  "start_url": "./mobile.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",

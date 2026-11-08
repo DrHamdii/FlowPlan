@@ -1,4 +1,4 @@
-const CACHE_NAME = 'flowplan-pwa-v2';
+const CACHE_NAME = 'flowplan-pwa-v3';
 
 const PRECACHE_ASSETS = [
   './',

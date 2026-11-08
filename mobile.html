@@ -1681,8 +1681,8 @@
                       <span class="text-base">💀</span>
                       <span>Your pet has collapsed from neglect! Revive with medicine to save them.</span>
                     </span>
-                    <button onclick="revivePetWithMedicine()" class="px-2.5 py-1 rounded-xl bg-white text-rose-700 hover:bg-rose-50 text-xs font-black shadow-sm transition">
-                      Revive (3 <img src="assets/Icons/money.png" alt="Coin" class="w-3.5 h-3.5 inline-block align-middle" />)
+                    <button id="revivePetBtn" onclick="revivePetWithMedicine()" class="px-2.5 py-1 rounded-xl bg-white text-rose-700 hover:bg-rose-50 text-xs font-black shadow-sm transition">
+                      Revive (<span id="revivePetCostLabel">3</span> <img src="assets/Icons/money.png" alt="Coin" class="w-3.5 h-3.5 inline-block align-middle" />)
                     </button>
                   </div>
 
@@ -3075,6 +3075,7 @@
         coins: 0,
         accumulatedFocusMinutes: 0,
         coinsGrantedTotal: 0,
+        deathCount: 0,
         playgroundTheme: 'meadow',
         inventory: {},
         sanctuaryPet: null,
@@ -3202,6 +3203,7 @@
           ...defaultState.pets,
           ...((parsed && parsed.pets) || {}),
           coins: typeof (parsed && parsed.pets && parsed.pets.coins) === 'number' ? parsed.pets.coins : 0,
+          deathCount: typeof (parsed && parsed.pets && parsed.pets.deathCount) === 'number' ? parsed.pets.deathCount : 0,
           inventory: {
             ...((parsed && parsed.pets && parsed.pets.inventory) || {})
           },
@@ -3211,6 +3213,7 @@
             vitality: 100,
             isSick: false,
             isDead: false,
+            deathCount: 0,
             adoptedAt: '',
             totalPets: 0,
             totalFeeds: 0,
@@ -3228,6 +3231,8 @@
         state.petsCleanStartV2 = true;
       }
 
+      syncCarryOverTasks();
+
       return true;
     }
 
@@ -3240,7 +3245,8 @@
           completed: false,
           stickyNote: 'Focus on the highest-leverage deliverable before checking messages.',
           showNote: true,
-          noteColor: 'yellow'
+          noteColor: 'yellow',
+          originDate: today
         },
         {
           id: 't2',
@@ -3248,7 +3254,8 @@
           completed: false,
           stickyNote: '',
           showNote: false,
-          noteColor: 'mint'
+          noteColor: 'mint',
+          originDate: today
         }
       ];
     }
@@ -3869,6 +3876,7 @@
       d.setDate(d.getDate() + daysDelta);
       state.selectedDate = toISO(d);
       state.monthCursor = state.selectedDate.slice(0, 7);
+      syncCarryOverTasks();
       saveState();
       renderAll();
     }
@@ -3876,6 +3884,7 @@
     function goToToday() {
       state.selectedDate = getTodayISO();
       state.monthCursor = state.selectedDate.slice(0, 7);
+      syncCarryOverTasks();
       saveState();
       renderAll();
     }
@@ -3884,6 +3893,7 @@
       if (!val) return;
       state.selectedDate = val;
       state.monthCursor = val.slice(0, 7);
+      syncCarryOverTasks();
       saveState();
       renderAll();
     }
@@ -3964,6 +3974,102 @@
     // =========================================================================
     // DAILY TASKS, STICKY NOTES & DRAG-AND-DROP REORDERING
     // =========================================================================
+    function syncCarryOverTasks() {
+      if (!state || !state.tasksByDate || typeof state.tasksByDate !== 'object') return false;
+      const todayISO = getTodayISO();
+      const activeDate = state.selectedDate || todayISO;
+      const pastCapDate = activeDate < todayISO ? activeDate : todayISO;
+      let changed = false;
+
+      const moveTaskToDate = (task, targetISO) => {
+        if (!Array.isArray(state.tasksByDate[targetISO])) {
+          state.tasksByDate[targetISO] = [];
+        }
+        const targetList = state.tasksByDate[targetISO];
+        if (!targetList.some(existing => existing && existing.id === task.id)) {
+          targetList.push(task);
+        }
+      };
+
+      // 1. Roll over any incomplete tasks from past dates (< pastCapDate) to pastCapDate
+      const allDates = Object.keys(state.tasksByDate).sort();
+      for (const iso of allDates) {
+        if (iso >= pastCapDate) continue;
+        const list = state.tasksByDate[iso];
+        if (!Array.isArray(list) || list.length === 0) continue;
+
+        const incomplete = list.filter(t => t && !t.completed);
+        if (incomplete.length === 0) continue;
+
+        state.tasksByDate[iso] = list.filter(t => t && t.completed);
+        for (const task of incomplete) {
+          task.carriedFrom = task.carriedFrom || iso;
+          task.originDate = pastCapDate;
+          moveTaskToDate(task, pastCapDate);
+        }
+        changed = true;
+      }
+
+      // 2. Carry incomplete tasks forward when advancing to subsequent days until marked complete
+      const updatedDates = Object.keys(state.tasksByDate).sort();
+      for (const iso of updatedDates) {
+        if (iso === activeDate) continue;
+        const list = state.tasksByDate[iso];
+        if (!Array.isArray(list) || list.length === 0) continue;
+
+        const remaining = [];
+        for (const task of list) {
+          if (!task || task.completed) {
+            if (task) remaining.push(task);
+            continue;
+          }
+          const origin = task.originDate || iso;
+          if (iso < activeDate && origin <= activeDate) {
+            task.originDate = origin;
+            task.carriedFrom = task.carriedFrom || iso;
+            moveTaskToDate(task, activeDate);
+            changed = true;
+          } else if (iso > activeDate && task.carriedFrom && origin < iso) {
+            const dest = origin > activeDate ? origin : activeDate;
+            if (dest !== iso) {
+              if (dest === origin) delete task.carriedFrom;
+              moveTaskToDate(task, dest);
+              changed = true;
+            } else {
+              remaining.push(task);
+            }
+          } else {
+            remaining.push(task);
+          }
+        }
+        state.tasksByDate[iso] = remaining;
+      }
+
+      if (changed && !isHydratingState) {
+        saveState();
+      }
+      return changed;
+    }
+
+    let _lastCheckedDayISO = getTodayISO();
+    if (typeof window !== 'undefined') {
+      if (window._taskMidnightRolloverInterval) clearInterval(window._taskMidnightRolloverInterval);
+      window._taskMidnightRolloverInterval = setInterval(() => {
+        const currentToday = getTodayISO();
+        if (currentToday !== _lastCheckedDayISO) {
+          const prevToday = _lastCheckedDayISO;
+          _lastCheckedDayISO = currentToday;
+          if (!state.selectedDate || state.selectedDate === prevToday) {
+            state.selectedDate = currentToday;
+            state.monthCursor = currentToday.slice(0, 7);
+          }
+          syncCarryOverTasks();
+          saveState();
+          renderAll();
+        }
+      }, 30000);
+    }
+
     function getTasksForDate(isoDate) {
       if (!state.tasksByDate[isoDate]) {
         state.tasksByDate[isoDate] = [];
@@ -3984,7 +4090,8 @@
         completed: false,
         stickyNote: '',
         showNote: false,
-        noteColor: 'yellow'
+        noteColor: 'yellow',
+        originDate: state.selectedDate
       });
 
       titleInput.value = '';
@@ -4694,6 +4801,7 @@
     function selectDateFromMonth(isoDate) {
       state.selectedDate = isoDate;
       state.monthCursor = isoDate.slice(0, 7);
+      syncCarryOverTasks();
       saveState();
       switchMainView('daily');
     }
@@ -5286,6 +5394,8 @@
           const idx = sourceList.findIndex(t => t.id === taskId);
           if (idx > -1) {
             const [moved] = sourceList.splice(idx, 1);
+            moved.originDate = targetDateISO;
+            delete moved.carriedFrom;
             getTasksForDate(targetDateISO).push(moved);
             saveState();
             renderWeeklyView();
@@ -5494,6 +5604,7 @@
 
     function selectDateFromWeek(iso) {
       state.selectedDate = iso;
+      syncCarryOverTasks();
       saveState();
       switchMainView('daily');
     }
@@ -5509,7 +5620,8 @@
         completed: false,
         stickyNote: '',
         showNote: false,
-        noteColor: 'yellow'
+        noteColor: 'yellow',
+        originDate: isoDate
       });
       input.value = '';
       saveState();
@@ -6973,10 +7085,14 @@
       p.vitality = target;
       p.isSick = target > 0 && target < 15;
       p.isDead = target === 0;
+      if (p.isDead) {
+        state.pets.deathCount = (Number(state.pets.deathCount) || 0) + 1;
+        p.deathCount = state.pets.deathCount;
+      }
       state.pets.lastVitalityDecayTime = Date.now();
       saveState();
       renderPetsView();
-      showToast(`⚡ DEV: Set vitality to ${target}% (${p.isDead ? '💀 Faint' : p.isSick ? '🤒 Sick' : '❤️ Healthy'})`);
+      showToast(`⚡ DEV: Set vitality to ${target}% (${p.isDead ? `💀 Faint • Revive: ${getPetRevivalCost()} coins` : p.isSick ? '🤒 Sick' : '❤️ Healthy'})`);
     }
 
     function devSeedSampleTasks() {
@@ -7456,6 +7572,7 @@ function ensurePetsState() {
   if (typeof state.pets.coins !== 'number') state.pets.coins = 0;
   if (typeof state.pets.accumulatedFocusMinutes !== 'number') state.pets.accumulatedFocusMinutes = 0;
   if (typeof state.pets.coinsGrantedTotal !== 'number') state.pets.coinsGrantedTotal = 0;
+  if (typeof state.pets.deathCount !== 'number') state.pets.deathCount = 0;
   if (!state.pets.playgroundTheme) state.pets.playgroundTheme = 'meadow';
   if (!state.pets.inventory) {
     state.pets.inventory = {};
@@ -7470,10 +7587,25 @@ function ensurePetsState() {
     if (typeof sp.vitality !== 'number') sp.vitality = 100;
     if (typeof sp.isSick !== 'boolean') sp.isSick = sp.vitality < 15;
     if (typeof sp.isDead !== 'boolean') sp.isDead = sp.vitality === 0;
+    if (typeof sp.deathCount !== 'number') sp.deathCount = state.pets.deathCount || (sp.isDead ? 1 : 0);
+    if (sp.isDead && state.pets.deathCount === 0) {
+      state.pets.deathCount = Math.max(1, sp.deathCount || 1);
+    }
     if (!state.pets.lastVitalityDecayTime) {
       state.pets.lastVitalityDecayTime = Date.now();
     }
   }
+}
+
+function getPetRevivalCost() {
+  ensurePetsState();
+  const pet = state.pets && state.pets.sanctuaryPet;
+  const deaths = Math.max(
+    Number(state.pets && state.pets.deathCount) || 0,
+    Number(pet && pet.deathCount) || 0,
+    1
+  );
+  return 3 + Math.max(0, deaths - 1);
 }
 
 // -------------------------------------------------------------------------
@@ -7499,11 +7631,16 @@ function checkSanctuaryVitalityDecay(save = true) {
     const decayAmount = ticks * 1; // 1% per 20 minutes
     state.pets.lastVitalityDecayTime += ticks * INTERVAL_MS;
 
+    const wasDead = Boolean(pet.isDead);
     pet.vitality = Math.max(0, Math.min(100, (Number(pet.vitality) || 0) - decayAmount));
 
     if (pet.vitality === 0) {
       pet.isDead = true;
       pet.isSick = false;
+      if (!wasDead) {
+        state.pets.deathCount = (Number(state.pets.deathCount) || 0) + 1;
+        pet.deathCount = state.pets.deathCount;
+      }
     } else if (pet.vitality < 15) {
       pet.isSick = true;
       pet.isDead = false;
@@ -8883,10 +9020,28 @@ function renderSanctuarySection() {
 
   // Sickness & Death States + Centered Health Status with Matching Card Outline
   if (vit === 0) {
-    pet.isDead = true;
+    if (!pet.isDead) {
+      pet.isDead = true;
+      state.pets.deathCount = (Number(state.pets.deathCount) || 0) + 1;
+      pet.deathCount = state.pets.deathCount;
+    }
     pet.isSick = false;
     if (deathAlert) deathAlert.classList.remove('hidden');
     if (sickAlert) sickAlert.classList.add('hidden');
+    const reviveCost = getPetRevivalCost();
+    const currentCoins = Number(state.pets.coins) || 0;
+    const canAffordRevive = currentCoins >= reviveCost;
+    const reviveCostEl = document.getElementById('revivePetCostLabel');
+    if (reviveCostEl) reviveCostEl.textContent = String(reviveCost);
+    const reviveBtnEl = document.getElementById('revivePetBtn');
+    if (reviveBtnEl) {
+      reviveBtnEl.className = canAffordRevive
+        ? 'px-2.5 py-1 rounded-xl bg-white text-rose-700 hover:bg-rose-50 text-xs font-black shadow-sm transition cursor-pointer'
+        : 'px-2.5 py-1 rounded-xl bg-white/50 text-rose-900/60 text-xs font-black shadow-sm transition cursor-not-allowed opacity-60';
+      reviveBtnEl.title = canAffordRevive
+        ? `Revive ${pet.nickname} for ${reviveCost} Focus Coins`
+        : `Not enough Focus Coins (Need ${reviveCost}, you have ${currentCoins})`;
+    }
     if (vitalityIcon) vitalityIcon.textContent = '💀';
     if (healthStateText) {
       healthStateText.textContent = 'Collapsed from neglect (Needs Revival)';
@@ -9424,13 +9579,14 @@ function revivePetWithMedicine() {
   const pet = state.pets.sanctuaryPet;
   if (!pet || !pet.isDead) return;
 
-  const cost = 3;
-  if (state.pets.coins >= cost) {
-    state.pets.coins -= cost;
-  } else {
-    state.pets.coins = 0;
+  const cost = getPetRevivalCost();
+  const currentCoins = Number(state.pets.coins) || 0;
+  if (currentCoins < cost) {
+    showToast(`❌ Not enough Focus Coins! Need ${cost} coins to revive ${pet.nickname} (you have ${currentCoins}).`);
+    return;
   }
 
+  state.pets.coins = currentCoins - cost;
   pet.isDead = false;
   pet.isSick = false;
   pet.vitality = 30;
@@ -9438,10 +9594,10 @@ function revivePetWithMedicine() {
 
   playSanctuaryAction('dance', 2500);
   spawnSanctuaryBurstParticles('❤️');
-  showToast(`❤️ Revived! ${pet.nickname} is back on their feet. Remember to feed them!`);
+  showToast(`❤️ Revived! ${pet.nickname} is back on their feet (-${cost} coins). Remember to feed them!`);
 
   saveState();
-  renderSanctuarySection();
+  renderPetsView();
 }
 
 // -------------------------------------------------------------------------

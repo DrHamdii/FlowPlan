@@ -679,6 +679,32 @@ function createMainWindow() {
   mainWindowRef = mainWindow;
   setupApplicationMenu(mainWindow);
 
+  // Set window/taskbar icon & update Windows Desktop/Start Menu shortcut icons at runtime
+  // (avoids rcedit PE header patching on Setup.exe which triggers Windows Smart App Control)
+  if (process.platform === 'win32' && fs.existsSync(appIconPath)) {
+    try {
+      mainWindow.setIcon(appIconPath);
+    } catch (e) {}
+    try {
+      const shortcutPaths = [
+        path.join(app.getPath('desktop'), 'FlowPlan.lnk'),
+        path.join(app.getPath('appData'), 'Microsoft', 'Windows', 'Start Menu', 'Programs', 'FlowPlan.lnk')
+      ];
+      for (const lnkPath of shortcutPaths) {
+        if (fs.existsSync(lnkPath)) {
+          const existing = shell.readShortcutLink(lnkPath);
+          if (existing && existing.target && existing.icon !== appIconPath) {
+            shell.writeShortcutLink(lnkPath, 'update', {
+              ...existing,
+              icon: appIconPath,
+              iconIndex: 0
+            });
+          }
+        }
+      }
+    } catch (e) {}
+  }
+
   // Distinguish explicit user window minimize (SC_MINIMIZE = 0xF020) from Windows "Show Desktop" (Win+D)
   if (process.platform === 'win32' && typeof mainWindow.hookWindowMessage === 'function') {
     try {

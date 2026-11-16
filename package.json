@@ -1,7 +1,7 @@
 {
   "name": "flowplan-desktop",
   "productName": "FlowPlan",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "FlowPlan — Daily, Weekly & Monthly Planner with Focus & Pomodoro Timer",
   "main": "main.js",
   "scripts": {
